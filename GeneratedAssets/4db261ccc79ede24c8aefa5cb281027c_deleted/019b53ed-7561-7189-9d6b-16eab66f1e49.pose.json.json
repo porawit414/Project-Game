@@ -1,0 +1,11 @@
+{
+    "asset": "4db261ccc79ede24c8aefa5cb281027c",
+    "fileName": "019b53ed-7561-7189-9d6b-16eab66f1e49.pose.json",
+    "prompt": "I want it to only show my hand while holding the flashlight. Like, when I press L, my hand comes up holding the flashlight, and when I press L again, my hand turns off the flashlight.",
+    "negativePrompt": "",
+    "model": "9e46c009-67d8-4254-a3a0-32e3168247ee",
+    "modelName": "Text to Motion",
+    "customSeed": 1080832706,
+    "w3CTraceId": "228e6294a6bc6df03115ef1956eaefb7",
+    "isTrimmed": false
+}

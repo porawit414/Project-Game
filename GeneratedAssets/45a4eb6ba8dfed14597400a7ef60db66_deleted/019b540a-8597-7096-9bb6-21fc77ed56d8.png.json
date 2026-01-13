@@ -1,0 +1,20 @@
+{
+    "asset": "45a4eb6ba8dfed14597400a7ef60db66",
+    "fileName": "019b540a-8597-7096-9bb6-21fc77ed56d8.png",
+    "prompt": "Muddy forest ground",
+    "negativePrompt": "3D",
+    "model": "5b5b2af1-6ea4-4266-b087-cc9f3bf4f450",
+    "modelName": "Flux.1 Dev",
+    "customSeed": -1,
+    "w3CTraceId": "61f61d228855790599a7ae36b5d0a697",
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0
+}

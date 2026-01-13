@@ -1,0 +1,23 @@
+{
+  "name": "com.unity.ai.toolkit",
+  "displayName": "AI Toolkit",
+  "version": "1.5.0-pre.1",
+  "unity": "6000.3",
+  "description": "AI Toolkit is a package that provides tools for adding generative AI to Unity.",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  },
+  "relatedPackages": {
+    "com.unity.ai.toolkit.tests": "1.5.0-pre.1"
+  },
+  "upmCi": {
+    "footprint": "702763e232717b90cf1622a8d9c905aa0da4bc49"
+  },
+  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.ai.toolkit@1.5/manual/index.html",
+  "repository": {
+    "url": "https://github.cds.internal.unity3d.com/unity/muse-editor.git",
+    "type": "git",
+    "revision": "591732a538dd4893b73354733701b9e3f0f8f576"
+  },
+  "_fingerprint": "5b5621a1dfc753f5f9fd8cd14208423792ba5a67"
+}
