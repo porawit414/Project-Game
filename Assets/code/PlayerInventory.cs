@@ -1,19 +1,28 @@
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro; // เพิ่มบรรทัดนี้เพื่อใช้ TextMeshPro
+using System.Collections;
 
 public class PlayerInventory : MonoBehaviour
 {
-    // เก็บรหัสกุญแจที่เราได้แล้ว เช่น "Room1"
-    private HashSet<string> keys = new HashSet<string>();
+    public bool hasKey = false;
 
-    public void AddKey(string keyId)
+    [Header("UI สำหรับแจ้งเตือน")]
+    public TextMeshProUGUI notificationText; // ลาก TextMeshPro ที่สร้างมาใส่ช่องนี้
+
+    // ฟังก์ชันเรียกใช้แสดงข้อความ (เรียกจาก Script กุญแจ)
+    public void ShowNotification(string message)
     {
-        keys.Add(keyId);
-        Debug.Log("Got key: " + keyId);
+        StartCoroutine(ShowTextTimer(message));
     }
 
-    public bool HasKey(string keyId)
+    // ตัวนับเวลา ให้ข้อความขึ้น 3 วินาทีแล้วหายไป
+    IEnumerator ShowTextTimer(string message)
     {
-        return keys.Contains(keyId);
+        notificationText.text = message;      // เปลี่ยนข้อความ
+        notificationText.gameObject.SetActive(true); // เปิดการมองเห็น
+
+        yield return new WaitForSeconds(3);   // รอ 3 วินาที
+
+        notificationText.gameObject.SetActive(false); // ซ่อนข้อความ
     }
 }
