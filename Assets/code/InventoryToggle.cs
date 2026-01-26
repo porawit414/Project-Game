@@ -1,27 +1,26 @@
 using UnityEngine;
+using StarterAssets; // *บรรทัดสำคัญ! ต้องมีอันนี้เพื่อสั่งงานตัวละคร
 
 public class InventoryToggle : MonoBehaviour
 {
     [Header("UI Setup")]
     public GameObject inventoryPanel; 
 
-    [Header("Mouse Look Setup")]
-    // ลาก PlayerCameraRoot มาใส่ช่องนี้เพื่อให้หน้าจอนิ่ง
-    public GameObject cameraObject; 
+    [Header("Player Setup")]
+    // ลาก PlayerCapsule มาใส่ช่องนี้ (เพื่อสั่งหยุดหมุนคอ)
+    public StarterAssetsInputs playerInput; 
 
     void Start()
     {
-        // เริ่มเกมมาให้ปิดกระเป๋าก่อน
         if (inventoryPanel != null) inventoryPanel.SetActive(false);
         
-        // เซ็ตให้เมาส์หายไปตอนเริ่มเกม
+        // เริ่มเกมมาล็อคเมาส์
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
-        // กด Tab เพื่อเปิด/ปิดกระเป๋า
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleInventory();
@@ -30,23 +29,23 @@ public class InventoryToggle : MonoBehaviour
 
     void ToggleInventory()
     {
-        // เช็คสถานะปัจจุบันของกระเป๋า
         bool isOpening = !inventoryPanel.activeSelf;
         
-        // 1. เปิด/ปิด แผงกระเป๋า
+        // 1. เปิด/ปิด หน้าต่างกระเป๋า
         inventoryPanel.SetActive(isOpening);
 
-        // 2. หยุดเวลาในเกม (เพื่อให้ตัวละครเดินไม่ได้)
+        // 2. หยุดเวลา (ศัตรูหยุดเดิน)
         Time.timeScale = isOpening ? 0f : 1f;
 
-        // 3. จัดการเรื่องเมาส์ (โชว์เมาส์เมื่อเปิดกระเป๋า)
+        // 3. ปลดล็อคเมาส์ (ให้เห็นลูกศร)
         Cursor.visible = isOpening;
         Cursor.lockState = isOpening ? CursorLockMode.None : CursorLockMode.Locked;
 
-        // 4. สั่ง "ปิด" ตัวคุมกล้อง (เพื่อให้หน้าจอนิ่ง 100%)
-        if (cameraObject != null)
+        // 4. สั่งตัวละคร "หยุดรับค่าการมอง" (แก้หน้าหมุนตามเมาส์)
+        if (playerInput != null)
         {
-            cameraObject.SetActive(!isOpening);
+            playerInput.cursorInputForLook = !isOpening; 
+            // แปลว่า: ถ้าเปิดกระเป๋า = ห้ามหมุนกล้อง, ถ้าปิดกระเป๋า = หมุนได้ปกติ
         }
     }
 }
