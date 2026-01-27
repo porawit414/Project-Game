@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// สร้างตัวเลือก 3 แบบ
+// เก็บ Enum ไว้เหมือนเดิม (ถ้าลบไป เดี๋ยว Type จะ Error)
 public enum ItemType { GeneralItem, Document, Evidence }
 
 public class ItemPickup : MonoBehaviour
@@ -10,16 +10,6 @@ public class ItemPickup : MonoBehaviour
     public Sprite itemIcon;
     public ItemType itemType;
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            SimpleInventory inventory = other.GetComponent<SimpleInventory>();
-            if (inventory != null)
-            {
-                inventory.AddItem(this);
-                Destroy(gameObject);
-            }
-        }
-    }
+    // ❌ ลบ void OnTriggerEnter ทิ้งไปแล้ว!
+    // ตอนนี้สคริปต์นี้จะมีหน้าที่แค่ "ถือข้อมูล" รอให้ KeyPickup มาดึงไปใช้ครับ
 }
