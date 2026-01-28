@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using StarterAssets; // ต้องมีบรรทัดนี้
+using StarterAssets;
 
 public class SimpleInventory : MonoBehaviour
 {
@@ -20,11 +20,10 @@ public class SimpleInventory : MonoBehaviour
     public List<ItemPickup> collectedItems = new List<ItemPickup>(); 
 
     private bool isInventoryOpen = false;
-    private StarterAssetsInputs _input; // ตัวแปรสำหรับคุยกับระบบเดิน
+    private StarterAssetsInputs _input;
 
     void Start()
     {
-        // ค้นหาตัวควบคุม StarterAssets ที่ตัวคน
         _input = GetComponent<StarterAssetsInputs>();
 
         if (inventoryPanel != null) 
@@ -36,52 +35,38 @@ public class SimpleInventory : MonoBehaviour
 
     void Update()
     {
-        // กด I เพื่อเปิด/ปิด
         if (Input.GetKeyDown(KeyCode.I))
         {
             isInventoryOpen = !isInventoryOpen;
-            
             if (inventoryPanel != null) inventoryPanel.SetActive(isInventoryOpen);
-            
-            // สั่งจัดการเมาส์
             SetCursorState(isInventoryOpen);
         }
     }
 
-    // ฟังก์ชันสั่งการเมาส์และกล้อง
     void SetCursorState(bool isOpen)
     {
         if (isOpen)
         {
-            // เปิดกระเป๋า:
-            // 1. บอก StarterAssets ว่า "ไม่ต้องหันหน้าตามเมาส์นะ"
             if (_input != null) 
             {
                 _input.cursorInputForLook = false; 
                 _input.cursorLocked = false;
             }
-
-            // 2. ปลดล็อกเมาส์ให้เห็นชัดๆ
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         else
         {
-            // ปิดกระเป๋า:
-            // 1. บอก StarterAssets ว่า "กลับมาหันหน้าตามปกติได้แล้ว"
             if (_input != null) 
             {
                 _input.cursorInputForLook = true;
                 _input.cursorLocked = true;
             }
-
-            // 2. ซ่อนเมาส์
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
     }
 
-    // แก้บั๊ก Alt-Tab
     private void OnApplicationFocus(bool hasFocus)
     {
         if (hasFocus && isInventoryOpen)
@@ -90,7 +75,6 @@ public class SimpleInventory : MonoBehaviour
         }
     }
 
-    // --- ส่วนเก็บของ (เหมือนเดิม) ---
     public void AddItem(ItemPickup newItem)
     {
         collectedItems.Add(newItem);
@@ -114,5 +98,19 @@ public class SimpleInventory : MonoBehaviour
             Image icon = newSlot.GetComponent<Image>();
             if (icon != null) icon.sprite = item.itemIcon;
         }
+    }
+
+    // --- ส่วนที่แก้ไข (เปลี่ยน I ใหญ่ เป็น i เล็ก) ---
+    public bool HasItem(string nameToCheck)
+    {
+        foreach (ItemPickup item in collectedItems)
+        {
+            // แก้ตรงนี้ครับ! ใช้ itemName (ตัวเล็ก)
+            if (item.itemName == nameToCheck || item.name == nameToCheck) 
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

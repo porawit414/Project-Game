@@ -4899,33 +4899,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5261235881985340365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &395152226 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2241007161028642730, guid: 55857842395940243a77c973d86163c0, type: 3}
-  m_PrefabInstance: {fileID: 614044918}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &395152232 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8723606252519581778, guid: 55857842395940243a77c973d86163c0, type: 3}
   m_PrefabInstance: {fileID: 614044918}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &395152236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 395152226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a1852888beeda64bb3ac6d030f033e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SimpleDoorController
-  doorBody: {fileID: 395152232}
-  openAngle: 90
-  smoothSpeed: 3
-  openSound: {fileID: 0}
-  closeSound: {fileID: 0}
 --- !u!1 &397422480
 GameObject:
   m_ObjectHideFlags: 0
@@ -7146,7 +7124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 385.811
+      value: 386.134
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9087,9 +9065,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4465560436706701026, guid: 55857842395940243a77c973d86163c0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 690211104}
-    - targetCorrespondingSourceObject: {fileID: 2241007161028642730, guid: 55857842395940243a77c973d86163c0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 6716752207294105347, guid: 55857842395940243a77c973d86163c0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 395152236}
+      addedObject: {fileID: 2027643078}
+    - targetCorrespondingSourceObject: {fileID: 6716752207294105347, guid: 55857842395940243a77c973d86163c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2027643077}
   m_SourcePrefab: {fileID: 100100000, guid: 55857842395940243a77c973d86163c0, type: 3}
 --- !u!4 &630167268 stripped
 Transform:
@@ -10202,7 +10183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4019922906343924, guid: eeefdd9044a28504abd5e39c9e8fe5d0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 362.00616
+      value: 362.078
       objectReference: {fileID: 0}
     - target: {fileID: 4019922906343924, guid: eeefdd9044a28504abd5e39c9e8fe5d0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10773,7 +10754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c86911a6937e884fb36b487d78dddcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemPickup
-  itemName: 
+  itemName: RoomKey
   itemIcon: {fileID: 21300000, guid: 46dddbf021c75a846ad5ca6eece444ef, type: 3}
   itemType: 0
 --- !u!1001 &877385426
@@ -19460,7 +19441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1751565365396325425, guid: 73dd7a893b9f3b547a73fc800af96e4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 396.1198
+      value: 396.014
       objectReference: {fileID: 0}
     - target: {fileID: 1751565365396325425, guid: 73dd7a893b9f3b547a73fc800af96e4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19468,7 +19449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1751565365396325425, guid: 73dd7a893b9f3b547a73fc800af96e4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 363.0481
+      value: 363.208
       objectReference: {fileID: 0}
     - target: {fileID: 1751565365396325425, guid: 73dd7a893b9f3b547a73fc800af96e4f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -22764,6 +22745,48 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 297921443619546973, guid: 3e97ec32f94307548bbf0a0346589316, type: 3}
   m_PrefabInstance: {fileID: 1329118403}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2027643075 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6716752207294105347, guid: 55857842395940243a77c973d86163c0, type: 3}
+  m_PrefabInstance: {fileID: 614044918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2027643077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027643075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d6b8f6238b274747a5e2705401c97af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyDoorLock
+  keyName: RoomKey
+  doorHinge: {fileID: 395152232}
+  openAngle: 90
+  openSpeed: 2
+--- !u!65 &2027643078
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027643075}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2028685148
 GameObject:
   m_ObjectHideFlags: 0
