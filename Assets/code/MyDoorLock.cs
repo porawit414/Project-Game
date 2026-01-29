@@ -1,42 +1,64 @@
 using UnityEngine;
+using System.Collections; // บรรทัดนี้สำคัญมาก!
 
 public class MyDoorLock : MonoBehaviour
 {
-    [Header("ชื่อกุญแจ (ต้องตรงกับ Item Name ในกุญแจ)")]
+    [Header("UI แจ้งเตือน (ลากข้อความมาใส่ตรงนี้)")]
+    public GameObject lockedMessageUI; // <--- ช่องใหม่ที่จะโผล่มา
+
+    [Header("ชื่อกุญแจ")]
     public string keyName = "RoomKey"; 
 
     [Header("การตั้งค่าประตู")]
-    public Transform doorHinge;   // ตัวบานประตูที่หมุนได้ (Interior_Door)
-    public float openAngle = 90f; // องศาที่จะเปิด
-    public float openSpeed = 2f;  // ความเร็ว
+    public Transform doorHinge;   
+    public float openAngle = 90f; 
+    public float openSpeed = 2f;  
+    public float autoCloseDelay = 5f; 
 
     private bool isOpen = false;
     private bool isPlayerNear = false;
     private Quaternion targetRotation;
     private Quaternion initialRotation;
+    private Coroutine currentCoroutine;
+    private Collider doorCollider; 
 
     void Start()
     {
-        // จำมุมเริ่มต้นไว้
         if(doorHinge != null)
         {
             initialRotation = doorHinge.localRotation;
             targetRotation = initialRotation;
+            doorCollider = doorHinge.GetComponent<Collider>();
         }
+        
+        // สั่งปิดข้อความแจ้งเตือนตอนเริ่มเกม (กันเหนียว)
+        if(lockedMessageUI != null) lockedMessageUI.SetActive(false);
     }
 
     void Update()
     {
-        // เงื่อนไข: อยู่ใกล้ + กด E + ประตูยังไม่เปิด
         if (isPlayerNear && Input.GetKeyDown(KeyCode.E) && !isOpen)
         {
             TryOpenDoor();
         }
 
-        // สั่งหมุนประตู (Animation)
+        // --- ส่วนจัดการการหมุนและระบบฟิสิกส์ (ประตูวิญญาณ) ---
         if (doorHinge != null)
         {
             doorHinge.localRotation = Quaternion.Slerp(doorHinge.localRotation, targetRotation, Time.deltaTime * openSpeed);
+
+            float angleDifference = Quaternion.Angle(doorHinge.localRotation, initialRotation);
+            
+            // ถ้าปิดสนิท -> แข็ง (ชนได้)
+            if (angleDifference < 0.5f && !isOpen) 
+            {
+                if(doorCollider != null) doorCollider.isTrigger = false;
+            }
+            // ถ้ากำลังขยับ -> เป็นวิญญาณ (เดินทะลุได้ ไม่ดันผู้เล่น)
+            else
+            {
+                if(doorCollider != null) doorCollider.isTrigger = true;
+            }
         }
     }
 
@@ -45,22 +67,54 @@ public class MyDoorLock : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            // เรียกใช้กระเป๋าที่เราเพิ่งแก้ไป
             SimpleInventory inventory = player.GetComponent<SimpleInventory>();
 
-            // เช็คว่ามีกุญแจไหม
+            // เช็คว่ามีกุญแจไหม?
             if (inventory != null && inventory.HasItem(keyName))
             {
-                Debug.Log("ไขกุญแจสำเร็จ!");
-                isOpen = true;
-                // ตั้งเป้าหมายใหม่ (หมุนแกน Y ไป 90 องศา)
-                targetRotation = Quaternion.Euler(0, openAngle, 0) * initialRotation; 
+                OpenDoor(); // มีกุญแจ -> เปิด
             }
             else
             {
-                Debug.Log("เปิดไม่ได้! ไม่มีกุญแจชื่อ: " + keyName);
+                // ไม่มีกุญแจ -> โชว์ข้อความแจ้งเตือน
+                Debug.Log("ไม่มีกุญแจ!");
+                if (currentCoroutine != null) StopCoroutine(currentCoroutine); // รีเซ็ตเวลานับถอยหลังเก่า (ถ้ามี)
+                StartCoroutine(ShowLockedMessage());
             }
         }
+    }
+
+    // ฟังก์ชันโชว์ข้อความ 2 วินาที แล้วหายไป
+    IEnumerator ShowLockedMessage()
+    {
+        if (lockedMessageUI != null)
+        {
+            lockedMessageUI.SetActive(true); // โชว์ข้อความ
+            yield return new WaitForSeconds(2f); // รอ 2 วิ
+            lockedMessageUI.SetActive(false); // ซ่อนข้อความ
+        }
+    }
+
+    void OpenDoor()
+    {
+        isOpen = true;
+        targetRotation = Quaternion.Euler(0, openAngle, 0) * initialRotation;
+        
+        // เริ่มนับถอยหลังปิดประตู
+        if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+        currentCoroutine = StartCoroutine(AutoCloseRoutine());
+    }
+
+    IEnumerator AutoCloseRoutine()
+    {
+        yield return new WaitForSeconds(autoCloseDelay);
+        CloseDoor();
+    }
+
+    void CloseDoor()
+    {
+        isOpen = false;
+        targetRotation = initialRotation;
     }
 
     private void OnTriggerEnter(Collider other)
