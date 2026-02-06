@@ -1,71 +1,118 @@
 using UnityEngine;
+using System.Collections;
 
 public class SimpleDoorController : MonoBehaviour
 {
     [Header("Settings")]
-    public Transform doorBody;    
+    public Transform doorBody;
     public float openAngle = 90f; 
-    public float smoothSpeed = 3f; 
-    public GameObject doorUI; // <--- เพิ่มช่องสำหรับลาก "DoorPrompt" มาใส่
+    public float smoothSpeed = 3f;
+    public GameObject doorUI;
+
+    [Header("Auto Close & Physics")]
+    public float autoCloseDelay = 3f; // ตั้งค่าไว้ 3 วินาที
+    public Collider blockingCollider; // ลาก Box Collider ตัวที่ใช้กันทาง (ไม่ติ๊ก Is Trigger) มาใส่
 
     [Header("Audio Settings")]
     public AudioClip openSound;
     public AudioClip closeSound;
 
     private bool isOpen = false;
-    private bool isPlayerNearby = false; 
+    private bool isPlayerNearby = false;
     private Quaternion closedRotation;
     private Quaternion openRotation;
     private AudioSource audioSource;
+    private Coroutine currentCoroutine;
 
     void Start()
     {
         if (doorBody == null) doorBody = transform;
-
         closedRotation = doorBody.localRotation;
-        openRotation = closedRotation * Quaternion.Euler(0, openAngle, 0);
+        
+        // คำนวณมุมเปิด (ติดลบตามที่คุณใช้งาน)
+        openRotation = closedRotation * Quaternion.Euler(0, -openAngle, 0); 
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.spatialBlend = 1f;
-
-        // เริ่มเกมมา ให้ซ่อน UI ไว้ก่อนเผื่อลืมปิดในหน้า Inspector
+        
         if (doorUI != null) doorUI.SetActive(false);
+
+        // เริ่มเกม: ถ้าประตูปิดอยู่ ต้องแข็ง (ทะลุไม่ได้)
+        if (blockingCollider != null) blockingCollider.enabled = true;
     }
 
     void Update()
     {
-        // เช็คการกดปุ่ม E
+        // 1. ตรวจสอบการกด E เพื่อเปิด
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
         {
-            isOpen = !isOpen; 
-            
-            if (isOpen) PlaySound(openSound);
-            else PlaySound(closeSound);
+            if (!isOpen) OpenDoor();
         }
 
-        // ส่วนหมุนประตู
+        // 2. คำนวณการหมุนราบรื่น
         Quaternion targetRotation = isOpen ? openRotation : closedRotation;
         doorBody.localRotation = Quaternion.Slerp(doorBody.localRotation, targetRotation, Time.deltaTime * smoothSpeed);
+
+        // 3. Logic การเดินทะลุ (สำคัญ)
+        // ถ้าประตู "ไม่สนิท" (มุมห่างจากจุดปิด > 0.1) ให้ปิด Collider เพื่อให้ทะลุได้
+        float angleRemaining = Quaternion.Angle(doorBody.localRotation, closedRotation);
+        
+        if (angleRemaining > 0.1f) 
+        {
+            // ประตูกำลังเปิด หรือ กำลังปิด -> ปิด Collider (ทะลุได้)
+            if (blockingCollider != null && blockingCollider.enabled)
+                blockingCollider.enabled = false;
+        }
+        else if (!isOpen && angleRemaining <= 0.1f)
+        {
+            // ประตูปิดสนิทแล้ว และสถานะคือ Close -> เปิด Collider (ทะลุไม่ได้)
+            if (blockingCollider != null && !blockingCollider.enabled)
+                blockingCollider.enabled = true;
+        }
     }
 
-    // เมื่อเดินเข้าเขต ให้แสดงคำแจ้งเตือน
+    void OpenDoor()
+    {
+        isOpen = true;
+        PlaySound(openSound);
+
+        // ปิดการชนทันทีที่เริ่มเปิด
+        if (blockingCollider != null) blockingCollider.enabled = false;
+
+        // เริ่มนับถอยหลัง 3 วินาทีเพื่อปิดเอง
+        if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+        currentCoroutine = StartCoroutine(AutoCloseRoutine());
+    }
+
+    void CloseDoor()
+    {
+        isOpen = false;
+        PlaySound(closeSound);
+        // Collider จะกลับมาทำงานเองใน Update() เมื่อหมุนถึงจุดปิดสนิท
+    }
+
+    IEnumerator AutoCloseRoutine()
+    {
+        // รอ 3 วินาทีตามที่กำหนด
+        yield return new WaitForSeconds(autoCloseDelay);
+        CloseDoor();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerNearby = true;
-            if (doorUI != null) doorUI.SetActive(true); // <--- สั่งให้คำแจ้งเตือนปรากฏขึ้น
+            if (doorUI != null) doorUI.SetActive(true);
         }
     }
 
-    // เมื่อเดินออกเขต ให้ซ่อนคำแจ้งเตือน
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerNearby = false;
-            if (doorUI != null) doorUI.SetActive(false); // <--- สั่งให้คำแจ้งเตือนหายไป
+            if (doorUI != null) doorUI.SetActive(false);
         }
     }
 
@@ -73,7 +120,7 @@ public class SimpleDoorController : MonoBehaviour
     {
         if (clip != null && audioSource != null)
         {
-            audioSource.Stop(); 
+            audioSource.Stop();
             audioSource.PlayOneShot(clip);
         }
     }
