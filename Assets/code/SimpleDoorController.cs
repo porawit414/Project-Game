@@ -1,170 +1,127 @@
-
 using UnityEngine;
-
 using System.Collections;
 
-
-
 public class SimpleDoorController : MonoBehaviour
-
 {
-
     [Header("Settings")]
-
-    public Transform doorBody; 
-
-    public float openAngle = 90f;
-
+    public Transform doorBody;
+    public float openAngle = 90f; 
     public float smoothSpeed = 3f;
+    public GameObject doorUI;
 
-
+    [Header("Auto Close & Physics")]
+    public float autoCloseDelay = 3f; // ตั้งค่าไว้ 3 วินาที
+    public Collider blockingCollider; // ลาก Box Collider ตัวที่ใช้กันทาง (ไม่ติ๊ก Is Trigger) มาใส่
 
     [Header("Audio Settings")]
-
     public AudioClip openSound;
-
     public AudioClip closeSound;
 
-
-
     private bool isOpen = false;
-
+    private bool isPlayerNearby = false;
     private Quaternion closedRotation;
-
     private Quaternion openRotation;
-
     private AudioSource audioSource;
-
-    private BoxCollider doorCollider;
-
-
+    private Coroutine currentCoroutine;
 
     void Start()
-
     {
-
         if (doorBody == null) doorBody = transform;
-
         closedRotation = doorBody.localRotation;
-
-        openRotation = Quaternion.Euler(0, openAngle, 0) * closedRotation;
+        
+        // คำนวณมุมเปิด (ติดลบตามที่คุณใช้งาน)
+        openRotation = closedRotation * Quaternion.Euler(0, -openAngle, 0); 
 
         audioSource = GetComponent<AudioSource>();
-
-        doorCollider = GetComponent<BoxCollider>(); 
-
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
         
+        if (doorUI != null) doorUI.SetActive(false);
 
-        if (doorCollider != null) doorCollider.isTrigger = false; 
-
+        // เริ่มเกม: ถ้าประตูปิดอยู่ ต้องแข็ง (ทะลุไม่ได้)
+        if (blockingCollider != null) blockingCollider.enabled = true;
     }
-
-
 
     void Update()
-
     {
+        // 1. ตรวจสอบการกด E เพื่อเปิด
+        if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
+        {
+            if (!isOpen) OpenDoor();
+        }
 
+        // 2. คำนวณการหมุนราบรื่น
         Quaternion targetRotation = isOpen ? openRotation : closedRotation;
-
         doorBody.localRotation = Quaternion.Slerp(doorBody.localRotation, targetRotation, Time.deltaTime * smoothSpeed);
 
-
-
-        // --- ส่วนที่แก้ไข: เช็กว่าถ้าประตูปิดเกือบสนิทแล้ว ถึงจะทำให้มันแข็ง ---
-
-        if (doorCollider != null)
-
+        // 3. Logic การเดินทะลุ (สำคัญ)
+        // ถ้าประตู "ไม่สนิท" (มุมห่างจากจุดปิด > 0.1) ให้ปิด Collider เพื่อให้ทะลุได้
+        float angleRemaining = Quaternion.Angle(doorBody.localRotation, closedRotation);
+        
+        if (angleRemaining > 0.1f) 
         {
-
-            float angleDifference = Quaternion.Angle(doorBody.localRotation, closedRotation);
-
-            
-
-            if (isOpen) 
-
-            {
-
-                // ถ้าประตูเปิดอยู่ ให้ทะลุได้เสมอ
-
-                doorCollider.isTrigger = true;
-
-            }
-
-            else if (angleDifference < 1f) 
-
-            {
-
-                // ถ้าประตูกำลังปิด และเหลืออีกไม่ถึง 1 องศาจะปิดสนิท ให้กลับมาแข็ง
-
-                doorCollider.isTrigger = false;
-
-            }
-
-            else 
-
-            {
-
-                // ถ้าประตูกำลังเคลื่อนที่ปิด (ยังไม่สนิท) ให้ยังคงทะลุได้อยู่
-
-                doorCollider.isTrigger = true;
-
-            }
-
+            // ประตูกำลังเปิด หรือ กำลังปิด -> ปิด Collider (ทะลุได้)
+            if (blockingCollider != null && blockingCollider.enabled)
+                blockingCollider.enabled = false;
         }
-
+        else if (!isOpen && angleRemaining <= 0.1f)
+        {
+            // ประตูปิดสนิทแล้ว และสถานะคือ Close -> เปิด Collider (ทะลุไม่ได้)
+            if (blockingCollider != null && !blockingCollider.enabled)
+                blockingCollider.enabled = true;
+        }
     }
 
-
-
-    public void ToggleDoor()
-
+    void OpenDoor()
     {
+        isOpen = true;
+        PlaySound(openSound);
 
-        isOpen = !isOpen;
+        // ปิดการชนทันทีที่เริ่มเปิด
+        if (blockingCollider != null) blockingCollider.enabled = false;
 
-
-
-        if (audioSource != null)
-
-        {
-
-            AudioClip clipToPlay = isOpen ? openSound : closeSound;
-
-            if (clipToPlay != null) audioSource.PlayOneShot(clipToPlay);
-
-        }
-
-
-
-        if (isOpen)
-
-        {
-
-            StopAllCoroutines();
-
-            StartCoroutine(AutoCloseTimer(4f));
-
-        }
-
+        // เริ่มนับถอยหลัง 3 วินาทีเพื่อปิดเอง
+        if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+        currentCoroutine = StartCoroutine(AutoCloseRoutine());
     }
 
-
-
-    IEnumerator AutoCloseTimer(float delay)
-
+    void CloseDoor()
     {
-
-        yield return new WaitForSeconds(delay);
-
-        if (isOpen)
-
-        {
-
-            ToggleDoor();
-
-        }
-
+        isOpen = false;
+        PlaySound(closeSound);
+        // Collider จะกลับมาทำงานเองใน Update() เมื่อหมุนถึงจุดปิดสนิท
     }
 
+    IEnumerator AutoCloseRoutine()
+    {
+        // รอ 3 วินาทีตามที่กำหนด
+        yield return new WaitForSeconds(autoCloseDelay);
+        CloseDoor();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerNearby = true;
+            if (doorUI != null) doorUI.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerNearby = false;
+            if (doorUI != null) doorUI.SetActive(false);
+        }
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource.PlayOneShot(clip);
+        }
+    }
 }
