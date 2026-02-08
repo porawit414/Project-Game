@@ -4688,7 +4688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleDoorController
   doorBody: {fileID: 91495340}
-  openAngle: -90
+  openAngle: 90
   smoothSpeed: 3
   doorUI: {fileID: 0}
   autoCloseDelay: 3
@@ -5015,17 +5015,6 @@ MonoBehaviour:
   reachRange: 5
   hasCutter: 0
   cutSound: {fileID: 8300000, guid: 29e7320a06f3e5e4cbe728d48ac91cee, type: 3}
---- !u!114 &103616790 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
-  m_PrefabInstance: {fileID: 426642904}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103616760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55919ac34a26952479f3fc91f777b2fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &107959367
 GameObject:
   m_ObjectHideFlags: 0
@@ -12654,6 +12643,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.89600015, y: 2.0370002, z: 0.02}
   m_Center: {x: 0.4460001, y: 1.0195, z: 0.031999957}
+--- !u!114 &602348038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602348035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1852888beeda64bb3ac6d030f033e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleDoorController
+  doorBody: {fileID: 602348036}
+  openAngle: 90
+  smoothSpeed: 3
+  doorUI: {fileID: 0}
+  autoCloseDelay: 3
+  blockingCollider: {fileID: 602348037}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
 --- !u!65 &602348041
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12675,22 +12684,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8959997, y: 2.0370002, z: 1}
   m_Center: {x: 0.44596937, y: 1.0195, z: 0.031999942}
---- !u!114 &602348044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 602348035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dd5b1ab4b69696459d8325ebb2fb611, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StorageDoorController
-  openAngle: 90
-  smoothSpeed: 3
-  autoCloseDelay: 3
-  blockingCollider: {fileID: 602348037}
 --- !u!4 &607246242 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7692463288171791090, guid: 99504df19992cb14ab3fb85911305df3, type: 3}
@@ -12818,7 +12811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2825665a4203f04c933a27ee7262e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FinalChainDoor
-  doorBody: {fileID: 5262320588085782019}
+  doorBody: {fileID: 0}
   openAngle: 90
   smoothSpeed: 3
   chainLock: {fileID: 1730294548}
@@ -13179,7 +13172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       propertyPath: m_Name
-      value: Door_Storage_Room1
+      value: Interior_Door (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       propertyPath: m_Layer
@@ -13800,7 +13793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       propertyPath: m_Name
-      value: Door_Password
+      value: Interior_Door
       objectReference: {fileID: 0}
     - target: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       propertyPath: m_IsActive
@@ -13924,7 +13917,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1635039950223524199, guid: 339aefca50fd7ea43a548819cf03cea6, type: 3}
       propertyPath: m_Name
-      value: Door_Main_Entrance
+      value: Exterior_Door (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1635039950223524199, guid: 339aefca50fd7ea43a548819cf03cea6, type: 3}
       propertyPath: m_Layer
@@ -14633,7 +14626,6 @@ MonoBehaviour:
   openAngle: 90
   openSpeed: 2
   autoCloseDelay: 5
-  playerMovement: {fileID: 103616790}
 --- !u!65 &869817279
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21564,7 +21556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       propertyPath: m_Name
-      value: Door_Storage_Room2
+      value: Interior_Door (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       propertyPath: m_Layer
@@ -21590,13 +21582,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 602348038}
+    - targetCorrespondingSourceObject: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 602348037}
     - targetCorrespondingSourceObject: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 602348041}
-    - targetCorrespondingSourceObject: {fileID: 6496748334773340241, guid: c7049498fdae1fa4992800082e31571c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 602348044}
   m_SourcePrefab: {fileID: 100100000, guid: c7049498fdae1fa4992800082e31571c, type: 3}
 --- !u!1001 &1509814609
 PrefabInstance:
@@ -54199,7 +54191,6 @@ GameObject:
   - component: {fileID: 7718513979749363365}
   - component: {fileID: 1475973269155338577}
   - component: {fileID: 6973380828083143921}
-  - component: {fileID: 7718513979749363366}
   - component: {fileID: 610579405}
   m_Layer: 0
   m_Name: Interior_Door
@@ -86994,27 +86985,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3390741272202676731}
   m_Mesh: {fileID: -8472003848236001347, guid: e0147f4678533444ca8209554a9ead22, type: 3}
---- !u!65 &7718513979749363366
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3390741272202676731}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.8959997, y: 2.0370002, z: 1}
-  m_Center: {x: 0.44596937, y: 1.0195, z: 0.031969424}
 --- !u!4 &7724761947717748331
 Transform:
   m_ObjectHideFlags: 0
@@ -88027,7 +87997,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2125462682295492010}
   m_Layer: 0
-  m_Name: Door_Toilet
+  m_Name: Door_3B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88209,7 +88179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2105887249837011407}
   m_Layer: 0
-  m_Name: Door_Storage_Room2
+  m_Name: Door_2B (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -29,8 +29,10 @@ public class SimpleDoorController : MonoBehaviour
         if (doorBody == null) doorBody = transform;
         closedRotation = doorBody.localRotation;
         
-        // คำนวณมุมเปิด (ติดลบตามที่คุณใช้งาน)
-        openRotation = closedRotation * Quaternion.Euler(0, -openAngle, 0); 
+        // --- แก้ไขตรงนี้ครับ ---
+        // เอาเครื่องหมายลบ (-) ออก เพื่อให้เปิดไปฝั่งตรงข้าม
+        openRotation = closedRotation * Quaternion.Euler(0, openAngle, 0); 
+        // -------------------
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
@@ -53,8 +55,7 @@ public class SimpleDoorController : MonoBehaviour
         Quaternion targetRotation = isOpen ? openRotation : closedRotation;
         doorBody.localRotation = Quaternion.Slerp(doorBody.localRotation, targetRotation, Time.deltaTime * smoothSpeed);
 
-        // 3. Logic การเดินทะลุ (สำคัญ)
-        // ถ้าประตู "ไม่สนิท" (มุมห่างจากจุดปิด > 0.1) ให้ปิด Collider เพื่อให้ทะลุได้
+        // 3. Logic การเดินทะลุ
         float angleRemaining = Quaternion.Angle(doorBody.localRotation, closedRotation);
         
         if (angleRemaining > 0.1f) 
