@@ -3,11 +3,14 @@ using UnityEngine;
 public class SimpleChainCut : MonoBehaviour
 {
     [Header("ตั้งค่าระยะและการเก็บของ")]
-    public float reachRange = 5.0f; // ระยะเอื้อม (ปรับให้ไกลหน่อยจะได้กดง่าย)
-    public bool hasCutter = false;  // เช็คว่าเก็บคีมรึยัง
+    public float reachRange = 5.0f; 
+    public bool hasCutter = false;  
+
+    [Header("UI ในกระเป๋า (ลากรูป Icon_Cutter มาใส่ช่องนี้)")] 
+    public GameObject cutterUIIcon; // <--- ตัวแปรใหม่สำหรับใส่รูปครับ
 
     [Header("เสียง (ถ้ามี)")]
-    public AudioClip cutSound;      // เสียงตัดโซ่
+    public AudioClip cutSound;      
 
     void Update()
     {
@@ -36,8 +39,15 @@ public class SimpleChainCut : MonoBehaviour
             if (hit.transform.CompareTag("Cutter"))
             {
                 hasCutter = true;
-                Destroy(hit.transform.gameObject);
-                Debug.Log("เก็บคีมแล้ว!");
+                
+                // >>> สั่งเปิดรูปในกระเป๋าตรงนี้! <<<
+                if (cutterUIIcon != null)
+                {
+                    cutterUIIcon.SetActive(true);
+                }
+
+                Destroy(hit.transform.gameObject); // ลบคีมบนพื้นทิ้ง
+                Debug.Log("เก็บคีมเข้ากระเป๋าเรียบร้อย!");
             }
             // --- เจอโซ่ ---
             else if (hit.transform.CompareTag("Chain"))
@@ -67,11 +77,10 @@ public class SimpleChainCut : MonoBehaviour
             // --- เจอประตู (ต้อง Tag ว่า Door) ---
             if (hit.transform.CompareTag("Door"))
             {
-                // เรียกหาไฟล์ประตูตัวใหม่ (FinalChainDoor)
                 FinalChainDoor door = hit.transform.GetComponent<FinalChainDoor>();
                 if (door != null)
                 {
-                    door.InteractWithDoor(); // สั่งเปิด/ปิด
+                    door.InteractWithDoor(); 
                 }
             }
         }
