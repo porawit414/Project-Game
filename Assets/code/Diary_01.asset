@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e397ec0b68d96114db2daa9c2fdd2f89, type: 3}
+  m_Name: Diary_01
+  m_EditorClassIdentifier: Assembly-CSharp::DiaryData
+  diaryName: father's diary
+  diaryContent: "Today I decided to take out another loan, even though I know my
+    wife is probably worried about the debt we\u2019re about to face. But I don\u2019t
+    see any other choice. The expenses are more than we can handle. I\u2019ve been
+    working as much as I can, but it\u2019s still not enough"
