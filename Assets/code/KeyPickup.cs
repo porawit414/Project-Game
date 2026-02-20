@@ -3,9 +3,12 @@ using UnityEngine;
 public class KeyPickup : MonoBehaviour
 {
     public AudioClip pickupSound;
-    
+
     [Header("ลาก KeyMessageCanvas มาใส่ช่องนี้")]
-    public GameObject pickupMessage; // <--- ตัวนี้แหละที่นายยังไม่มี!
+    public GameObject pickupMessage;
+
+    [Header("ลากปุ่มไอคอนในกระเป๋า (UI) มาใส่ช่องนี้")]
+    public GameObject inventoryButtonUI; // <--- 🌟 (จุดที่ 1) เพิ่มตัวแปรรองรับปุ่ม UI ของเรา
 
     private void OnTriggerEnter(Collider other)
     {
@@ -39,6 +42,9 @@ public class KeyPickup : MonoBehaviour
 
                     // ซ่อนป้ายก่อน
                     if (pickupMessage != null) pickupMessage.SetActive(false);
+
+                    // 🌟 (จุดที่ 2) สั่งเปิดปุ่มไอคอนในกระเป๋าสนิมของเรา!
+                    if (inventoryButtonUI != null) inventoryButtonUI.SetActive(true);
 
                     Destroy(gameObject);
                 }
