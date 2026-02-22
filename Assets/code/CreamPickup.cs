@@ -66,10 +66,10 @@ public class CreamPickup : MonoBehaviour
         // 3. ซ่อนป้ายข้อความ
         if (pickupMessage != null) pickupMessage.SetActive(false);
 
-        // 4. 🌟 สั่งเปิดปุ่มไอคอนครีมในกระเป๋าของเรา! 🌟
-        if (creamInventoryButton != null) creamInventoryButton.SetActive(true);
+        // 4. 🌟 สั่งเปิดปุ่มไอคอนครีม (เอา if ดักจับออกแล้ว ถ้าลืมเสียบสายไฟ มันจะฟ้อง Error สีแดงทันที!) 🌟
+        creamInventoryButton.SetActive(true);
 
-        // 5. ลบโมเดลครีมที่ตกอยู่บนพื้นทิ้ง
-        Destroy(gameObject);
+        // 5. 🌟 เปลี่ยนจากลบทิ้ง เป็นแค่ "ซ่อน" (เหมือนสมุดและกุญแจ) 🌟
+        gameObject.SetActive(false);
     }
 }
