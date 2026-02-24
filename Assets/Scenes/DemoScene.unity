@@ -255,6 +255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ghostly Woman (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_Avatar
       value: 
@@ -10129,6 +10133,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 456743499}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &409042263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+  m_PrefabInstance: {fileID: 1730345228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &409042266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409042263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe65990eade9554496c3d45fcd9a30f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostChase
+  player: {fileID: 44101509}
+  moveSpeed: 1.5
 --- !u!1 &412154734
 GameObject:
   m_ObjectHideFlags: 0
@@ -17639,6 +17662,75 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e929aadd100e224e985bdcc3db5ec19, type: 3}
+--- !u!1001 &919496177
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 393.8831
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0000035762787
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 367.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
+      propertyPath: m_Name
+      value: Street_Light_A_08
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c9860748a7a3bca4fa010da7aec3104a, type: 3}
 --- !u!1001 &923047536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27596,6 +27688,94 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &1730345228
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 399.371
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.116999984
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 359.947
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7305847
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.68282217
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 273.871
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8348666210409156807, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.837
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Name
+      value: Ghostly Woman (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f276ffdc6165a554f8fda3e8e5fa092a, type: 2}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6135518212934058998, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 409042266}
+  m_SourcePrefab: {fileID: 100100000, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
 --- !u!4 &1746379621 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8751386502240410090, guid: beb740d872f755c4797491edaa67e321, type: 3}
@@ -31252,6 +31432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyDoorLock
   lockedMessageUI: {fileID: 242793569}
   keyName: RoomKey
+  ghostlyWoman: {fileID: 409042263}
   doorHinge: {fileID: 8723606253115800740}
   openAngle: 90
   openSpeed: 2
@@ -103104,6 +103285,7 @@ SceneRoots:
   - {fileID: 915709135}
   - {fileID: 18671937}
   - {fileID: 716777035}
+  - {fileID: 1730345228}
   - {fileID: 1271565834}
   - {fileID: 1751159209}
   - {fileID: 1954207856}
@@ -103118,3 +103300,4 @@ SceneRoots:
   - {fileID: 464317874}
   - {fileID: 875800841}
   - {fileID: 57240955}
+  - {fileID: 919496177}
