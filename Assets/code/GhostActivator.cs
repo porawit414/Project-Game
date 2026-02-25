@@ -5,8 +5,8 @@ public class GhostActivator : MonoBehaviour
     // ลากตัวผีที่ซ่อนอยู่ (Ghostly Woman 2) มาใส่ในช่องนี้
     public GameObject targetGhost; 
     
-    // ปรับเวลาให้ผีโชว์ตัวสั้นลงเหลือ 1.7 วินาที (เพื่อให้รับกับความเร็วที่เพิ่มขึ้น)
-    public float displayDuration = 1.7f;
+    // ปรับเวลาให้ผีโชว์ตัวสั้นลงเหลือ 1.9 วินาที (เพื่อให้รับกับความเร็วที่เพิ่มขึ้น)
+    public float displayDuration = 1.9f;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,7 +16,7 @@ public class GhostActivator : MonoBehaviour
             // 1. สั่งให้ผีปรากฏตัวออกมาคลาน
             targetGhost.SetActive(true);
 
-            // 2. สั่งให้ทำลายผีทิ้งหลังจากผ่านไป 1.7 วินาที
+            // 2. สั่งให้ทำลายผีทิ้งหลังจากผ่านไป 1.9 วินาที
             Destroy(targetGhost, displayDuration);
 
             // 3. ทำลายกล่องกับดักทิ้งทันที เพื่อไม่ให้เกิดเหตุการณ์ซ้ำ

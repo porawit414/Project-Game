@@ -1,14 +1,25 @@
 using UnityEngine;
+using System.Collections; 
 
 public class GhostChase : MonoBehaviour
 {
+    [Header("ตั้งค่าการวิ่ง")]
     public Transform player; 
-    public float moveSpeed = 3f; 
+    public float moveSpeed = 0.5f; // ความเร็ววิ่งปัจจุบันคือ 0.5
+
+    [Header("ตั้งค่าเสียงหลอน")]
+    public AudioClip scarySound; 
+    public float soundDelay = 0f; 
+    private AudioSource audioSource; 
 
     void Start()
     {
-        // ให้ผีค้นหาวัตถุที่มี Tag ว่า "Player" ในฉากโดยอัตโนมัติ
-        if (player == null)
+        // 1. ค้นหากล้องหลักของผู้เล่น
+        if (player == null && Camera.main != null)
+        {
+            player = Camera.main.transform; 
+        }
+        else if (player == null) 
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
@@ -17,15 +28,35 @@ public class GhostChase : MonoBehaviour
             }
         }
 
-        // ตั้งเวลาหายไปใน 0.7 วินาที
-        Destroy(gameObject, 0.7f); 
+        // 2. ตั้งค่าระบบเสียงอัตโนมัติ 
+        audioSource = gameObject.AddComponent<AudioSource>(); 
+        audioSource.clip = scarySound; 
+        audioSource.playOnAwake = false; 
+        
+        if (scarySound != null)
+        {
+            StartCoroutine(PlaySoundWithDelay()); 
+        }
+
+        // 3. ตั้งเวลาทำลายตัวเอง (ปรับเป็นหายไปใน 1.2 วินาทีแล้วครับ!)
+        Destroy(gameObject, 1.4f); 
     }
 
-    void Update()
+    IEnumerator PlaySoundWithDelay()
     {
-        if (player != null)
+        yield return new WaitForSeconds(soundDelay); 
+        
+        if (audioSource != null) 
         {
-            transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+            audioSource.Play(); 
+        }
+    }
+
+    void Update() 
+    {
+        if (player != null) 
+        {
+            transform.LookAt(player.position); 
             transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
         }
     }
