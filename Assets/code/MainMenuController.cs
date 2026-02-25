@@ -9,10 +9,10 @@ public class MainMenuController : MonoBehaviour
     public GameObject loadingScreen; // เอาไว้เก็บหน้าจอโหลด (Raw Image)
     public VideoPlayer videoPlayer;  // เอาไว้เก็บตัวเล่นวิดีโอ
 
-public void PlayGame()
+    public void PlayGame()
     {
         // 1. สั่งให้เวลาเดินปกติ (เผื่อมันหยุดอยู่) << เพิ่มบรรทัดนี้ครับ
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
 
         // 2. เริ่มโหลด
         StartCoroutine(LoadLevel(1));
@@ -37,8 +37,8 @@ public void PlayGame()
 
         // 3. เริ่มโหลดฉากเกมแบบเบื้องหลัง
         // รอ 1 วินาทีก่อนโหลดจริง (เพื่อให้คนดูวิดีโอทันโหลดหน่อย)
-        yield return new WaitForSeconds(1f); 
-        
+        yield return new WaitForSeconds(1f);
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
 
         // รอจนกว่าจะโหลดเสร็จ
