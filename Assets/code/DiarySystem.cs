@@ -12,6 +12,11 @@ public class DiarySystem : MonoBehaviour
     [Header("หน้าต่างโชว์ภาพไดอารี่ (UI)")]
     public GameObject diaryReadPanel;
 
+    [Header("ระบบเสียง (ลากไฟล์เสียง .mp3 หรือ .wav มาใส่)")]
+    public AudioClip pickupSound;      // เสียงหยิบสมุด
+    public AudioClip openDiarySound;   // เสียงเปิดหน้ากระดาษ
+    public AudioClip closeDiarySound;  // เสียงปิดหน้ากระดาษ
+
     private bool canPickup = false;
 
     void Update()
@@ -29,7 +34,6 @@ public class DiarySystem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canPickup = true;
-            // ตรงนี้สามารถเพิ่มโค้ดให้โชว์ข้อความ "กด F เพื่อเก็บ" ได้
         }
     }
 
@@ -38,17 +42,21 @@ public class DiarySystem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canPickup = false;
-            // ซ่อนข้อความ "กด F เพื่อเก็บ"
         }
     }
 
     void PickUpDiary()
     {
-        // --- จุดที่แก้ไขแล้ว ---
-        // 1. เปิดปุ่มสมุดในหน้าต่างกระเป๋าก่อน! (สคริปต์จะได้ทำงานบรรทัดนี้จนจบ)
+        // 🌟 1. สั่งเล่นเสียงเก็บของตรงนี้! (เล่นเสียงตรงตำแหน่งที่สมุดวางอยู่)
+        if (pickupSound != null)
+        {
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        }
+
+        // 2. เปิดปุ่มสมุดในหน้าต่างกระเป๋า
         diaryInventoryButton.SetActive(true);
 
-        // 2. ค่อยซ่อนโมเดลสมุดในฉากเป็นลำดับสุดท้าย (เพราะถ้าปิดตัวเองก่อน โค้ดจะหยุดทำงานทันที)
+        // 3. ซ่อนโมเดลสมุดในฉาก
         diary3DModel.SetActive(false);
 
         canPickup = false;
@@ -59,14 +67,24 @@ public class DiarySystem : MonoBehaviour
     // เปิดหน้าอ่าน (เอาไปตั้งค่าที่ OnClick ของ DiaryButton ในกระเป๋า)
     public void OpenDiary()
     {
+        // 🌟 เล่นเสียงเปิดกระดาษ (ให้เสียงมาดังที่กล้องหลัก จะได้ยินชัดเจนแบบเสียง UI)
+        if (openDiarySound != null && Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(openDiarySound, Camera.main.transform.position);
+        }
+
         diaryReadPanel.SetActive(true);
-        // Time.timeScale = 0f; // เอาคอมเมนต์ออกถ้าอยากให้เกมหยุดชั่วคราวตอนอ่าน
     }
 
     // ปิดหน้าอ่าน (เอาไปตั้งค่าที่ OnClick ของ CloseButton)
     public void CloseDiary()
     {
+        // 🌟 เล่นเสียงปิดกระดาษ
+        if (closeDiarySound != null && Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(closeDiarySound, Camera.main.transform.position);
+        }
+
         diaryReadPanel.SetActive(false);
-        // Time.timeScale = 1f; // เอาคอมเมนต์ออกถ้าอยากให้เกมเดินต่อ
     }
 }

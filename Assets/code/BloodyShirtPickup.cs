@@ -11,6 +11,9 @@ public class BloodyShirtPickup : MonoBehaviour
     [Header("จุดดักเสียงเคาะประตู (ส่วนที่เพิ่มใหม่)")]
     public GameObject doorKnockTrigger; // ลากกล่อง DoorKnock ล่องหน มาใส่ช่องนี้
 
+    [Header("ระบบเสียงตอนเก็บเสื้อ")]
+    public AudioClip pickupSound; // ลากไฟล์เสียงหยิบผ้า/เสื้อ มาใส่ช่องนี้
+
     private bool canPickup = false;
 
     void Update()
@@ -39,6 +42,12 @@ public class BloodyShirtPickup : MonoBehaviour
 
     void PickUpShirt()
     {
+        // 🌟 0. สั่งเล่นเสียงหยิบเสื้อตรงนี้! (เล่นเสียงก่อนที่ของจะหายไป)
+        if (pickupSound != null)
+        {
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        }
+
         // 1. เปิดช่องในกระเป๋า
         if (shirtUI != null) shirtUI.SetActive(true);
 
@@ -52,8 +61,8 @@ public class BloodyShirtPickup : MonoBehaviour
         }
 
         canPickup = false;
-        
-        // 4. (แถม) ปิดกล่อง Trigger ของเสื้อทิ้งไปเลย ผู้เล่นจะได้ไม่มากด F ซ้ำได้อีก
+
+        // 4. ปิดกล่อง Trigger ของเสื้อทิ้งไปเลย ผู้เล่นจะได้ไม่มากด F ซ้ำได้อีก
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
     }

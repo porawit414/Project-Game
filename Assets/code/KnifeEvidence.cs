@@ -1,4 +1,4 @@
-using UnityEngine; 
+using UnityEngine;
 // เรียกใช้ไลบรารีหลักของ Unity สำหรับการทำงานทั่วไป เช่น GameObject, Input, Collider
 
 public class KnifeEvidence : MonoBehaviour
@@ -7,17 +7,19 @@ public class KnifeEvidence : MonoBehaviour
 {
     [Header("ตัวมีดในฉาก")]
     // แค่เอาไว้จัดหมวดใน Inspector ให้อ่านง่ายขึ้น
-
     public GameObject knife3DModel;
     // ตัวแปรเก็บ "โมเดลมีดในฉากจริง" (3D)
     // เอาไว้เปิด/ปิดการมองเห็นของมีด
 
     [Header("ช่องหลักฐานในกระเป๋า")]
     // หัวข้อใน Inspector
-
     public GameObject evidenceUI;
     // UI ที่เป็นช่องเก็บของ (inventory) ของมีด
     // ตอนแรกจะปิดไว้ พอเก็บมีดจะเปิด
+
+    [Header("ระบบเสียง (เพิ่มเข้ามาใหม่)")]
+    public AudioClip pickupSound;
+    // ตัวแปรเก็บไฟล์เสียงตอนหยิบมีด
 
     private bool canPickup = false;
     // ตัวแปรตรวจสอบว่า "ผู้เล่นอยู่ใกล้มีดพอจะเก็บได้ไหม"
@@ -60,11 +62,17 @@ public class KnifeEvidence : MonoBehaviour
     void PickUpKnife()
     // ฟังก์ชันสำหรับ "เก็บมีด"
     {
-        // เปิดช่องหลักฐาน
+        // 🌟 1. สั่งเล่นเสียงหยิบมีดตรงนี้! (เล่นตรงตำแหน่งที่ฉากเลย)
+        if (pickupSound != null)
+        {
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        }
+
+        // 2. เปิดช่องหลักฐาน
         evidenceUI.SetActive(true);
         // แสดง UI ช่องเก็บของของมีด
 
-        // ซ่อนมีดในฉาก
+        // 3. ซ่อนมีดในฉาก
         knife3DModel.SetActive(false);
         // ปิดการแสดงผลมีดในโลกจริง (เหมือนเก็บไปแล้ว)
 
