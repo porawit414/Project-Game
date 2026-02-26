@@ -42,7 +42,13 @@ public class BloodyShirtPickup : MonoBehaviour
 
     void PickUpShirt()
     {
-        // 🌟 0. สั่งเล่นเสียงหยิบเสื้อตรงนี้! (เล่นเสียงก่อนที่ของจะหายไป)
+        // === จุดที่เพิ่ม: สั่งให้ตัวนับหลักฐานทำงาน (+1) ===
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.AddEvidence();
+        }
+
+        // 🌟 0. สั่งเล่นเสียงหยิบเสื้อตรงนี้!
         if (pickupSound != null)
         {
             AudioSource.PlayClipAtPoint(pickupSound, transform.position);
@@ -62,8 +68,10 @@ public class BloodyShirtPickup : MonoBehaviour
 
         canPickup = false;
 
-        // 4. ปิดกล่อง Trigger ของเสื้อทิ้งไปเลย ผู้เล่นจะได้ไม่มากด F ซ้ำได้อีก
+        // 4. ปิดกล่อง Trigger ของเสื้อทิ้ง
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
+
+        Debug.Log("เก็บหลักฐานเสื้อเปื้อนเลือดแล้ว!");
     }
 }

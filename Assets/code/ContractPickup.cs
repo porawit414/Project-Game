@@ -33,6 +33,12 @@ public class ContractPickup : MonoBehaviour
 
     void PickUpContract()
     {
+        // === จุดที่เพิ่ม: สั่งให้ตัวนับหลักฐานทำงาน (+1) ===
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.AddEvidence();
+        }
+
         // 1. เล่นเสียงหยิบกระดาษ
         if (pickupSound != null) AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 
@@ -47,5 +53,7 @@ public class ContractPickup : MonoBehaviour
         // 4. ปิดกล่องชน
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
+
+        Debug.Log("เก็บหลักฐานใบสัญญาแล้ว!");
     }
 }

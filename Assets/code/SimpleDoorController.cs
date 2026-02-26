@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class SimpleDoorController : MonoBehaviour
 {
@@ -9,9 +10,16 @@ public class SimpleDoorController : MonoBehaviour
     public float smoothSpeed = 3f;
     public GameObject doorUI;
 
+    [Header("Ending System")]
+    public Image fadeToBlackImage; 
+    public float fadeSpeed = 0.5f; 
+
+    [Header("Auto Close Settings")]
+    public float autoCloseDelay = 3f; 
+    private Coroutine autoCloseCoroutine;
+
     [Header("Auto Close & Physics")]
-    public float autoCloseDelay = 3f; // ตั้งค่าไว้ 3 วินาที
-    public Collider blockingCollider; // ลาก Box Collider ตัวที่ใช้กันทาง (ไม่ติ๊ก Is Trigger) มาใส่
+    public Collider blockingCollider; 
 
     [Header("Audio Settings")]
     public AudioClip openSound;
@@ -22,81 +30,147 @@ public class SimpleDoorController : MonoBehaviour
     private Quaternion closedRotation;
     private Quaternion openRotation;
     private AudioSource audioSource;
-    private Coroutine currentCoroutine;
+    private bool isEndingStarted = false;
 
     void Start()
     {
         if (doorBody == null) doorBody = transform;
         closedRotation = doorBody.localRotation;
-        
-        // --- แก้ไขตรงนี้ครับ ---
-        // เอาเครื่องหมายลบ (-) ออก เพื่อให้เปิดไปฝั่งตรงข้าม
         openRotation = closedRotation * Quaternion.Euler(0, openAngle, 0); 
-        // -------------------
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
         
         if (doorUI != null) doorUI.SetActive(false);
-
-        // เริ่มเกม: ถ้าประตูปิดอยู่ ต้องแข็ง (ทะลุไม่ได้)
         if (blockingCollider != null) blockingCollider.enabled = true;
+
+        if (fadeToBlackImage != null) fadeToBlackImage.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        // 1. ตรวจสอบการกด E เพื่อเปิด
-        if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
+        // กด E เพื่อ เปิด/ปิด ประตู (จะกดไม่ได้ถ้าเริ่มฉากจบแล้ว)
+        if (isPlayerNearby && Input.GetKeyDown(KeyCode.E) && !isEndingStarted)
         {
-            if (!isOpen) OpenDoor();
+            ToggleDoor();
         }
 
-        // 2. คำนวณการหมุนราบรื่น
+        // การหมุนของประตู
         Quaternion targetRotation = isOpen ? openRotation : closedRotation;
         doorBody.localRotation = Quaternion.Slerp(doorBody.localRotation, targetRotation, Time.deltaTime * smoothSpeed);
 
-        // 3. Logic การเดินทะลุ
+        // ระบบฟิสิกส์: ถ้าประตูปิดสนิท ให้เปิด Collider กันคนเดินทะลุ
         float angleRemaining = Quaternion.Angle(doorBody.localRotation, closedRotation);
-        
-        if (angleRemaining > 0.1f) 
+        if (!isOpen && angleRemaining <= 0.1f)
         {
-            // ประตูกำลังเปิด หรือ กำลังปิด -> ปิด Collider (ทะลุได้)
-            if (blockingCollider != null && blockingCollider.enabled)
-                blockingCollider.enabled = false;
-        }
-        else if (!isOpen && angleRemaining <= 0.1f)
-        {
-            // ประตูปิดสนิทแล้ว และสถานะคือ Close -> เปิด Collider (ทะลุไม่ได้)
             if (blockingCollider != null && !blockingCollider.enabled)
                 blockingCollider.enabled = true;
         }
+    }
+
+    void ToggleDoor()
+    {
+        if (!isOpen) OpenDoor();
+        else CloseDoor();
     }
 
     void OpenDoor()
     {
         isOpen = true;
         PlaySound(openSound);
-
-        // ปิดการชนทันทีที่เริ่มเปิด
         if (blockingCollider != null) blockingCollider.enabled = false;
 
         // เริ่มนับถอยหลัง 3 วินาทีเพื่อปิดเอง
-        if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-        currentCoroutine = StartCoroutine(AutoCloseRoutine());
+        if (autoCloseCoroutine != null) StopCoroutine(autoCloseCoroutine);
+        autoCloseCoroutine = StartCoroutine(AutoCloseRoutine());
     }
 
     void CloseDoor()
     {
         isOpen = false;
         PlaySound(closeSound);
-        // Collider จะกลับมาทำงานเองใน Update() เมื่อหมุนถึงจุดปิดสนิท
     }
 
     IEnumerator AutoCloseRoutine()
     {
-        // รอ 3 วินาทีตามที่กำหนด
         yield return new WaitForSeconds(autoCloseDelay);
-        CloseDoor();
+        if (isOpen) CloseDoor();
+    }
+
+    // ฟังก์ชันนี้ถูกเรียกจาก ExitDoorDetector (ตัวดักหน้าประตู)
+    public void StartEndingSequence()
+    {
+        // เช็คว่าเก็บครบ 5 ชิ้นหรือยัง
+        if (GameManager.instance != null && GameManager.instance.GetEvidenceCount() >= 5)
+        {
+            if (!isEndingStarted)
+            {
+                isEndingStarted = true;
+                StartCoroutine(FadeToBlackRoutine());
+            }
+        }
+    }
+
+    IEnumerator FadeToBlackRoutine()
+    {
+        if (fadeToBlackImage != null)
+        {
+            // === [1] สั่งหยุดทุกอย่าง "ทันที" ตั้งแต่วินาทีแรกที่เริ่มฟังก์ชัน ===
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                // 1.1 หยุดการเคลื่อนที่ (Disable CharacterController)
+                CharacterController cc = player.GetComponent<CharacterController>();
+                if (cc != null) cc.enabled = false;
+
+                // 1.2 ปิดสคริปต์เดิน หมุน ช่องเก็บของ และระบบรับค่าปุ่มกดบนตัวผู้เล่นทั้งหมด
+                MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
+                foreach (var script in scripts)
+                {
+                    string sName = script.GetType().Name;
+                    if (sName.Contains("Movement") || sName.Contains("Controller") || 
+                        sName.Contains("Inventory") || sName.Contains("Input") || 
+                        sName.Contains("Interact"))
+                    {
+                        script.enabled = false;
+                    }
+                }
+
+                // 1.3 ปิด UI/Canvas ทั้งหมด (รวมถึงตัวเลข 0/5) ทันที
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases)
+                {
+                    // ปิดทุก Canvas ยกเว้นอันที่มีรูปจอดำ (Fade)
+                    if (canvas != fadeToBlackImage.canvas)
+                    {
+                        canvas.enabled = false;
+                    }
+                }
+
+                // 1.4 ล็อกเมาส์ไม่ให้ขยับและซ่อนลูกศร
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+
+            // === [2] เมื่อทุกอย่างถูกล็อกแล้ว จึงเริ่มทำให้จอมืดลง ===
+            fadeToBlackImage.gameObject.SetActive(true);
+            float alpha = 0;
+            while (alpha < 1)
+            {
+                alpha += Time.deltaTime * fadeSpeed;
+                fadeToBlackImage.color = new Color(0, 0, 0, alpha);
+                yield return null;
+            }
+
+            // === [3] เมื่อมืดสนิทแล้ว ค่อยซ่อนโมเดลตัวละคร (เพื่อความชัวร์) ===
+            if (player != null)
+            {
+                Renderer[] renderers = player.GetComponentsInChildren<Renderer>();
+                foreach (var r in renderers) r.enabled = false;
+            }
+
+            Debug.Log("ฉากจบสมบูรณ์: ผู้เล่นถูกล็อกตั้งแต่เริ่ม Fade และจอดำสนิทแล้ว");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -121,7 +195,6 @@ public class SimpleDoorController : MonoBehaviour
     {
         if (clip != null && audioSource != null)
         {
-            audioSource.Stop();
             audioSource.PlayOneShot(clip);
         }
     }

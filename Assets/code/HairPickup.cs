@@ -40,6 +40,12 @@ public class HairPickup : MonoBehaviour
 
     void PickUpHair()
     {
+        // === จุดที่เพิ่ม: สั่งให้ตัวนับหลักฐานทำงาน (+1) ===
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.AddEvidence();
+        }
+
         // 1. เล่นเสียงตอนเก็บ
         if (pickupSound != null)
         {
@@ -57,5 +63,7 @@ public class HairPickup : MonoBehaviour
         // 4. ปิดกล่องชน จะได้ไม่เผลอมากดเก็บซ้ำ
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
+
+        Debug.Log("เก็บหลักฐานเส้นผมแล้ว!");
     }
 }
