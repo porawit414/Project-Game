@@ -9734,6 +9734,52 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7119446, y: 0.32998595, z: 0.78900146}
   m_Center: {x: 0.11036682, y: 0.1434197, z: 0.09005737}
+--- !u!1 &324238940
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 324238942}
+  - component: {fileID: 324238941}
+  m_Layer: 0
+  m_Name: NotificationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &324238941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324238940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21e825152019aa4988c287d4fcd9ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NotificationManager
+  notificationText: {fileID: 345676504}
+  showTime: 2.5
+--- !u!4 &324238942
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324238940}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 549.0874, y: 290.84662, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330139798
 GameObject:
   m_ObjectHideFlags: 0
@@ -10391,7 +10437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &345676503
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10431,10 +10477,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "\u0E44\u0E14\u0E49\u0E23\u0E31\u0E1A..."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 413f10a37ca668a4f9fbf313d1747843, type: 2}
+  m_sharedMaterial: {fileID: -7690027715205418883, guid: 413f10a37ca668a4f9fbf313d1747843, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10465,8 +10511,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -11394,6 +11440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7becf04e08863d42b2c9197ce490425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContractPickup
+  itemName: "\u0E43\u0E1A\u0E2A\u0E31\u0E0D\u0E0D\u0E32\u0E01\u0E39\u0E49\u0E22\u0E37\u0E21"
   contract3DModel: {fileID: 405128000}
   contractUI: {fileID: 314413019}
   pickupSound: {fileID: 0}
@@ -20513,6 +20560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754b0e8d86a502c44bd76d76bb73e570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BloodyShirtPickup
+  itemName: "\u0E40\u0E2A\u0E37\u0E49\u0E2D\u0E40\u0E1B\u0E37\u0E49\u0E2D\u0E19\u0E40\u0E25\u0E37\u0E2D\u0E14"
   shirt3DModel: {fileID: 977108169}
   shirtUI: {fileID: 785096064}
   doorKnockTrigger: {fileID: 161151193}
@@ -22508,6 +22556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9fbd897d60c8b04f96cb79a5b4455d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HairPickup
+  itemName: "\u0E40\u0E2A\u0E49\u0E19\u0E1C\u0E21\u0E1B\u0E23\u0E34\u0E28\u0E19\u0E32"
   hair3DModel: {fileID: 1190929501}
   hairUI: {fileID: 1784358212}
   pickupSound: {fileID: 0}
@@ -33366,6 +33415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d43517579ad5c2d4ab4b478f1eec589e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreamPickup
+  itemName: "\u0E04\u0E35\u0E21\u0E15\u0E31\u0E14\u0E42\u0E0B\u0E48"
   pickupSound: {fileID: 0}
   pickupMessage: {fileID: 0}
   creamInventoryButton: {fileID: 1944192600}
@@ -105369,3 +105419,4 @@ SceneRoots:
   - {fileID: 405128005}
   - {fileID: 67485862}
   - {fileID: 598375618}
+  - {fileID: 324238942}
