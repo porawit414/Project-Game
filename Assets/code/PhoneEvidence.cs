@@ -10,7 +10,7 @@ public class PhoneEvidence : MonoBehaviour
     public AudioClip pickupSound;   // เสียงตอนเก็บ
 
     [Header("เหตุการณ์หลอนทิ้งท้าย")]
-    public UnityEvent onPhonePickedUp; 
+    public UnityEvent onPhonePickedUp;
 
     private bool canPickup = false;
 
@@ -45,6 +45,12 @@ public class PhoneEvidence : MonoBehaviour
         if (GameManager.instance != null)
         {
             GameManager.instance.AddEvidence();
+        }
+
+        // 🌟 0. แจ้งเตือนบนหน้าจอว่าเก็บของแล้ว! 🌟
+        if (NotificationManager.instance != null)
+        {
+            NotificationManager.instance.ShowText("ได้รับ: " + itemName);
         }
 
         // 1. เล่นเสียงเก็บ

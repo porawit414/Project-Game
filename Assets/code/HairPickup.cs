@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class HairPickup : MonoBehaviour
 {
+    // 🌟 1. เพิ่มช่องตั้งชื่อไอเทมสำหรับโชว์แจ้งเตือน
+    [Header("ชื่อไอเทมที่จะโชว์ตอนแจ้งเตือน")]
+    public string itemName = "เส้นผมปริศนา";
+
     [Header("ตัวโมเดลผมในฉาก")]
     public GameObject hair3DModel;
 
@@ -44,6 +48,12 @@ public class HairPickup : MonoBehaviour
         if (GameManager.instance != null)
         {
             GameManager.instance.AddEvidence();
+        }
+
+        // 🌟 2. สั่งโชว์ข้อความแจ้งเตือนตรงนี้! 🌟
+        if (NotificationManager.instance != null)
+        {
+            NotificationManager.instance.ShowText("ได้รับ: " + itemName);
         }
 
         // 1. เล่นเสียงตอนเก็บ

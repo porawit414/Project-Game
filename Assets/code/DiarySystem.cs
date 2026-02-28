@@ -47,10 +47,16 @@ public class DiarySystem : MonoBehaviour
 
     void PickUpDiary()
     {
-        // 🌟 1. สั่งเล่นเสียงเก็บของตรงนี้! (เล่นเสียงตรงตำแหน่งที่สมุดวางอยู่)
+        // 1. สั่งเล่นเสียงเก็บของตรงนี้! (เล่นเสียงตรงตำแหน่งที่สมุดวางอยู่)
         if (pickupSound != null)
         {
             AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        }
+
+        // 🌟 บรรทัดใหม่ที่เพิ่มเข้ามา! สั่งให้ศูนย์กลางโชว์ข้อความแจ้งเตือน
+        if (NotificationManager.instance != null)
+        {
+            NotificationManager.instance.ShowText("ได้รับ: สมุดไดอารี่");
         }
 
         // 2. เปิดปุ่มสมุดในหน้าต่างกระเป๋า
@@ -67,7 +73,7 @@ public class DiarySystem : MonoBehaviour
     // เปิดหน้าอ่าน (เอาไปตั้งค่าที่ OnClick ของ DiaryButton ในกระเป๋า)
     public void OpenDiary()
     {
-        // 🌟 เล่นเสียงเปิดกระดาษ (ให้เสียงมาดังที่กล้องหลัก จะได้ยินชัดเจนแบบเสียง UI)
+        // เล่นเสียงเปิดกระดาษ (ให้เสียงมาดังที่กล้องหลัก จะได้ยินชัดเจนแบบเสียง UI)
         if (openDiarySound != null && Camera.main != null)
         {
             AudioSource.PlayClipAtPoint(openDiarySound, Camera.main.transform.position);
@@ -79,7 +85,7 @@ public class DiarySystem : MonoBehaviour
     // ปิดหน้าอ่าน (เอาไปตั้งค่าที่ OnClick ของ CloseButton)
     public void CloseDiary()
     {
-        // 🌟 เล่นเสียงปิดกระดาษ
+        // เล่นเสียงปิดกระดาษ
         if (closeDiarySound != null && Camera.main != null)
         {
             AudioSource.PlayClipAtPoint(closeDiarySound, Camera.main.transform.position);

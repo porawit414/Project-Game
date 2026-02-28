@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class BloodyShirtPickup : MonoBehaviour
 {
+    // 🌟 1. เพิ่มช่องให้ตั้งชื่อได้เหมือนสมุดไดอารี่
+    [Header("ชื่อไอเทมที่จะโชว์ตอนแจ้งเตือน")]
+    public string itemName = "เสื้อเปื้อนเลือด";
+
     [Header("ตัวเสื้อในฉาก")]
     public GameObject shirt3DModel;
 
@@ -9,10 +13,10 @@ public class BloodyShirtPickup : MonoBehaviour
     public GameObject shirtUI;
 
     [Header("จุดดักเสียงเคาะประตู (ส่วนที่เพิ่มใหม่)")]
-    public GameObject doorKnockTrigger; // ลากกล่อง DoorKnock ล่องหน มาใส่ช่องนี้
+    public GameObject doorKnockTrigger;
 
     [Header("ระบบเสียงตอนเก็บเสื้อ")]
-    public AudioClip pickupSound; // ลากไฟล์เสียงหยิบผ้า/เสื้อ มาใส่ช่องนี้
+    public AudioClip pickupSound;
 
     private bool canPickup = false;
 
@@ -42,13 +46,19 @@ public class BloodyShirtPickup : MonoBehaviour
 
     void PickUpShirt()
     {
-        // === จุดที่เพิ่ม: สั่งให้ตัวนับหลักฐานทำงาน (+1) ===
+        // === สั่งให้ตัวนับหลักฐานทำงาน (+1) ===
         if (GameManager.instance != null)
         {
             GameManager.instance.AddEvidence();
         }
 
-        // 🌟 0. สั่งเล่นเสียงหยิบเสื้อตรงนี้!
+        // 🌟 2. สั่งโชว์ข้อความแจ้งเตือนตรงนี้!
+        if (NotificationManager.instance != null)
+        {
+            NotificationManager.instance.ShowText("ได้รับ: " + itemName);
+        }
+
+        // 0. สั่งเล่นเสียงหยิบเสื้อ
         if (pickupSound != null)
         {
             AudioSource.PlayClipAtPoint(pickupSound, transform.position);
@@ -63,7 +73,7 @@ public class BloodyShirtPickup : MonoBehaviour
         // 3. --- สั่งให้กล่องดักเสียงเคาะประตูทำงาน! ---
         if (doorKnockTrigger != null)
         {
-            doorKnockTrigger.SetActive(true); // เปิดกล่องดักให้เริ่มทำงาน
+            doorKnockTrigger.SetActive(true);
         }
 
         canPickup = false;
