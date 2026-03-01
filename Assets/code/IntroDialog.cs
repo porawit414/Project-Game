@@ -9,9 +9,11 @@ public class IntroDialog : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI messageText;
 
-    // 🌟 1. เพิ่มช่องใส่รูปหัวหน้าตรงนี้
     [Header("รูปโปรไฟล์หัวหน้า")]
     public GameObject bossProfileImage;
+
+    [Header("จอดำพื้นหลัง")]
+    public GameObject blackScreenPanel;
 
     [Header("ตั้งค่าความเร็ว")]
     public float typingSpeed = 0.05f;
@@ -33,6 +35,11 @@ public class IntroDialog : MonoBehaviour
     {
         dialogPanel.SetActive(true);
 
+        if (blackScreenPanel != null) blackScreenPanel.SetActive(true);
+
+        // 🌟 🔇 ถอดปลั๊กเสียง! ทุกอย่างจะเงียบกริบ 100%
+        AudioListener.pause = true;
+
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -46,7 +53,6 @@ public class IntroDialog : MonoBehaviour
         nameText.text = speakerNames[currentLine];
         messageText.text = "";
 
-        // 🌟 2. ระบบเช็คชื่อคนพูด: ถ้าเป็นหัวหน้า ให้โชว์รูป ถ้าไม่ใช่ ให้ซ่อนรูป
         if (bossProfileImage != null)
         {
             if (speakerNames[currentLine] == "หัวหน้า อังเดร ไนท์ฟอร์ด")
@@ -96,8 +102,11 @@ public class IntroDialog : MonoBehaviour
         {
             dialogPanel.SetActive(false);
 
-            // 🌟 3. ปิดรูปทิ้งด้วยตอนคุยจบ จะได้ไม่ลอยค้างบนจอ
             if (bossProfileImage != null) bossProfileImage.SetActive(false);
+            if (blackScreenPanel != null) blackScreenPanel.SetActive(false);
+
+            // 🌟 🔊 เสียบปลั๊กเสียงกลับคืน! เสียงลม เสียงบรรยากาศจะกลับมา
+            AudioListener.pause = false;
 
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;

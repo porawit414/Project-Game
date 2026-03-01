@@ -9,6 +9,9 @@ public class SimplePauseMenu : MonoBehaviour
     [Header("ตัวละคร (ลาก PlayerCapsule มาใส่)")]
     public GameObject playerObject;
 
+    [Header("🌟 อนุญาตให้กด ESC หยุดเกมได้หรือไม่")]
+    public bool canPause = true; // <--- เพิ่มกุญแจล็อคตรงนี้ครับ
+
     private bool isPaused = false;
 
     void Start()
@@ -16,13 +19,14 @@ public class SimplePauseMenu : MonoBehaviour
         // เริ่มเกมมา ปิดเมนูและให้เวลาเดินปกติ
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
         isPaused = false;
+        canPause = true; // เริ่มเกมมาต้องอนุญาตให้กดได้
         Time.timeScale = 1f;
     }
 
     void Update()
     {
-        // กด ESC เพื่อสลับโหมดเปิด/ปิดเมนู
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // กด ESC เพื่อสลับโหมดเปิด/ปิดเมนู (เช็คด้วยว่า canPause เป็น true ไหม)
+        if (Input.GetKeyDown(KeyCode.Escape) && canPause) // <--- เพิ่มการเช็คกุญแจตรงนี้ครับ
         {
             if (isPaused)
                 ResumeGame();
@@ -65,7 +69,8 @@ public class SimplePauseMenu : MonoBehaviour
     }
 
     // ฟังก์ชันพิเศษ: ตัดไฟ/จ่ายไฟ ให้ระบบควบคุมของ Starter Assets โดยเฉพาะ
-    private void TogglePlayerInput(bool state)
+    // เปลี่ยนจาก private เป็น public ซะ!
+    public void TogglePlayerInput(bool state)
     {
         if (playerObject != null)
         {
