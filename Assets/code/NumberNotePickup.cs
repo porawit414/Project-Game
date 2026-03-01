@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class NumberNotePickup : MonoBehaviour
 {
@@ -6,6 +7,9 @@ public class NumberNotePickup : MonoBehaviour
     public GameObject noteInventoryButton; // ปุ่มในกระเป๋า
     public GameObject noteReadPanel;       // หน้าต่างรูปกระดาษใบใหญ่
     public GameObject interactMessage;     // ป้ายกด F
+
+    [Header("Ghost System")] // <--- ส่วนที่เพิ่มใหม่
+    public GameObject ghostTrigger;        // ลากจุดดักผี (Ghost_Trigger) มาใส่ช่องนี้
 
     [Header("Audio")]
     public AudioClip pickupSound;
@@ -21,7 +25,7 @@ public class NumberNotePickup : MonoBehaviour
             PickUpNote();
         }
 
-        // 2. ถ้าเปิดอ่านอยู่ แล้วกดปุ่มอื่น (เช่น Esc หรือ E) ให้ปิดก็ได้ (Option เสริม)
+        // 2. ถ้าเปิดอ่านอยู่ แล้วกดปุ่มอื่น (เช่น Esc) ให้ปิด
         if (isReading && Input.GetKeyDown(KeyCode.Escape))
         {
             CloseNote();
@@ -51,6 +55,13 @@ public class NumberNotePickup : MonoBehaviour
         // เปิดปุ่มในกระเป๋า
         if (noteInventoryButton != null) noteInventoryButton.SetActive(true);
 
+        // --- ส่วนสำคัญ: สั่งเปิดระบบผีหลอกทันทีที่เก็บกระดาษ ---
+        if (ghostTrigger != null) 
+        {
+            ghostTrigger.SetActive(true); 
+            Debug.Log("ระบบผีหลอกเปิดใช้งานแล้ว! เตรียมตัวหันหลังได้เลย...");
+        }
+
         // เล่นเสียง
         if (pickupSound != null) AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 
@@ -63,16 +74,12 @@ public class NumberNotePickup : MonoBehaviour
         Debug.Log("เก็บกระดาษแล้ว!");
     }
 
-    // --- ฟังก์ชันใหม่ที่คุณต้องการ ---
-
     public void OpenNote()
     {
         if (noteReadPanel != null)
         {
             noteReadPanel.SetActive(true);
             isReading = true;
-
-            // ปลดล็อคเมาส์ให้กดปิดได้
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
@@ -84,12 +91,6 @@ public class NumberNotePickup : MonoBehaviour
         {
             noteReadPanel.SetActive(false);
             isReading = false;
-
-            // ลบโค้ด Lock Mouse ทิ้ง หรือคอมเมนต์ไว้แบบนี้:
-            // Cursor.lockState = CursorLockMode.Locked;
-            // Cursor.visible = false;
-
-            // หมายเหตุ: ลูกศรจะยังโชว์อยู่จนกว่าคุณจะกดปิดหน้าต่างกระเป๋า (Inventory)
         }
     }
 }

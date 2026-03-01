@@ -4,7 +4,7 @@ using TMPro;
 public class PasswordDoor : MonoBehaviour
 {
     [Header("การตั้งค่ารหัสผ่าน")]
-    public string correctPassword = "379"; 
+    public string correctPassword = "164"; 
     public GameObject keypadUI;      
     public TMP_Text screenText;      
 
