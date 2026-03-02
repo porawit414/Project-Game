@@ -9,21 +9,42 @@ public class MainMenuController : MonoBehaviour
     public GameObject loadingScreen; // เอาไว้เก็บหน้าจอโหลด (Raw Image)
     public VideoPlayer videoPlayer;  // เอาไว้เก็บตัวเล่นวิดีโอ
 
-    public void PlayGame()
+    // 🌟 1. ฟังก์ชันนี้เอาไว้ผูกกับปุ่ม "เริ่มเล่นใหม่ (New Game)"
+    public void StartNewGame()
     {
-        // 1. สั่งให้เวลาเดินปกติ (เผื่อมันหยุดอยู่) << เพิ่มบรรทัดนี้ครับ
+        // สั่งล้างสมอง ลบตำแหน่งเซฟเก่าทิ้งให้หมด!
+        PlayerPrefs.DeleteKey("SavedPlayerX");
+        PlayerPrefs.DeleteKey("SavedPlayerY");
+        PlayerPrefs.DeleteKey("SavedPlayerZ");
+        PlayerPrefs.Save(); // ย้ำให้เซฟการลบทิ้ง
+
+        Debug.Log("🗑️ ลบเซฟเก่าทิ้งแล้ว กำลังเริ่มเกมใหม่...");
+
         Time.timeScale = 1f;
 
-        // 2. เริ่มโหลด
+        // เริ่มโหลดฉาก (พร้อมเปิดวิดีโอ)
         StartCoroutine(LoadLevel(1));
     }
+
+    // 🌟 2. ฟังก์ชันนี้คือปุ่ม "เล่นเกม / เล่นต่อ (Continue)" ของเดิมของคุณ
+    public void PlayGame()
+    {
+        Debug.Log("🔄 กำลังโหลดเซฟเดิม...");
+
+        // สั่งให้เวลาเดินปกติ (เผื่อมันหยุดอยู่)
+        Time.timeScale = 1f;
+
+        // เริ่มโหลดฉากเลย ไม่ต้องลบเซฟ
+        StartCoroutine(LoadLevel(1));
+    }
+
     public void QuitGame()
     {
         Debug.Log("ออกเกมแล้ว");
         Application.Quit();
     }
 
-    // ฟังก์ชันโหลดฉาก
+    // ฟังก์ชันโหลดฉาก (ระบบวิดีโอโหลดดิ้งตัวเดิมของคุณ)
     IEnumerator LoadLevel(int sceneIndex)
     {
         // 1. เปิดหน้าจอโหลดขึ้นมาบังจอ

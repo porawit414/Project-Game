@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement; // <--- เพิ่มบรรทัดนี้เพื่อใช้คำสั่งเปลี่ยนฉาก
 
 public class SimplePauseMenu : MonoBehaviour
 {
@@ -10,23 +11,21 @@ public class SimplePauseMenu : MonoBehaviour
     public GameObject playerObject;
 
     [Header("🌟 อนุญาตให้กด ESC หยุดเกมได้หรือไม่")]
-    public bool canPause = true; // <--- เพิ่มกุญแจล็อคตรงนี้ครับ
+    public bool canPause = true;
 
     private bool isPaused = false;
 
     void Start()
     {
-        // เริ่มเกมมา ปิดเมนูและให้เวลาเดินปกติ
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
         isPaused = false;
-        canPause = true; // เริ่มเกมมาต้องอนุญาตให้กดได้
+        canPause = true;
         Time.timeScale = 1f;
     }
 
     void Update()
     {
-        // กด ESC เพื่อสลับโหมดเปิด/ปิดเมนู (เช็คด้วยว่า canPause เป็น true ไหม)
-        if (Input.GetKeyDown(KeyCode.Escape) && canPause) // <--- เพิ่มการเช็คกุญแจตรงนี้ครับ
+        if (Input.GetKeyDown(KeyCode.Escape) && canPause)
         {
             if (isPaused)
                 ResumeGame();
@@ -38,47 +37,41 @@ public class SimplePauseMenu : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
-        Time.timeScale = 0f; // หยุดเวลาในเกม
-
-        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(true); // เปิดหน้าต่างเมนู
-
-        // ปลดล็อคเมาส์ให้ขยับมากดปุ่มได้
+        Time.timeScale = 0f;
+        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        // สั่งระงับการควบคุมตัวละคร (ตัดไฟคีย์บอร์ดและเมาส์)
         TogglePlayerInput(false);
     }
 
     public void ResumeGame()
     {
         isPaused = false;
-        Time.timeScale = 1f; // ให้เวลาเดินปกติ
-
-        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false); // ปิดหน้าต่างเมนู
-
-        // เคลียร์ความจำปุ่ม (กันบัคเมาส์จำปุ่มค้างตอนกด ESC)
+        Time.timeScale = 1f;
+        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
         if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
-
-        // ล็อคเมาส์กลับเข้ากลางจอเพื่อเล่นเกมต่อ
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        // คืนการควบคุมให้ตัวละคร
         TogglePlayerInput(true);
     }
 
-    // ฟังก์ชันพิเศษ: ตัดไฟ/จ่ายไฟ ให้ระบบควบคุมของ Starter Assets โดยเฉพาะ
-    // เปลี่ยนจาก private เป็น public ซะ!
+    // 🌟 ฟังก์ชันใหม่: กดแล้ววาร์ปกลับไปหน้าเมนูหลัก (บ้านสยองขวัญ)
+    public void GoToMainMenu()
+    {
+        Debug.Log("🏠 กำลังกลับไปหน้าเมนูหลัก...");
+        Time.timeScale = 1f; // สำคัญมาก! ต้องคืนค่าเวลาเป็นปกติก่อนเปลี่ยนฉาก
+
+        // ใส่ชื่อฉากเมนูของคุณ (จากรูปก่อนๆ คือ "MainMen")
+        SceneManager.LoadScene("MainMen");
+    }
+
     public void TogglePlayerInput(bool state)
     {
         if (playerObject != null)
         {
-            // ปิดตัวรับ Input (ทำให้ขยับเมาส์/เดินไม่ได้ 100%)
             Behaviour playerInput = playerObject.GetComponent("UnityEngine.InputSystem.PlayerInput") as Behaviour;
             if (playerInput != null) playerInput.enabled = state;
 
-            // ปิดตัวควบคุมการเดิน
             MonoBehaviour fpsController = playerObject.GetComponent("StarterAssets.FirstPersonController") as MonoBehaviour;
             if (fpsController != null) fpsController.enabled = state;
         }
@@ -87,6 +80,11 @@ public class SimplePauseMenu : MonoBehaviour
     public void QuitGame()
     {
         Debug.Log("ออกจากเกม!");
-        Application.Quit();
+        Application.Quit(); // ใช้ตอน build เกมเสร็จแล้ว
+
+        // บรรทัดนี้ช่วยให้กดทดสอบใน Unity Editor แล้วมันหยุดรันเกมให้ด้วย
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }
