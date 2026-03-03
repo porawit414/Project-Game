@@ -3,20 +3,49 @@ using UnityEngine.Events;
 
 public class PhoneEvidence : MonoBehaviour
 {
+    [Header("🌟 ชื่อเซฟของโทรศัพท์มือถือ (ห้ามซ้ำ)")]
+    public string phoneSaveKey = "Evidence_Phone";
+
     [Header("ข้อมูลหลักฐาน")]
     public string itemName = "โทรศัพท์มือถือปริศนา";
-    public GameObject phone3DModel; // ลากโมเดลมือถือในฉากมาใส่
-    public GameObject phoneUI;      // ลาก UI มือถือในกระเป๋ามาใส่
-    public AudioClip pickupSound;   // เสียงตอนเก็บ
+    public GameObject phone3DModel;
+    public GameObject phoneUI;
+    public AudioClip pickupSound;
 
     [Header("เหตุการณ์หลอนทิ้งท้าย")]
     public UnityEvent onPhonePickedUp;
 
     private bool canPickup = false;
 
+    void Start()
+    {
+        // 🌟 1. เช็คตอนเริ่มเกมว่า "เคยเก็บโทรศัพท์เครื่องนี้ไปหรือยัง?"
+        if (PlayerPrefs.GetInt(phoneSaveKey, 0) == 1)
+        {
+            // เปิดปุ่ม UI มือถือในกระเป๋ารอไว้เลย
+            if (phoneUI != null) phoneUI.SetActive(true);
+
+            // ซ่อนโมเดลในฉาก
+            if (phone3DModel != null)
+            {
+                phone3DModel.SetActive(false);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+
+            // หมายเหตุ: ไม่สั่งรัน UnityEvent ซ้ำนะ ให้ผีหลอกแค่รอบแรกพอ 👻
+
+            // ปิดกล่องชนและสคริปต์นี้ทิ้งไปเลย
+            Collider col = GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+            this.enabled = false;
+        }
+    }
+
     void Update()
     {
-        // ระบบกด F เมื่ออยู่ใกล้เหมือนสคริปต์เสื้อ
         if (canPickup && Input.GetKeyDown(KeyCode.F))
         {
             PickUpPhone();
@@ -41,7 +70,7 @@ public class PhoneEvidence : MonoBehaviour
 
     public void PickUpPhone()
     {
-        // === จุดที่เพิ่ม: สั่งให้ตัวนับหลักฐานทำงาน ===
+        // === สั่งให้ตัวนับหลักฐานทำงาน ===
         if (GameManager.instance != null)
         {
             GameManager.instance.AddEvidence();
@@ -75,7 +104,6 @@ public class PhoneEvidence : MonoBehaviour
         }
         else
         {
-            // ถ้าไม่ได้ลากใส่ช่อง phone3DModel ให้หายไปทั้ง Object ที่แปะสคริปต์เลย
             gameObject.SetActive(false);
         }
 
@@ -85,6 +113,13 @@ public class PhoneEvidence : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
+        // 🌟 2. เซฟลงเครื่องว่า "เก็บโทรศัพท์มือถือไปแล้ว! (ค่า = 1)"
+        PlayerPrefs.SetInt(phoneSaveKey, 1);
+        PlayerPrefs.Save();
+
         Debug.Log("เก็บหลักฐานชิ้นสุดท้ายสำเร็จ: " + itemName);
+
+        // ปิดการทำงานสคริปต์
+        this.enabled = false;
     }
 }

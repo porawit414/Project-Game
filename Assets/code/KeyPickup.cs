@@ -2,13 +2,30 @@ using UnityEngine;
 
 public class KeyPickup : MonoBehaviour
 {
+    [Header("🌟 ชื่อเซฟของกุญแจดอกนี้ (ห้ามซ้ำกันถ้ามีหลายดอก)")]
+    public string keySaveKey = "Item_Key_1";
+
     public AudioClip pickupSound;
 
     [Header("ลาก KeyMessageCanvas มาใส่ช่องนี้")]
     public GameObject pickupMessage;
 
     [Header("ลากปุ่มไอคอนในกระเป๋า (UI) มาใส่ช่องนี้")]
-    public GameObject inventoryButtonUI; // <--- 🌟 (จุดที่ 1) เพิ่มตัวแปรรองรับปุ่ม UI ของเรา
+    public GameObject inventoryButtonUI;
+
+    private void Start()
+    {
+        // 🌟 1. เช็คตอนเริ่มเกมว่า "เคยเก็บกุญแจดอกนี้ไปหรือยัง?"
+        // ถ้า PlayerPrefs จำได้ว่ามีค่าเป็น 1 แปลว่าเคยเก็บแล้ว
+        if (PlayerPrefs.GetInt(keySaveKey, 0) == 1)
+        {
+            // เปิดปุ่มกุญแจในกระเป๋าให้เลย
+            if (inventoryButtonUI != null) inventoryButtonUI.SetActive(true);
+
+            // สั่งทำลายกุญแจในฉากทิ้งไปเลย จะได้ไม่ต้องเดินมาเก็บซ้ำ
+            Destroy(gameObject);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -43,10 +60,14 @@ public class KeyPickup : MonoBehaviour
                     // ซ่อนป้ายก่อน
                     if (pickupMessage != null) pickupMessage.SetActive(false);
 
-                    // 🌟 (จุดที่ 2) สั่งเปิดปุ่มไอคอนในกระเป๋าสนิมของเรา!
+                    // สั่งเปิดปุ่มไอคอนในกระเป๋าสนิมของเรา!
                     if (inventoryButtonUI != null) inventoryButtonUI.SetActive(true);
 
-                    Destroy(gameObject);
+                    // 🌟 2. เซฟความจำลงเครื่องว่าเก็บกุญแจนี้ไปแล้ว! (ค่า = 1)
+                    PlayerPrefs.SetInt(keySaveKey, 1);
+                    PlayerPrefs.Save();
+
+                    Destroy(gameObject); // ทำลายทิ้งตอนเก็บสำเร็จ
                 }
             }
         }

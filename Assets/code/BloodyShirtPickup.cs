@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class BloodyShirtPickup : MonoBehaviour
 {
-    // 🌟 1. เพิ่มช่องให้ตั้งชื่อได้เหมือนสมุดไดอารี่
+    [Header("🌟 ชื่อเซฟของเสื้อเปื้อนเลือด (ห้ามซ้ำ)")]
+    public string shirtSaveKey = "Evidence_BloodyShirt";
+
     [Header("ชื่อไอเทมที่จะโชว์ตอนแจ้งเตือน")]
     public string itemName = "เสื้อเปื้อนเลือด";
 
@@ -19,6 +21,27 @@ public class BloodyShirtPickup : MonoBehaviour
     public AudioClip pickupSound;
 
     private bool canPickup = false;
+
+    void Start()
+    {
+        // 🌟 1. เช็คตอนเริ่มเกมว่า "เคยเก็บเสื้อเล่มนี้ไปหรือยัง?"
+        // ถ้า PlayerPrefs มีค่าเป็น 1 แปลว่าเคยเก็บแล้ว
+        if (PlayerPrefs.GetInt(shirtSaveKey, 0) == 1)
+        {
+            // เปิดช่องเสื้อในกระเป๋ารอไว้เลย
+            if (shirtUI != null) shirtUI.SetActive(true);
+
+            // ซ่อนเสื้อในฉากทิ้งไป
+            if (shirt3DModel != null) shirt3DModel.SetActive(false);
+
+            // หมายเหตุ: เราไม่เปิด doorKnockTrigger ซ้ำนะ ให้ผีหลอกแค่รอบแรกพอ 👻
+
+            // ปิดกล่องชนและสคริปต์นี้ทิ้งไปเลย
+            Collider col = GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+            this.enabled = false;
+        }
+    }
 
     void Update()
     {
@@ -70,7 +93,7 @@ public class BloodyShirtPickup : MonoBehaviour
         // 2. ซ่อนเสื้อในฉาก
         if (shirt3DModel != null) shirt3DModel.SetActive(false);
 
-        // 3. --- สั่งให้กล่องดักเสียงเคาะประตูทำงาน! ---
+        // 3. --- สั่งให้กล่องดักเสียงเคาะประตูทำงาน! --- (ผีหลอกทำงาน!)
         if (doorKnockTrigger != null)
         {
             doorKnockTrigger.SetActive(true);
@@ -82,6 +105,13 @@ public class BloodyShirtPickup : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
+        // 🌟 3. เซฟลงเครื่องว่า "เก็บเสื้อเปื้อนเลือดไปแล้ว! (ค่า = 1)"
+        PlayerPrefs.SetInt(shirtSaveKey, 1);
+        PlayerPrefs.Save();
+
         Debug.Log("เก็บหลักฐานเสื้อเปื้อนเลือดแล้ว!");
+
+        // ปิดการทำงานสคริปต์
+        this.enabled = false;
     }
 }

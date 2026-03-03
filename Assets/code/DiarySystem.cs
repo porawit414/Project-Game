@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class DiarySystem : MonoBehaviour
 {
+    [Header("🌟 ตั้งชื่อเซฟของไดอารี่ (ห้ามซ้ำกับของชิ้นอื่น!)")]
+    public string diarySaveKey = "Diary_01"; // ตัวแปรนี้คือชื่อความจำของสมุดเล่มนี้ครับ
+
     [Header("โมเดลสมุดในฉาก")]
     public GameObject diary3DModel;
 
@@ -13,22 +16,35 @@ public class DiarySystem : MonoBehaviour
     public GameObject diaryReadPanel;
 
     [Header("ระบบเสียง (ลากไฟล์เสียง .mp3 หรือ .wav มาใส่)")]
-    public AudioClip pickupSound;      // เสียงหยิบสมุด
-    public AudioClip openDiarySound;   // เสียงเปิดหน้ากระดาษ
-    public AudioClip closeDiarySound;  // เสียงปิดหน้ากระดาษ
+    public AudioClip pickupSound;
+    public AudioClip openDiarySound;
+    public AudioClip closeDiarySound;
 
     private bool canPickup = false;
 
+    void Start()
+    {
+        // 🌟 1. เช็คตอนเริ่มเกมว่า "เคยเก็บไดอารี่เล่มนี้ไปหรือยัง?"
+        // ถ้า PlayerPrefs จำได้ว่า diarySaveKey มีค่าเป็น 1 แปลว่าเคยเก็บแล้ว
+        if (PlayerPrefs.GetInt(diarySaveKey, 0) == 1)
+        {
+            // จัดการเปิด-ปิดของให้เหมือนตอนเก็บไปแล้ว
+            if (diary3DModel != null) diary3DModel.SetActive(false); // ซ่อนสมุดบนโต๊ะ
+            if (diaryInventoryButton != null) diaryInventoryButton.SetActive(true); // โชว์ปุ่มในกระเป๋า
+
+            // ปิดการทำงานของสคริปต์นี้ไปเลย จะได้ไม่ต้องเดินชนให้เสียเวลา
+            this.enabled = false;
+        }
+    }
+
     void Update()
     {
-        // ถ้าผู้เล่นอยู่ใกล้ (canPickup เป็นจริง) และกดปุ่ม F
         if (canPickup && Input.GetKeyDown(KeyCode.F))
         {
             PickUpDiary();
         }
     }
 
-    // เช็คว่าผู้เล่นเดินมาชนกล่อง Trigger ของสมุดหรือยัง
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -47,33 +63,30 @@ public class DiarySystem : MonoBehaviour
 
     void PickUpDiary()
     {
-        // 1. สั่งเล่นเสียงเก็บของตรงนี้! (เล่นเสียงตรงตำแหน่งที่สมุดวางอยู่)
         if (pickupSound != null)
         {
             AudioSource.PlayClipAtPoint(pickupSound, transform.position);
         }
 
-        // 🌟 บรรทัดใหม่ที่เพิ่มเข้ามา! สั่งให้ศูนย์กลางโชว์ข้อความแจ้งเตือน
         if (NotificationManager.instance != null)
         {
             NotificationManager.instance.ShowText("ได้รับ: สมุดไดอารี่");
         }
 
-        // 2. เปิดปุ่มสมุดในหน้าต่างกระเป๋า
         diaryInventoryButton.SetActive(true);
-
-        // 3. ซ่อนโมเดลสมุดในฉาก
         diary3DModel.SetActive(false);
-
         canPickup = false;
+
+        // 🌟 2. เซฟลงเครื่องว่า "เก็บไดอารี่เล่มนี้แล้วนะ! (ให้ค่าเป็น 1)"
+        PlayerPrefs.SetInt(diarySaveKey, 1);
+        PlayerPrefs.Save();
+
+        // ปิดสคริปต์กันเหนียว ไม่ให้กด F ซ้ำได้อีก
+        this.enabled = false;
     }
 
-    // --- 2 ฟังก์ชันด้านล่างนี้ เอาไว้ไปผูกกับปุ่มคลิกใน UI ---
-
-    // เปิดหน้าอ่าน (เอาไปตั้งค่าที่ OnClick ของ DiaryButton ในกระเป๋า)
     public void OpenDiary()
     {
-        // เล่นเสียงเปิดกระดาษ (ให้เสียงมาดังที่กล้องหลัก จะได้ยินชัดเจนแบบเสียง UI)
         if (openDiarySound != null && Camera.main != null)
         {
             AudioSource.PlayClipAtPoint(openDiarySound, Camera.main.transform.position);
@@ -82,10 +95,8 @@ public class DiarySystem : MonoBehaviour
         diaryReadPanel.SetActive(true);
     }
 
-    // ปิดหน้าอ่าน (เอาไปตั้งค่าที่ OnClick ของ CloseButton)
     public void CloseDiary()
     {
-        // เล่นเสียงปิดกระดาษ
         if (closeDiarySound != null && Camera.main != null)
         {
             AudioSource.PlayClipAtPoint(closeDiarySound, Camera.main.transform.position);

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CreamPickup : MonoBehaviour
 {
+    [Header("🌟 ชื่อเซฟของไอเทมชิ้นนี้ (ห้ามซ้ำ)")]
+    public string creamSaveKey = "Item_BoltCutter"; // ชื่อที่จะใช้จำว่าเก็บคีมไปหรือยัง
+
     [Header("ชื่อไอเทมที่จะโชว์ตอนแจ้งเตือน")]
     public string itemName = "คีมตัดโซ่";
 
@@ -16,6 +19,20 @@ public class CreamPickup : MonoBehaviour
 
     private bool isPlayerNear = false;
     private Collider playerCollider;
+
+    private void Start()
+    {
+        // 🌟 1. เช็คตอนเริ่มเกมว่า "เคยเก็บคีมตัดโซ่ไปหรือยัง?"
+        // ถ้า PlayerPrefs จำได้ว่ามีค่าเป็น 1 แปลว่าเคยเก็บแล้ว
+        if (PlayerPrefs.GetInt(creamSaveKey, 0) == 1)
+        {
+            // เปิดปุ่มในกระเป๋าให้เลย
+            if (creamInventoryButton != null) creamInventoryButton.SetActive(true);
+
+            // ซ่อนโมเดลคีมในฉากทิ้งไปเลย จะได้ไม่ต้องเดินมาเก็บซ้ำ
+            gameObject.SetActive(false);
+        }
+    }
 
     private void Update()
     {
@@ -49,13 +66,13 @@ public class CreamPickup : MonoBehaviour
 
     private void CollectCream()
     {
-        // 🌟 1. ย้ายคำสั่งเปิดปุ่ม UI มาไว้บรรทัดแรกสุด! (ดักบัคเงียบ)
+        // 1. เปิดปุ่ม UI ในกระเป๋า
         if (creamInventoryButton != null)
         {
             creamInventoryButton.SetActive(true);
         }
 
-        // 🌟 2. สั่งโชว์ข้อความแจ้งเตือน
+        // 2. สั่งโชว์ข้อความแจ้งเตือน
         if (NotificationManager.instance != null)
         {
             NotificationManager.instance.ShowText("ได้รับ: " + itemName);
@@ -67,7 +84,7 @@ public class CreamPickup : MonoBehaviour
         // 4. ซ่อนป้ายข้อความ
         if (pickupMessage != null) pickupMessage.SetActive(false);
 
-        // 5. นำข้อมูลเข้ากระเป๋าหลัก (ถ้าระบบนี้พัง อย่างน้อยปุ่ม UI ด้านบนก็เปิดไปแล้ว)
+        // 5. นำข้อมูลเข้ากระเป๋าหลัก 
         if (playerCollider != null)
         {
             SimpleInventory inventory = playerCollider.GetComponent<SimpleInventory>();
@@ -78,7 +95,11 @@ public class CreamPickup : MonoBehaviour
             }
         }
 
-        // 6. ซ่อนโมเดลคีมตัดโซ่ในฉาก
+        // 🌟 6. เซฟลงเครื่องว่า "เก็บคีมตัดโซ่ไปแล้วนะ! (ค่า = 1)"
+        PlayerPrefs.SetInt(creamSaveKey, 1);
+        PlayerPrefs.Save();
+
+        // 7. ซ่อนโมเดลคีมตัดโซ่ในฉาก
         gameObject.SetActive(false);
     }
 }

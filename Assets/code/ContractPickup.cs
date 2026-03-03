@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class ContractPickup : MonoBehaviour
 {
-    // 🌟 1. เพิ่มช่องตั้งชื่อไอเทมสำหรับโชว์แจ้งเตือน
+    [Header("🌟 ชื่อเซฟของใบสัญญา (ห้ามซ้ำ)")]
+    public string contractSaveKey = "Evidence_Contract";
+
     [Header("ชื่อไอเทมที่จะโชว์ตอนแจ้งเตือน")]
     public string itemName = "ใบสัญญากู้ยืม";
 
@@ -13,9 +15,28 @@ public class ContractPickup : MonoBehaviour
     public GameObject contractUI;
 
     [Header("ระบบเสียงตอนเก็บ")]
-    public AudioClip pickupSound; // ลากเสียงหยิบกระดาษ (Paper rustle) มาใส่
+    public AudioClip pickupSound;
 
     private bool canPickup = false;
+
+    void Start()
+    {
+        // 🌟 1. เช็คตอนเริ่มเกมว่า "เคยเก็บใบสัญญาไปหรือยัง?"
+        // ถ้า PlayerPrefs มีค่าเป็น 1 แปลว่าเคยเก็บแล้ว
+        if (PlayerPrefs.GetInt(contractSaveKey, 0) == 1)
+        {
+            // โชว์รูปสัญญาในกระเป๋าให้เลย
+            if (contractUI != null) contractUI.SetActive(true);
+
+            // ซ่อนแผ่นสัญญาในฉาก
+            if (contract3DModel != null) contract3DModel.SetActive(false);
+
+            // ปิดกล่องชนและสคริปต์ทิ้ง
+            Collider col = GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+            this.enabled = false;
+        }
+    }
 
     void Update()
     {
@@ -64,6 +85,13 @@ public class ContractPickup : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
+        // 🌟 3. เซฟลงเครื่องว่า "เก็บใบสัญญาไปแล้ว! (ค่า = 1)"
+        PlayerPrefs.SetInt(contractSaveKey, 1);
+        PlayerPrefs.Save();
+
         Debug.Log("เก็บหลักฐานใบสัญญาแล้ว!");
+
+        // ปิดการทำงานสคริปต์
+        this.enabled = false;
     }
 }
