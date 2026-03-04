@@ -33,11 +33,31 @@ public class IntroDialog : MonoBehaviour
 
     void Start()
     {
+        // 🌟 1. เช็คความจำ: เคยดูคำสั่งหัวหน้าไปหรือยัง? (1 = เคยดูแล้ว, 0 = ยังไม่เคยดู)
+        if (PlayerPrefs.GetInt("HasSeenIntro", 0) == 1)
+        {
+            // ถ้าเคยดูแล้ว (โหลดเซฟมา) -> สั่งปิด UI ทั้งหมดทันที
+            dialogPanel.SetActive(false);
+            if (blackScreenPanel != null) blackScreenPanel.SetActive(false);
+            if (bossProfileImage != null) bossProfileImage.SetActive(false);
+
+            // คืนค่าระบบเกมให้เดินได้ และเปิดเสียงทันที
+            AudioListener.pause = false;
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            // ปิดสคริปต์นี้ทิ้งไปเลย จะได้ไม่กินทรัพยากรเครื่อง
+            this.enabled = false;
+            return; // ออกจากฟังก์ชัน Start ทันที (ไม่ทำบรรทัดข้างล่างต่อ)
+        }
+
+        // 🌟 2. ถ้ายังไม่เคยดู (เริ่มเกมใหม่) -> แสดงหน้าจอปกติ
         dialogPanel.SetActive(true);
 
         if (blackScreenPanel != null) blackScreenPanel.SetActive(true);
 
-        // 🌟 🔇 ถอดปลั๊กเสียง! ทุกอย่างจะเงียบกริบ 100%
+        // 🔇 ถอดปลั๊กเสียง! ทุกอย่างจะเงียบกริบ 100%
         AudioListener.pause = true;
 
         Time.timeScale = 0f;
@@ -68,6 +88,7 @@ public class IntroDialog : MonoBehaviour
         foreach (char letter in dialogMessages[currentLine].ToCharArray())
         {
             messageText.text += letter;
+            // ใช้ WaitForSecondsRealtime เพราะเราตั้ง Time.timeScale = 0 ไว้
             yield return new WaitForSecondsRealtime(typingSpeed);
         }
 
@@ -105,12 +126,16 @@ public class IntroDialog : MonoBehaviour
             if (bossProfileImage != null) bossProfileImage.SetActive(false);
             if (blackScreenPanel != null) blackScreenPanel.SetActive(false);
 
-            // 🌟 🔊 เสียบปลั๊กเสียงกลับคืน! เสียงลม เสียงบรรยากาศจะกลับมา
+            // 🔊 เสียบปลั๊กเสียงกลับคืน! เสียงลม เสียงบรรยากาศจะกลับมา
             AudioListener.pause = false;
 
             Time.timeScale = 1f;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            // 🌟 3. คุยจบแล้ว! บันทึกความจำลงระบบว่า "ดู Intro จบแล้วนะ!"
+            PlayerPrefs.SetInt("HasSeenIntro", 1);
+            PlayerPrefs.Save();
         }
     }
 }

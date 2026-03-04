@@ -4,12 +4,18 @@ using System.Collections;
 public class StorageDoorController : MonoBehaviour
 {
     [Header("Settings")]
-    public float openAngle = -90f;    // ปรับเฉพาะจุดนี้เป็น -90f ตามคำขอ
-    public float smoothSpeed = 3f;    
-    public float autoCloseDelay = 3f; 
+    public float openAngle = -90f;
+    public float smoothSpeed = 3f;
+    public float autoCloseDelay = 3f;
 
     [Header("Collision")]
-    public Collider blockingCollider; 
+    public Collider blockingCollider;
+
+    // 🌟 --- เพิ่มระบบเสียงตรงนี้ --- 🌟
+    [Header("Audio Settings")]
+    public AudioSource doorAudio;     // ช่องใส่ Audio Source
+    public AudioClip openSound;       // เสียงตอนเปิด
+    public AudioClip closeSound;      // เสียงตอนปิด
 
     private bool isOpen = false;
     private bool isPlayerNearby = false;
@@ -21,6 +27,12 @@ public class StorageDoorController : MonoBehaviour
     {
         closedRotation = transform.localRotation;
         targetRotation = closedRotation;
+
+        // ดึง Audio Source มาใส่อัตโนมัติ (ถ้าลืมลากใส่)
+        if (doorAudio == null)
+        {
+            doorAudio = GetComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -28,7 +40,7 @@ public class StorageDoorController : MonoBehaviour
         // --- 1. ส่วนรับคำสั่งเปิด ---
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
         {
-            if (!isOpen) 
+            if (!isOpen)
             {
                 OpenDoor();
             }
@@ -55,6 +67,12 @@ public class StorageDoorController : MonoBehaviour
         isOpen = true;
         targetRotation = closedRotation * Quaternion.Euler(0, openAngle, 0);
 
+        // 🌟 เล่นเสียงเปิดประตู 🌟
+        if (doorAudio != null && openSound != null)
+        {
+            doorAudio.PlayOneShot(openSound);
+        }
+
         if (closeCoroutine != null) StopCoroutine(closeCoroutine);
         closeCoroutine = StartCoroutine(AutoCloseRoutine());
     }
@@ -64,6 +82,12 @@ public class StorageDoorController : MonoBehaviour
         yield return new WaitForSeconds(autoCloseDelay);
         isOpen = false;
         targetRotation = closedRotation;
+
+        // 🌟 เล่นเสียงปิดประตู 🌟
+        if (doorAudio != null && closeSound != null)
+        {
+            doorAudio.PlayOneShot(closeSound);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
