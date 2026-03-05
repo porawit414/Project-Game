@@ -17,6 +17,10 @@ public class PasswordDoor : MonoBehaviour
     [Header("ตัวเล่น (สำคัญ! ลากสคริปต์เดินมาใส่ตรงนี้)")]
     public MonoBehaviour playerMovement; 
 
+    // 🌟 เพิ่มช่องนี้ให้ลาก Collider มาใส่เอง จะได้ไม่บั๊กครับ 🌟
+    [Header("ตัวกั้นคน (ลากวัตถุประตูที่มี Collider มาใส่)")]
+    public Collider doorCollider; 
+
     // ตัวแปรเช็คสถานะ
     private bool isLocked = true; 
     private string currentInput = "";
@@ -24,7 +28,6 @@ public class PasswordDoor : MonoBehaviour
     private bool isPlayerNear = false;
     private Quaternion initialRotation;
     private Quaternion targetRotation;
-    private Collider doorCollider; // ตัวกั้นคน
 
     void Start()
     {
@@ -32,9 +35,6 @@ public class PasswordDoor : MonoBehaviour
         {
             initialRotation = doorHinge.localRotation;
             targetRotation = initialRotation;
-            
-            // หา Collider ที่ติดอยู่กับประตู
-            doorCollider = doorHinge.GetComponent<Collider>();
         }
         if (keypadUI != null) keypadUI.SetActive(false);
     }
@@ -49,9 +49,16 @@ public class PasswordDoor : MonoBehaviour
                 if (keypadUI.activeSelf) CloseKeypad();
                 else OpenKeypad();
             }
-            else
+            else // ถ้ารหัสผ่านถูกปลดล็อคแล้ว
             {
-                if (!isOpen) OpenDoor();
+                if (isOpen) 
+                {
+                    CloseDoor(); // ถ้าเปิดอยู่ กด E ให้ปิด
+                }
+                else 
+                {
+                    OpenDoor();  // ถ้าปิดอยู่ กด E ให้เปิด
+                }
             }
         }
 
@@ -70,26 +77,26 @@ public class PasswordDoor : MonoBehaviour
             }
         }
 
-        // --- 3. ระบบหมุนประตูและการชน (แก้ใหม่ตรงนี้) ---
+        // --- 3. ระบบหมุนประตูและการชน (เดินทะลุได้ตอนประตูขยับ) ---
         if (doorHinge != null)
         {
-            // หมุนประตู
+            // หมุนประตูอย่างนุ่มนวล
             doorHinge.localRotation = Quaternion.Slerp(doorHinge.localRotation, targetRotation, Time.deltaTime * openSpeed);
             
-            // เช็คมุมว่าประตูเปิดอยู่ไหม?
+            // เช็คมุมว่าประตูขยับออกจากจุดเริ่มต้น (ตอนปิด) ไปกี่องศาแล้ว?
             float angleDifference = Quaternion.Angle(doorHinge.localRotation, initialRotation);
 
             if(doorCollider != null) 
             {
-                // ถ้ามุมห่างจากตอนปิดเกิน 1 องศา (ไม่ว่าจะเปิด หรือกำลังปิด) -> ให้เดินทะลุได้ (isTrigger = true)
-                // ถ้าปิดสนิท (มุมน้อยกว่า 1) -> ให้เดินชน (isTrigger = false)
+                // ถ้าประตูขยับออกจากจุดเดิมเกิน 1 องศา (กำลังเปิด หรือ กำลังปิด) -> ให้เดินทะลุได้ (isTrigger = true)
                 if (angleDifference > 1.0f)
                 {
-                    doorCollider.isTrigger = true; // ทะลุได้
+                    doorCollider.isTrigger = true; // ทะลุได้เลย
                 }
+                // ถ้าประตูกลับมาที่จุดเดิมสนิท (มุมน้อยกว่า 1) -> ให้เดินชนได้ (isTrigger = false)
                 else
                 {
-                    doorCollider.isTrigger = false; // แข็ง (ปิดสนิทแล้ว)
+                    doorCollider.isTrigger = false; // แข็ง ปิดตาย
                 }
             }
         }
@@ -159,6 +166,13 @@ public class PasswordDoor : MonoBehaviour
         isOpen = true;
         targetRotation = Quaternion.Euler(0, openAngle, 0) * initialRotation;
         Invoke("AutoClose", autoCloseDelay); 
+    }
+
+    void CloseDoor()
+    {
+        isOpen = false;
+        targetRotation = initialRotation;
+        CancelInvoke("AutoClose"); // ยกเลิกการปิดอัตโนมัติ เพราะผู้เล่นกดปิดเองไปแล้ว
     }
 
     void AutoClose()

@@ -37,12 +37,16 @@ public class StorageDoorController : MonoBehaviour
 
     void Update()
     {
-        // --- 1. ส่วนรับคำสั่งเปิด ---
+        // --- 1. ส่วนรับคำสั่งเปิด/ปิด (กด E สลับไปมา) ---
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
         {
-            if (!isOpen)
+            if (isOpen)
             {
-                OpenDoor();
+                CloseDoor(); // ถ้าเปิดอยู่ -> ให้ปิด
+            }
+            else
+            {
+                OpenDoor();  // ถ้าปิดอยู่ -> ให้เปิด
             }
         }
 
@@ -73,13 +77,13 @@ public class StorageDoorController : MonoBehaviour
             doorAudio.PlayOneShot(openSound);
         }
 
+        // รีเซ็ตการนับเวลาปิดอัตโนมัติใหม่
         if (closeCoroutine != null) StopCoroutine(closeCoroutine);
         closeCoroutine = StartCoroutine(AutoCloseRoutine());
     }
 
-    IEnumerator AutoCloseRoutine()
+    void CloseDoor()
     {
-        yield return new WaitForSeconds(autoCloseDelay);
         isOpen = false;
         targetRotation = closedRotation;
 
@@ -87,6 +91,21 @@ public class StorageDoorController : MonoBehaviour
         if (doorAudio != null && closeSound != null)
         {
             doorAudio.PlayOneShot(closeSound);
+        }
+
+        // 🛑 ยกเลิกการนับเวลาปิดอัตโนมัติ (เพราะผู้เล่นชิงปิดไปก่อนแล้ว)
+        if (closeCoroutine != null) StopCoroutine(closeCoroutine);
+    }
+
+    IEnumerator AutoCloseRoutine()
+    {
+        // รอเวลาตามที่ตั้งไว้
+        yield return new WaitForSeconds(autoCloseDelay);
+        
+        // ถ้าถึงเวลาแล้วประตูยังเปิดอยู่ ให้สั่งปิด
+        if (isOpen)
+        {
+            CloseDoor();
         }
     }
 
