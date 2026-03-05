@@ -1,14 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-public class StaticGhostTrigger : MonoBehaviour 
+public class StaticGhostTrigger : MonoBehaviour
 {
+    // 🌟 --- เพิ่มตัวแปรเซฟความจำตรงนี้ --- 🌟
+    [Header("🌟 ชื่อเซฟของผีตัวนี้ (ตั้งให้ไม่ซ้ำกัน!)")]
+    public string ghostSaveID = "Ghost_Spot_1";
+
     [Header("Setup Objects")]
     public GameObject ghostObject;    // ลาก Static_Ghost มาใส่
     public GameObject ghostModel;     // ลาก Womann:Body มาใส่
-    
+
     [Header("Audio Settings")]
-    public AudioSource audioSource;   
+    public AudioSource audioSource;
     public AudioClip jumpscareSound;  // ลากไฟล์เสียงกรี๊ดมาใส่
 
     [Header("Settings")]
@@ -17,16 +21,28 @@ public class StaticGhostTrigger : MonoBehaviour
     private bool isGhostActive = false;
     private bool hasScreamed = false;
 
+    // 🌟 1. เพิ่มฟังก์ชัน Start() เพื่อเช็คความจำตอนเริ่มเกม
+    void Start()
+    {
+        // เช็คว่าผีตัวนี้เคยหลอกผู้เล่นไปแล้วหรือยัง? (1 = เคยหลอกแล้ว)
+        if (PlayerPrefs.GetInt(ghostSaveID, 0) == 1)
+        {
+            // ถ้าเคยหลอกแล้ว ก็เก็บผีเข้ากรุ และทำลายจุดดักทิ้งไปเลยตั้งแต่เริ่มเกม!
+            if (ghostObject != null) ghostObject.SetActive(false);
+            Destroy(gameObject);
+        }
+    }
+
     // 1. ถ้าเรียกผ่านสคริปต์เก็บของ
-    public void OnItemPickedUp() 
+    public void OnItemPickedUp()
     {
         ActivateGhost();
     }
 
     // 2. ถ้าใช้วิธีเดินเหยียบกล่อง Trigger (จุดดัก)
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Player"))
         {
             ActivateGhost();
         }
@@ -35,7 +51,7 @@ public class StaticGhostTrigger : MonoBehaviour
     // ฟังก์ชันสั่งผีออกมาเตรียมตัว
     private void ActivateGhost()
     {
-        if (!isGhostActive) 
+        if (!isGhostActive)
         {
             isGhostActive = true;
             if (ghostObject != null) ghostObject.SetActive(true);
@@ -47,7 +63,7 @@ public class StaticGhostTrigger : MonoBehaviour
     {
         // ดึง Renderer จาก Womann:Body ที่ลากมาใส่
         Renderer rd = null;
-        if (ghostModel != null) 
+        if (ghostModel != null)
         {
             rd = ghostModel.GetComponent<Renderer>();
         }
@@ -55,10 +71,14 @@ public class StaticGhostTrigger : MonoBehaviour
         while (!hasScreamed)
         {
             // ตรวจสอบว่ากล้องของผู้เล่นหันมาเห็นขอบเขตของตัวผีหรือยัง
-            if (rd != null && IsVisibleToCamera(rd)) 
+            if (rd != null && IsVisibleToCamera(rd))
             {
                 hasScreamed = true;
-                
+
+                // 🌟 2. ประทับตราเซฟ! จำไว้เลยว่าผีตัวนี้หลอกสำเร็จแล้ว
+                PlayerPrefs.SetInt(ghostSaveID, 1);
+                PlayerPrefs.Save();
+
                 // สั่งเล่นเสียงทันทีที่ตาเห็น!
                 if (audioSource != null && jumpscareSound != null)
                 {
@@ -73,7 +93,7 @@ public class StaticGhostTrigger : MonoBehaviour
                 // รอ 1 วินาที แล้วปิดผีทิ้ง
                 yield return new WaitForSeconds(ghostDuration);
                 if (ghostObject != null) ghostObject.SetActive(false);
-                
+
                 Destroy(gameObject, 0.5f); // ทำลายจุดดักทิ้งจะได้ไม่ทำงานซ้ำ
                 yield break;
             }

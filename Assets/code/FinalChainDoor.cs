@@ -3,6 +3,10 @@ using System.Collections; // ต้องมีบรรทัดนี้เพ
 
 public class FinalChainDoor : MonoBehaviour
 {
+    // 🌟 --- เพิ่มตัวแปรเซฟความจำตรงนี้ --- 🌟
+    [Header("🌟 ชื่อเซฟของประตูโซ่ (ตั้งให้ไม่ซ้ำกัน!)")]
+    public string doorSaveID = "Chain_Door_1";
+
     [Header("การตั้งค่าประตู")]
     public Transform doorBody;        // ตัวบานประตู
     public float openAngle = 90f;     // องศาเปิด
@@ -26,6 +30,9 @@ public class FinalChainDoor : MonoBehaviour
     private AudioSource audioSource;
     private Coroutine autoCloseCoroutine; // ตัวช่วยจำสถานะการนับเวลา
 
+    // ตัวแปรเช็คว่าระบบบันทึกการตัดโซ่ไปแล้วหรือยัง
+    private bool isChainCutSaved = false;
+
     void Start()
     {
         if (doorBody == null) doorBody = transform;
@@ -34,10 +41,32 @@ public class FinalChainDoor : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+
+        // 🌟 1. เช็คความจำตอนโหลดฉาก: ประตูบานนี้เคยถูกตัดโซ่ไปแล้วหรือยัง?
+        if (PlayerPrefs.GetInt(doorSaveID, 0) == 1)
+        {
+            isChainCutSaved = true; // ล็อคไว้ไม่ให้เซฟซ้ำ
+
+            // ถ้าเคยตัดแล้ว ก็ทำลายโมเดลโซ่ทิ้งไปเลยตั้งแต่เริ่มเกม!
+            if (chainLock != null)
+            {
+                Destroy(chainLock);
+            }
+            Debug.Log("ประตู " + doorSaveID + " เคยถูกตัดโซ่แล้ว วันนี้เปิดได้เลย!");
+        }
     }
 
     void Update()
     {
+        // 🌟 2. ระบบแอบดูอัตโนมัติ: ถ้าโซ่ถูกทำลาย (เป็น null) แต่ยังไม่ได้เซฟ -> ให้เซฟทันที!
+        if (chainLock == null && !isChainCutSaved)
+        {
+            isChainCutSaved = true;
+            PlayerPrefs.SetInt(doorSaveID, 1);
+            PlayerPrefs.Save();
+            Debug.Log("โซ่ถูกตัดแล้ว! ระบบจำไว้แล้วว่าไม่ต้องเอาโซ่มาขวางอีก");
+        }
+
         // 1. จัดการเรื่องการหมุนของประตู
         Quaternion targetRot = isOpen ? openRot : closedRot;
         doorBody.localRotation = Quaternion.Slerp(doorBody.localRotation, targetRot, Time.deltaTime * smoothSpeed);
@@ -48,7 +77,7 @@ public class FinalChainDoor : MonoBehaviour
             if (isOpen)
             {
                 // เปลี่ยนเป็นวิญญาณ (เดินทะลุได้ แต่เป้าเล็งยังตรวจจับเพื่อกด E ได้)
-                solidDoorCollider.isTrigger = true; 
+                solidDoorCollider.isTrigger = true;
             }
             else
             {
@@ -69,7 +98,7 @@ public class FinalChainDoor : MonoBehaviour
     public void InteractWithDoor()
     {
         // 1. ถ้ายังมีโซ่ขวางอยู่
-        if (chainLock != null) 
+        if (chainLock != null)
         {
             Debug.Log("ประตูล็อค! ติดโซ่");
             if (lockedSound != null) audioSource.PlayOneShot(lockedSound);
@@ -82,7 +111,7 @@ public class FinalChainDoor : MonoBehaviour
         if (isOpen)
         {
             if (openSound != null) audioSource.PlayOneShot(openSound);
-            
+
             // เริ่มนับเวลาปิดประตูอัตโนมัติ
             if (autoCloseCoroutine != null) StopCoroutine(autoCloseCoroutine);
             autoCloseCoroutine = StartCoroutine(AutoCloseDoor());
@@ -90,7 +119,7 @@ public class FinalChainDoor : MonoBehaviour
         else
         {
             if (closeSound != null) audioSource.PlayOneShot(closeSound);
-            
+
             // ถ้าผู้เล่นกด E ปิดเองก่อนครบ 3 วินาที ให้ยกเลิกการนับเวลาอัตโนมัติ
             if (autoCloseCoroutine != null) StopCoroutine(autoCloseCoroutine);
         }
@@ -100,9 +129,9 @@ public class FinalChainDoor : MonoBehaviour
     private IEnumerator AutoCloseDoor()
     {
         yield return new WaitForSeconds(autoCloseTime); // รอนับถอยหลังตามเวลาที่ตั้งไว้ (3 วินาที)
-        
+
         // เมื่อครบเวลา เช็คอีกรอบว่าประตูยังเปิดอยู่ไหม ถ้าเปิดอยู่ให้สั่งปิด
-        if (isOpen) 
+        if (isOpen)
         {
             isOpen = false;
             if (closeSound != null) audioSource.PlayOneShot(closeSound);

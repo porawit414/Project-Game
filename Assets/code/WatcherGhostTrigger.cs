@@ -2,19 +2,23 @@ using UnityEngine;
 using System.Collections;
 
 // บรรทัดนี้จะบังคับให้ Unity สร้างลำโพง (AudioSource) ใส่กล่องนี้ให้อัตโนมัติเลยครับ
-[RequireComponent(typeof(AudioSource))] 
-public class WatcherGhostTrigger : MonoBehaviour 
+[RequireComponent(typeof(AudioSource))]
+public class WatcherGhostTrigger : MonoBehaviour
 {
+    // 🌟 --- เพิ่มตัวแปรเซฟความจำตรงนี้ --- 🌟
+    [Header("🌟 ชื่อเซฟของผีจ้องมอง (ตั้งให้ไม่ซ้ำกัน!)")]
+    public string ghostSaveID = "Watcher_Ghost_1";
+
     [Header("Watcher Setup")]
-    public GameObject watcherObject;    
-    public GameObject watcherModel;     
-    
+    public GameObject watcherObject;
+    public GameObject watcherModel;
+
     [Header("Audio Settings")]
-    public AudioSource audioSource;   
-    public AudioClip jumpscareSound;    
+    public AudioSource audioSource;
+    public AudioClip jumpscareSound;
 
     [Header("Settings")]
-    public float vanishTime = 1.0f;     
+    public float vanishTime = 1.0f;
 
     private bool isGhostActive = false;
     private bool hasScreamed = false;
@@ -23,8 +27,16 @@ public class WatcherGhostTrigger : MonoBehaviour
     // ฟังก์ชันนี้ทำงานตอนกด Play เกม (เตรียมของไว้ล่วงหน้า จะได้ไม่กระตุก)
     void Start()
     {
+        // 🌟 1. เช็คความจำ: ถ้าผีตัวนี้เคยออกมาจ้องแล้ว ให้ทำลายทิ้งตั้งแต่เริ่มเกมเลย!
+        if (PlayerPrefs.GetInt(ghostSaveID, 0) == 1)
+        {
+            if (watcherObject != null) watcherObject.SetActive(false);
+            Destroy(gameObject);
+            return; // หยุดการทำงานของ Start() แค่นี้เลย ไม่ต้องโหลดของข้างล่างให้หนักเครื่อง
+        }
+
         // 1. หาภาพผีเตรียมไว้
-        if (watcherModel != null) 
+        if (watcherModel != null)
         {
             rd = watcherModel.GetComponent<Renderer>();
         }
@@ -34,7 +46,7 @@ public class WatcherGhostTrigger : MonoBehaviour
         {
             audioSource = GetComponent<AudioSource>();
         }
-        
+
         if (audioSource != null && jumpscareSound != null)
         {
             audioSource.clip = jumpscareSound;
@@ -42,14 +54,14 @@ public class WatcherGhostTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isGhostActive) 
+        if (other.CompareTag("Player") && !isGhostActive)
         {
             isGhostActive = true;
-            
+
             if (watcherObject != null) watcherObject.SetActive(true);
-            
+
             StartCoroutine(CheckIfPlayerSeesWatcher());
         }
     }
@@ -58,10 +70,14 @@ public class WatcherGhostTrigger : MonoBehaviour
     {
         while (!hasScreamed)
         {
-            if (rd != null && IsVisibleToCamera(rd)) 
+            if (rd != null && IsVisibleToCamera(rd))
             {
                 hasScreamed = true;
-                
+
+                // 🌟 2. ประทับตราเซฟ! จำไว้ว่าผู้เล่นหันมาเห็นผีตัวนี้แล้วนะ
+                PlayerPrefs.SetInt(ghostSaveID, 1);
+                PlayerPrefs.Save();
+
                 // สั่งเล่นเสียงที่เตรียมไว้แล้วได้เลยทันที (ลื่นแน่นอน)
                 if (audioSource != null)
                 {
@@ -69,15 +85,15 @@ public class WatcherGhostTrigger : MonoBehaviour
                 }
 
                 yield return new WaitForSeconds(vanishTime);
-                
+
                 if (watcherObject != null) watcherObject.SetActive(false);
-                
+
                 if (audioSource != null)
                 {
                     audioSource.Stop();
                 }
-                
-                Destroy(gameObject, 0.5f); 
+
+                Destroy(gameObject, 0.5f);
                 yield break;
             }
             yield return new WaitForSeconds(0.1f);

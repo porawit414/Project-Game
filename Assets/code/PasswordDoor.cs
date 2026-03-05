@@ -3,26 +3,29 @@ using TMPro;
 
 public class PasswordDoor : MonoBehaviour
 {
+    // 🌟 --- เพิ่มตัวแปรเซฟความจำตรงนี้ --- 🌟
+    [Header("🌟 ชื่อเซฟของประตูรหัส (ตั้งให้ไม่ซ้ำกัน!)")]
+    public string doorSaveID = "Password_Door_1";
+
     [Header("การตั้งค่ารหัสผ่าน")]
-    public string correctPassword = "164"; 
-    public GameObject keypadUI;      
-    public TMP_Text screenText;      
+    public string correctPassword = "164";
+    public GameObject keypadUI;
+    public TMP_Text screenText;
 
     [Header("การตั้งค่าประตู")]
-    public Transform doorHinge;      
+    public Transform doorHinge;
     public float openAngle = 90f;
     public float openSpeed = 2f;
     public float autoCloseDelay = 5f;
 
     [Header("ตัวเล่น (สำคัญ! ลากสคริปต์เดินมาใส่ตรงนี้)")]
-    public MonoBehaviour playerMovement; 
+    public MonoBehaviour playerMovement;
 
-    // 🌟 เพิ่มช่องนี้ให้ลาก Collider มาใส่เอง จะได้ไม่บั๊กครับ 🌟
     [Header("ตัวกั้นคน (ลากวัตถุประตูที่มี Collider มาใส่)")]
-    public Collider doorCollider; 
+    public Collider doorCollider;
 
     // ตัวแปรเช็คสถานะ
-    private bool isLocked = true; 
+    private bool isLocked = true;
     private string currentInput = "";
     private bool isOpen = false;
     private bool isPlayerNear = false;
@@ -37,6 +40,13 @@ public class PasswordDoor : MonoBehaviour
             targetRotation = initialRotation;
         }
         if (keypadUI != null) keypadUI.SetActive(false);
+
+        // 🌟 1. เช็คความจำตอนโหลดฉาก: ประตูนี้เคยใส่รหัสผ่านถูกไปแล้วหรือยัง?
+        if (PlayerPrefs.GetInt(doorSaveID, 0) == 1)
+        {
+            isLocked = false; // ถ้าเคยใส่ถูกแล้ว ปลดล็อคระบบรหัสผ่านทิ้งไปเลย!
+            Debug.Log("ประตูรหัส " + doorSaveID + " เคยถูกปลดล็อคแล้ว วันนี้เปิดได้เลย!");
+        }
     }
 
     void Update()
@@ -51,11 +61,11 @@ public class PasswordDoor : MonoBehaviour
             }
             else // ถ้ารหัสผ่านถูกปลดล็อคแล้ว
             {
-                if (isOpen) 
+                if (isOpen)
                 {
                     CloseDoor(); // ถ้าเปิดอยู่ กด E ให้ปิด
                 }
-                else 
+                else
                 {
                     OpenDoor();  // ถ้าปิดอยู่ กด E ให้เปิด
                 }
@@ -77,23 +87,20 @@ public class PasswordDoor : MonoBehaviour
             }
         }
 
-        // --- 3. ระบบหมุนประตูและการชน (เดินทะลุได้ตอนประตูขยับ) ---
+        // --- 3. ระบบหมุนประตูและการชน ---
         if (doorHinge != null)
         {
             // หมุนประตูอย่างนุ่มนวล
             doorHinge.localRotation = Quaternion.Slerp(doorHinge.localRotation, targetRotation, Time.deltaTime * openSpeed);
-            
-            // เช็คมุมว่าประตูขยับออกจากจุดเริ่มต้น (ตอนปิด) ไปกี่องศาแล้ว?
+
             float angleDifference = Quaternion.Angle(doorHinge.localRotation, initialRotation);
 
-            if(doorCollider != null) 
+            if (doorCollider != null)
             {
-                // ถ้าประตูขยับออกจากจุดเดิมเกิน 1 องศา (กำลังเปิด หรือ กำลังปิด) -> ให้เดินทะลุได้ (isTrigger = true)
                 if (angleDifference > 1.0f)
                 {
                     doorCollider.isTrigger = true; // ทะลุได้เลย
                 }
-                // ถ้าประตูกลับมาที่จุดเดิมสนิท (มุมน้อยกว่า 1) -> ให้เดินชนได้ (isTrigger = false)
                 else
                 {
                     doorCollider.isTrigger = false; // แข็ง ปิดตาย
@@ -120,20 +127,25 @@ public class PasswordDoor : MonoBehaviour
     {
         if (currentInput == correctPassword)
         {
-            isLocked = false; 
-            CloseKeypad();    
-            OpenDoor();       
+            isLocked = false;
+
+            // 🌟 2. ประทับตราเซฟ! จำไว้ว่าผู้เล่นรู้รหัสและปลดล็อคบานนี้สำเร็จแล้ว
+            PlayerPrefs.SetInt(doorSaveID, 1);
+            PlayerPrefs.Save();
+
+            CloseKeypad();
+            OpenDoor();
         }
         else
         {
-            if(screenText != null) screenText.text = "ERR";
+            if (screenText != null) screenText.text = "ERR";
             Invoke("ClearInput", 1f);
         }
     }
 
     void OpenKeypad()
     {
-        if(keypadUI != null) keypadUI.SetActive(true);
+        if (keypadUI != null) keypadUI.SetActive(true);
         if (playerMovement != null) playerMovement.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -143,7 +155,7 @@ public class PasswordDoor : MonoBehaviour
 
     public void CloseKeypad()
     {
-        if(keypadUI != null) keypadUI.SetActive(false);
+        if (keypadUI != null) keypadUI.SetActive(false);
         if (playerMovement != null) playerMovement.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -165,14 +177,14 @@ public class PasswordDoor : MonoBehaviour
     {
         isOpen = true;
         targetRotation = Quaternion.Euler(0, openAngle, 0) * initialRotation;
-        Invoke("AutoClose", autoCloseDelay); 
+        Invoke("AutoClose", autoCloseDelay);
     }
 
     void CloseDoor()
     {
         isOpen = false;
         targetRotation = initialRotation;
-        CancelInvoke("AutoClose"); // ยกเลิกการปิดอัตโนมัติ เพราะผู้เล่นกดปิดเองไปแล้ว
+        CancelInvoke("AutoClose");
     }
 
     void AutoClose()
@@ -182,9 +194,9 @@ public class PasswordDoor : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) { if (other.CompareTag("Player")) isPlayerNear = true; }
-    private void OnTriggerExit(Collider other) 
-    { 
-        if (other.CompareTag("Player")) 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
             isPlayerNear = false;
             if (keypadUI.activeSelf) CloseKeypad();
