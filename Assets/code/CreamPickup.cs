@@ -23,11 +23,22 @@ public class CreamPickup : MonoBehaviour
     private void Start()
     {
         // 🌟 1. เช็คตอนเริ่มเกมว่า "เคยเก็บคีมตัดโซ่ไปหรือยัง?"
-        // ถ้า PlayerPrefs จำได้ว่ามีค่าเป็น 1 แปลว่าเคยเก็บแล้ว
         if (PlayerPrefs.GetInt(creamSaveKey, 0) == 1)
         {
-            // เปิดปุ่มในกระเป๋าให้เลย
+            // เปิดปุ่มในกระเป๋า UI ให้เลย
             if (creamInventoryButton != null) creamInventoryButton.SetActive(true);
+
+            // 🌟 จุดที่เพิ่มเข้ามา: แอบยัดข้อมูลคีมเข้ากระเป๋าผู้เล่นตอนโหลดเซฟด้วย!
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                SimpleInventory inventory = player.GetComponent<SimpleInventory>();
+                ItemPickup itemData = GetComponent<ItemPickup>();
+                if (inventory != null && itemData != null)
+                {
+                    inventory.AddItem(itemData); // ใส่กลับเข้ากระเป๋า ระบบจะได้จำได้ว่ามีของ!
+                }
+            }
 
             // ซ่อนโมเดลคีมในฉากทิ้งไปเลย จะได้ไม่ต้องเดินมาเก็บซ้ำ
             gameObject.SetActive(false);

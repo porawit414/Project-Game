@@ -3,7 +3,6 @@ using TMPro;
 
 public class PasswordDoor : MonoBehaviour
 {
-    // 🌟 --- เพิ่มตัวแปรเซฟความจำตรงนี้ --- 🌟
     [Header("🌟 ชื่อเซฟของประตูรหัส (ตั้งให้ไม่ซ้ำกัน!)")]
     public string doorSaveID = "Password_Door_1";
 
@@ -17,6 +16,13 @@ public class PasswordDoor : MonoBehaviour
     public float openAngle = 90f;
     public float openSpeed = 2f;
     public float autoCloseDelay = 5f;
+
+    // 🌟 --- เพิ่มช่องใส่เสียงตรงนี้ --- 🌟
+    [Header("ระบบเสียง (ลากไฟล์เสียงมาใส่)")]
+    public AudioClip openDoorSound;    // เสียงตอนประตูเปิด
+    public AudioClip closeDoorSound;   // เสียงตอนประตูปิด
+    public AudioClip accessGrantedSound; // เสียงติ๊ดดด! (รหัสถูก)
+    public AudioClip accessDeniedSound;  // เสียงตู๊ดดด! (รหัสผิด)
 
     [Header("ตัวเล่น (สำคัญ! ลากสคริปต์เดินมาใส่ตรงนี้)")]
     public MonoBehaviour playerMovement;
@@ -32,8 +38,15 @@ public class PasswordDoor : MonoBehaviour
     private Quaternion initialRotation;
     private Quaternion targetRotation;
 
+    // ตัวเล่นเสียง
+    private AudioSource audioSource;
+
     void Start()
     {
+        // สร้างระบบเสียงให้อัตโนมัติ ไม่ต้องสร้างเองใน Inspector
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 1f; // ให้เสียงเป็น 3 มิติ (ดังจากที่ตั้งของประตู)
+
         if (doorHinge != null)
         {
             initialRotation = doorHinge.localRotation;
@@ -41,10 +54,10 @@ public class PasswordDoor : MonoBehaviour
         }
         if (keypadUI != null) keypadUI.SetActive(false);
 
-        // 🌟 1. เช็คความจำตอนโหลดฉาก: ประตูนี้เคยใส่รหัสผ่านถูกไปแล้วหรือยัง?
+        // เช็คความจำตอนโหลดฉาก
         if (PlayerPrefs.GetInt(doorSaveID, 0) == 1)
         {
-            isLocked = false; // ถ้าเคยใส่ถูกแล้ว ปลดล็อคระบบรหัสผ่านทิ้งไปเลย!
+            isLocked = false;
             Debug.Log("ประตูรหัส " + doorSaveID + " เคยถูกปลดล็อคแล้ว วันนี้เปิดได้เลย!");
         }
     }
@@ -59,7 +72,7 @@ public class PasswordDoor : MonoBehaviour
                 if (keypadUI.activeSelf) CloseKeypad();
                 else OpenKeypad();
             }
-            else // ถ้ารหัสผ่านถูกปลดล็อคแล้ว
+            else // ถ้ารหัสถูกปลดล็อคแล้ว
             {
                 if (isOpen)
                 {
@@ -90,20 +103,18 @@ public class PasswordDoor : MonoBehaviour
         // --- 3. ระบบหมุนประตูและการชน ---
         if (doorHinge != null)
         {
-            // หมุนประตูอย่างนุ่มนวล
             doorHinge.localRotation = Quaternion.Slerp(doorHinge.localRotation, targetRotation, Time.deltaTime * openSpeed);
-
             float angleDifference = Quaternion.Angle(doorHinge.localRotation, initialRotation);
 
             if (doorCollider != null)
             {
                 if (angleDifference > 1.0f)
                 {
-                    doorCollider.isTrigger = true; // ทะลุได้เลย
+                    doorCollider.isTrigger = true;
                 }
                 else
                 {
-                    doorCollider.isTrigger = false; // แข็ง ปิดตาย
+                    doorCollider.isTrigger = false;
                 }
             }
         }
@@ -129,15 +140,22 @@ public class PasswordDoor : MonoBehaviour
         {
             isLocked = false;
 
-            // 🌟 2. ประทับตราเซฟ! จำไว้ว่าผู้เล่นรู้รหัสและปลดล็อคบานนี้สำเร็จแล้ว
+            // 🌟 เล่นเสียงติ๊ด! รหัสถูก
+            if (accessGrantedSound != null) audioSource.PlayOneShot(accessGrantedSound);
+
             PlayerPrefs.SetInt(doorSaveID, 1);
             PlayerPrefs.Save();
 
             CloseKeypad();
-            OpenDoor();
+
+            // ให้รอฟังเสียงติ๊ดก่อนครึ่งวินาที ค่อยเปิดประตู
+            Invoke("OpenDoor", 0.5f);
         }
         else
         {
+            // 🌟 เล่นเสียงตู๊ด! รหัสผิด
+            if (accessDeniedSound != null) audioSource.PlayOneShot(accessDeniedSound);
+
             if (screenText != null) screenText.text = "ERR";
             Invoke("ClearInput", 1f);
         }
@@ -176,6 +194,10 @@ public class PasswordDoor : MonoBehaviour
     void OpenDoor()
     {
         isOpen = true;
+
+        // 🌟 เล่นเสียงเปิดประตู
+        if (openDoorSound != null) audioSource.PlayOneShot(openDoorSound);
+
         targetRotation = Quaternion.Euler(0, openAngle, 0) * initialRotation;
         Invoke("AutoClose", autoCloseDelay);
     }
@@ -183,6 +205,10 @@ public class PasswordDoor : MonoBehaviour
     void CloseDoor()
     {
         isOpen = false;
+
+        // 🌟 เล่นเสียงปิดประตู
+        if (closeDoorSound != null) audioSource.PlayOneShot(closeDoorSound);
+
         targetRotation = initialRotation;
         CancelInvoke("AutoClose");
     }
@@ -190,6 +216,10 @@ public class PasswordDoor : MonoBehaviour
     void AutoClose()
     {
         isOpen = false;
+
+        // 🌟 เล่นเสียงปิดประตู (ตอนมันปิดเองอัตโนมัติ)
+        if (closeDoorSound != null) audioSource.PlayOneShot(closeDoorSound);
+
         targetRotation = initialRotation;
     }
 
@@ -199,7 +229,7 @@ public class PasswordDoor : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerNear = false;
-            if (keypadUI.activeSelf) CloseKeypad();
+            if (keypadUI != null && keypadUI.activeSelf) CloseKeypad();
         }
     }
 }

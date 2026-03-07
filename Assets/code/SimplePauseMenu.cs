@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement; // <--- เพิ่มบรรทัดนี้เพื่อใช้คำสั่งเปลี่ยนฉาก
+using UnityEngine.SceneManagement;
 
 public class SimplePauseMenu : MonoBehaviour
 {
     [Header("หน้าต่างเมนู (ลาก Pause Panel มาใส่)")]
     public GameObject pauseMenuPanel;
+
+    // 🌟 1. เพิ่มช่องให้ลากสคริปต์กระเป๋ามาใส่ เพื่อให้มันคุยกันได้ 🌟
+    [Header("สคริปต์กระเป๋า (ป้องกันเมนูตีกัน)")]
+    public InventoryUIController inventoryController;
 
     [Header("ตัวละคร (ลาก PlayerCapsule มาใส่)")]
     public GameObject playerObject;
@@ -25,6 +29,13 @@ public class SimplePauseMenu : MonoBehaviour
 
     void Update()
     {
+        // 🌟 2. ถ้าระบบกระเป๋าเปิดอยู่ จะข้ามคำสั่ง Pause ไปเลย ให้กระเป๋าทำงานแทน 🌟
+        if (inventoryController != null && inventoryController.isInventoryOpen)
+        {
+            return; // หยุดการทำงานของ Update ไว้แค่นี้ ไม่ต้องเช็คการกด ESC ของ Pause
+        }
+
+        // ระบบ Pause ปกติ ทำงานก็ต่อเมื่อกระเป๋าปิดอยู่เท่านั้น
         if (Input.GetKeyDown(KeyCode.Escape) && canPause)
         {
             if (isPaused)
@@ -55,13 +66,11 @@ public class SimplePauseMenu : MonoBehaviour
         TogglePlayerInput(true);
     }
 
-    // 🌟 ฟังก์ชันใหม่: กดแล้ววาร์ปกลับไปหน้าเมนูหลัก (บ้านสยองขวัญ)
     public void GoToMainMenu()
     {
         Debug.Log("🏠 กำลังกลับไปหน้าเมนูหลัก...");
-        Time.timeScale = 1f; // สำคัญมาก! ต้องคืนค่าเวลาเป็นปกติก่อนเปลี่ยนฉาก
+        Time.timeScale = 1f;
 
-        // ใส่ชื่อฉากเมนูของคุณ (จากรูปก่อนๆ คือ "MainMen")
         SceneManager.LoadScene("MainMen");
     }
 
@@ -80,9 +89,8 @@ public class SimplePauseMenu : MonoBehaviour
     public void QuitGame()
     {
         Debug.Log("ออกจากเกม!");
-        Application.Quit(); // ใช้ตอน build เกมเสร็จแล้ว
+        Application.Quit();
 
-        // บรรทัดนี้ช่วยให้กดทดสอบใน Unity Editor แล้วมันหยุดรันเกมให้ด้วย
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
