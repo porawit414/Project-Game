@@ -6,7 +6,6 @@ public class FinalChainDoor : MonoBehaviour
     [Header("🌟 ชื่อเซฟของประตูโซ่ (ตั้งให้ไม่ซ้ำกัน!)")]
     public string doorSaveID = "Chain_Door_1";
 
-    // 🌟 1. ท่าไม้ตาย! ให้ประตูเช็คจากชื่อเซฟของไอเทมตรงๆ เลย
     [Header("🌟 ใส่ชื่อเซฟของคีม (ต้องพิมพ์ให้ตรงกับ creamSaveKey เป๊ะๆ)")]
     public string requiredItemSaveKey = "Item_BoltCutter";
 
@@ -26,7 +25,7 @@ public class FinalChainDoor : MonoBehaviour
     public AudioClip openSound;
     public AudioClip closeSound;
     public AudioClip lockedSound;
-    public AudioClip cutSound;        // ช่องใส่เสียงตอนโซ่ขาด
+    public AudioClip cutSound;
 
     [Header("ระบบฟิสิกส์ (ป้องกันเดินติด)")]
     public Collider solidDoorCollider;
@@ -70,9 +69,7 @@ public class FinalChainDoor : MonoBehaviour
         if (solidDoorCollider != null)
         {
             if (isOpen)
-            {
                 solidDoorCollider.isTrigger = true;
-            }
             else
             {
                 if (Quaternion.Angle(doorBody.localRotation, closedRot) < 2f)
@@ -85,20 +82,34 @@ public class FinalChainDoor : MonoBehaviour
 
     public void InteractWithDoor()
     {
-        // 1. ถ้ายังมีโซ่ขวางอยู่
         if (chainLock != null)
         {
-            // 🌟 2. จุดเปลี่ยนสำคัญ: เช็คเซฟตรงๆ เลยว่ามีค่าเป็น 1 (เคยเก็บคีม) ไหม?
             if (PlayerPrefs.GetInt(requiredItemSaveKey, 0) == 1)
             {
-                // มีคีม! สั่งตัดโซ่เลย
                 Debug.Log("ความจำเครื่องบอกว่ามีคีม! ตัดโซ่สำเร็จ!");
                 if (cutSound != null) audioSource.PlayOneShot(cutSound);
-                Destroy(chainLock);
+
+                // 🌟 --- ระบบโซ่ร่วงลงพื้น --- 🌟
+                // 1. ปลดโซ่ออกจากบานประตู
+                chainLock.transform.SetParent(null);
+
+                // 2. แอบใส่ระบบฟิสิกส์ (แรงโน้มถ่วง) ให้โซ่เดี๋ยวนั้นเลย!
+                Rigidbody rb = chainLock.GetComponent<Rigidbody>();
+                if (rb == null) rb = chainLock.AddComponent<Rigidbody>();
+
+                // (เสริม) ดันโซ่ให้กระเด็นนิดๆ จะได้ดูเหมือนโดนตัดขาด
+                rb.AddForce(transform.forward * 2f, ForceMode.Impulse);
+
+                // 3. สั่งทำลายโซ่ทิ้งหลังจากร่วงไปแล้ว 3 วินาที (จะได้ไม่รกพื้น)
+                Destroy(chainLock, 3f);
+
+                // 4. ล้างความจำในสคริปต์นี้ว่าไม่มีโซ่แล้ว ประตูจะได้เปิดได้
+                chainLock = null;
+                // 🌟 ------------------------ 🌟
+
                 return;
             }
 
-            // ถ้าไม่มีคีมในระบบเซฟ
             Debug.Log("ประตูล็อค! ติดโซ่ (ยังไม่ได้เก็บคีม)");
             if (lockedSound != null) audioSource.PlayOneShot(lockedSound);
 
@@ -109,7 +120,6 @@ public class FinalChainDoor : MonoBehaviour
             return;
         }
 
-        // 2. ถ้าไม่มีโซ่ -> สลับ เปิด/ปิด
         isOpen = !isOpen;
 
         if (isOpen)
