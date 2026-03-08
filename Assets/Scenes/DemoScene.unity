@@ -4420,7 +4420,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 416825241}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &49514915
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6852,7 +6858,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 1260556319}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &75276414
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -48975,7 +48987,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 830170512}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!1001 &406040755
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82603,7 +82621,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 1127859624}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &663227671
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -86923,7 +86947,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 1675962548}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &710593615
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -95211,6 +95241,90 @@ Transform:
   - {fileID: 1208494015}
   m_Father: {fileID: 1433342916}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &793353451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 380.68738
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3809
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 355.12875
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.01574143
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.99987614
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 181.804
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8348666210409156807, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.837
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Name
+      value: Ghost_Waving
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3d3e828802365a947b68e977880f2aa8, type: 2}
+    - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1305471906}
+  m_SourcePrefab: {fileID: 100100000, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
 --- !u!1 &793424761
 GameObject:
   m_ObjectHideFlags: 0
@@ -113387,7 +113501,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 830170512}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!1 &958324025
 GameObject:
   m_ObjectHideFlags: 0
@@ -122240,6 +122360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4a8c0f155df6c448bd68ba416c1632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnifeEvidence
+  ghostSpawnTrigger: {fileID: 0}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 1043135938}
   evidenceUI: {fileID: 480111589}
@@ -122282,7 +122403,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 1165081221}
+  ghostHideTrigger: {fileID: 1254692007}
   uiText: {fileID: 1127859624}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!1 &1043364681
 GameObject:
   m_ObjectHideFlags: 0
@@ -133403,6 +133530,132 @@ Transform:
   - {fileID: 114033307}
   m_Father: {fileID: 950730482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1165081221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1165081222}
+  - component: {fileID: 1165081226}
+  - component: {fileID: 1165081225}
+  - component: {fileID: 1165081224}
+  - component: {fileID: 1165081223}
+  m_Layer: 0
+  m_Name: Ghost_Spawn_Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1165081222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165081221}
+  serializedVersion: 2
+  m_LocalRotation: {x: 2.8458351e-12, y: 0.99987614, z: -4.4803066e-14, w: -0.01574143}
+  m_LocalPosition: {x: 380.99487, y: 1.6149, z: 348.81793}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1165081223
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165081221}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.5, y: 3, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1165081224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165081221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b281d9d422f914abad8b4eabb508ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostWavingTrigger
+  ghostObject: {fileID: 1305471905}
+--- !u!23 &1165081225
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165081221}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1165081226
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165081221}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!28 &1165126205
 Texture2D:
   m_ObjectHideFlags: 0
@@ -142877,6 +143130,133 @@ Transform:
   - {fileID: 1089741422}
   m_Father: {fileID: 1979472137}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1254692007
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1254692008}
+  - component: {fileID: 1254692012}
+  - component: {fileID: 1254692011}
+  - component: {fileID: 1254692010}
+  - component: {fileID: 1254692009}
+  m_Layer: 0
+  m_Name: Trigger_Ghost_Waving
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1254692008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254692007}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.99987614, z: -0, w: -0.01574143}
+  m_LocalPosition: {x: 380.88867, y: 1.3809, z: 351.79977}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1254692009
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254692007}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3, y: 2, z: 0.3}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1254692010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254692007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21f1a869b13cca4bb079b0b3b61a5d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostWavingTrigger1
+  ghostObject: {fileID: 1305471905}
+  knifeSaveKey: Evidence_Knife
+--- !u!23 &1254692011
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254692007}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1254692012
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254692007}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1254731156
 GameObject:
   m_ObjectHideFlags: 0
@@ -146750,7 +147130,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 115339218}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &1282966782
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -148799,6 +149185,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 525318685}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1305471905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+  m_PrefabInstance: {fileID: 793353451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1305471906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305471905}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdff58512ee349e46a591e5a91effa1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostAudioDelay
+  passBySound: {fileID: 0}
+  soundDelay: 0
 --- !u!1 &1305937018
 GameObject:
   m_ObjectHideFlags: 0
@@ -149965,7 +150370,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 345727322}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &1314540640
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -162543,7 +162954,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 209680268}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &1434627669
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -163566,15 +163983,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 399.201
+      value: 398.209
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.116999984
+      value: 1.204
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 361.974
+      value: 362.064
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalRotation.w
@@ -163635,7 +164052,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9100000, guid: 0562763a240dd0f4d9955fd292b65e5a, type: 2}
     - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 1
@@ -178651,7 +179068,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 217901305}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &1583415589
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -180073,7 +180496,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
+  ghostSpawnTrigger: {fileID: 0}
+  ghostHideTrigger: {fileID: 0}
   uiText: {fileID: 1835098368}
+  knifeSaveKey: Evidence_Knife
+  knife3DModel: {fileID: 0}
+  evidenceUI: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!65 &1593950675
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -305963,6 +306392,9 @@ SceneRoots:
   - {fileID: 915709135}
   - {fileID: 18671937}
   - {fileID: 716777035}
+  - {fileID: 793353451}
+  - {fileID: 1254692008}
+  - {fileID: 1165081222}
   - {fileID: 1730345228}
   - {fileID: 1444449653}
   - {fileID: 131558045}

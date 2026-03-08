@@ -2,15 +2,21 @@ using UnityEngine;
 
 public class EvidenceItem : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public string evidenceName = "Bloody Knife";
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerStay(Collider other)
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                // ใส่ // ไว้ข้างหน้าบรรทัดที่พัง เพื่อปิดการทำงานชั่วคราว
+                // Inventory.instance.AddEvidence(evidenceName); 
+                
+                Debug.Log("เก็บหลักฐาน: " + evidenceName + " (บรรทัด Inventory ถูกปิดไว้เพื่อแก้ Error)");
+                
+                Destroy(gameObject);
+            }
+        }
     }
 }

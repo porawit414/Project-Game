@@ -16,7 +16,7 @@ public class StaticGhostTrigger : MonoBehaviour
     public AudioClip jumpscareSound;  // ลากไฟล์เสียงกรี๊ดมาใส่
 
     [Header("Settings")]
-    public float ghostDuration = 1.0f; // เวลาที่ผีโผล่ (ปรับเหลือ 1 วินาทีแล้ว)
+    public float ghostDuration = 0.7f; // เวลาที่ผีโผล่ (ปรับเหลือ 0.7 วินาที)
 
     private bool isGhostActive = false;
     private bool hasScreamed = false;
@@ -90,7 +90,7 @@ public class StaticGhostTrigger : MonoBehaviour
                     AudioSource.PlayClipAtPoint(jumpscareSound, transform.position);
                 }
 
-                // รอ 1 วินาที แล้วปิดผีทิ้ง
+                // รอ 0.7 วินาที แล้วปิดผีทิ้ง (ดึงค่าจาก ghostDuration ด้านบน)
                 yield return new WaitForSeconds(ghostDuration);
                 if (ghostObject != null) ghostObject.SetActive(false);
 

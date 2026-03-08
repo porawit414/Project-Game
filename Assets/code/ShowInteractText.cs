@@ -2,44 +2,89 @@ using UnityEngine;
 
 public class ShowInteractText : MonoBehaviour
 {
-    [Header("ตั้งค่า UI")]
-    public GameObject uiText; // ลาก InteractText ที่สร้างไว้มาใส่ช่องนี้
+    [Header("🌟 ลากจุดเสกผี (จุดที่ 1) และจุดทำให้ผีหาย (จุดที่ 2) มาใส่")]
+    public GameObject ghostSpawnTrigger; 
+    public GameObject ghostHideTrigger;
 
-    private bool isPlayerNear = false; // ตัวแปรเช็คว่าผู้เล่นอยู่ใกล้ไหม
+    [Header("ตั้งค่า UI")]
+    public GameObject uiText; 
+
+    [Header("ชื่อเซฟของมีดเล่มนี้")]
+    public string knifeSaveKey = "Evidence_Knife";
+
+    [Header("ตัวมีดในฉากและหน้าต่างหลักฐาน")]
+    public GameObject knife3DModel;
+    public GameObject evidenceUI;
+
+    [Header("ระบบเสียง")]
+    public AudioClip pickupSound;
+
+    private bool isPlayerNear = false;
+    private bool hasBeenPickedUp = false; // กันบั๊กกดรัว
 
     void Start()
     {
-        // ตอนเริ่มเกม ให้มั่นใจว่าข้อความถูกซ่อนอยู่
+        if (PlayerPrefs.GetInt(knifeSaveKey, 0) == 1)
+        {
+            ActivateTriggers(); 
+            if (evidenceUI != null) evidenceUI.SetActive(true);
+            if (knife3DModel != null) knife3DModel.SetActive(false);
+            this.enabled = false;
+        }
+        
         if (uiText != null) uiText.SetActive(false);
     }
 
     void Update()
     {
-        // ถ้าผู้เล่นอยู่ใกล้ และพยายามกดปุ่ม F
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.F))
+        if (isPlayerNear && !hasBeenPickedUp && Input.GetKeyDown(KeyCode.F))
         {
-            // คุณจอนสามารถเพิ่มเสียงพึมพำ หรือคำพูดตัวละครตรงนี้ได้
-            Debug.Log("ผู้เล่นพยายามเก็บ แต่กระดาษใบนี้ดึงไม่ออก!");
+            PickUpKnife();
         }
     }
 
-    // ฟังก์ชันทำงานเมื่อผู้เล่นเดินเข้าเขต Collider
+    void PickUpKnife()
+    {
+        hasBeenPickedUp = true;
+
+        // ❌ ลบบรรทัด GameManager.instance.AddEvidence() ออกแล้ว 
+        // เพื่อไม่ให้เลขบวกซ้ำซ้อน (ให้สคริปต์หลักเป็นคนบวกแทน)
+
+        if (pickupSound != null) AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        if (evidenceUI != null) evidenceUI.SetActive(true);
+        if (knife3DModel != null) knife3DModel.SetActive(false);
+        if (uiText != null) uiText.SetActive(false);
+
+        ActivateTriggers();
+
+        PlayerPrefs.SetInt(knifeSaveKey, 1);
+        PlayerPrefs.Save();
+
+        Debug.Log("เก็บมีดแล้ว -> เปิดระบบผี (ไม่มีการบวกเลขจากสคริปต์นี้)");
+        this.enabled = false;
+    }
+
+    void ActivateTriggers()
+    {
+        if (ghostSpawnTrigger != null) ghostSpawnTrigger.SetActive(true);
+        if (ghostHideTrigger != null) ghostHideTrigger.SetActive(true);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player")) 
         {
             isPlayerNear = true;
-            if (uiText != null) uiText.SetActive(true); // โชว์ข้อความ "กด F เพื่อเก็บ"
+            if (uiText != null) uiText.SetActive(true);
         }
     }
 
-    // ฟังก์ชันทำงานเมื่อผู้เล่นเดินออกจากเขต Collider
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerNear = false;
-            if (uiText != null) uiText.SetActive(false); // ซ่อนข้อความเมื่อเดินหนี
+            if (uiText != null) uiText.SetActive(false);
         }
     }
 }
