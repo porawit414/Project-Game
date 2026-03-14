@@ -95255,7 +95255,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3809
+      value: 0.073
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.z
@@ -95315,7 +95315,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 3d3e828802365a947b68e977880f2aa8, type: 2}
     - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -122360,7 +122360,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4a8c0f155df6c448bd68ba416c1632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnifeEvidence
-  ghostSpawnTrigger: {fileID: 0}
+  ghostSpawnTrigger: {fileID: 1165081221}
+  ghostHideTrigger: {fileID: 1254692007}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 1043135938}
   evidenceUI: {fileID: 480111589}
