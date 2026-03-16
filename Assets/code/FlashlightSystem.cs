@@ -3,14 +3,24 @@ using UnityEngine;
 public class FlashlightSystem : MonoBehaviour
 {
     // ตัวไฟฉาย (ต้องลากจาก Hierarchy เท่านั้น)
-    public GameObject flashlightObject; 
-    
+    public GameObject flashlightObject;
+
     // ตัวจ่ายเสียง
-    public AudioSource audioSource;     
+    public AudioSource audioSource;
 
     [Header("ใส่เสียงตรงนี้")]
     public AudioClip soundTurnOn;       // เสียงตอนเปิด
     public AudioClip soundTurnOff;      // เสียงตอนปิด
+
+    // ฟังก์ชันนี้จะทำงานแค่ 1 ครั้งถ้วน ตอนที่เริ่มเกมครับ
+    void Start()
+    {
+        // บังคับปิดไฟฉายทันทีที่เริ่มเกม!
+        if (flashlightObject != null)
+        {
+            flashlightObject.SetActive(false);
+        }
+    }
 
     void Update()
     {
