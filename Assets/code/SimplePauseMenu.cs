@@ -7,7 +7,10 @@ public class SimplePauseMenu : MonoBehaviour
     [Header("หน้าต่างเมนู (ลาก Pause Panel มาใส่)")]
     public GameObject pauseMenuPanel;
 
-    // 🌟 1. เพิ่มช่องให้ลากสคริปต์กระเป๋ามาใส่ เพื่อให้มันคุยกันได้ 🌟
+    // 🌟 1. เพิ่มช่องให้ลากหน้าต่างตั้งค่ามาใส่ 🌟
+    [Header("หน้าต่างตั้งค่า (ลาก Settings Panel มาใส่)")]
+    public GameObject settingsMenuPanel;
+
     [Header("สคริปต์กระเป๋า (ป้องกันเมนูตีกัน)")]
     public InventoryUIController inventoryController;
 
@@ -22,6 +25,8 @@ public class SimplePauseMenu : MonoBehaviour
     void Start()
     {
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
+        if (settingsMenuPanel != null) settingsMenuPanel.SetActive(false); // ปิดหน้าตั้งค่าไว้ก่อนตอนเริ่ม
+
         isPaused = false;
         canPause = true;
         Time.timeScale = 1f;
@@ -29,19 +34,30 @@ public class SimplePauseMenu : MonoBehaviour
 
     void Update()
     {
-        // 🌟 2. ถ้าระบบกระเป๋าเปิดอยู่ จะข้ามคำสั่ง Pause ไปเลย ให้กระเป๋าทำงานแทน 🌟
+        // ถ้าระบบกระเป๋าเปิดอยู่ จะข้ามคำสั่ง Pause ไปเลย ให้กระเป๋าทำงานแทน
         if (inventoryController != null && inventoryController.isInventoryOpen)
         {
-            return; // หยุดการทำงานของ Update ไว้แค่นี้ ไม่ต้องเช็คการกด ESC ของ Pause
+            return;
         }
 
         // ระบบ Pause ปกติ ทำงานก็ต่อเมื่อกระเป๋าปิดอยู่เท่านั้น
         if (Input.GetKeyDown(KeyCode.Escape) && canPause)
         {
-            if (isPaused)
+            // 🌟 เช็คว่าถ้าเปิด "หน้าตั้งค่า" ค้างไว้อยู่ ให้กดย้อนกลับมาที่หน้า Pause หลัก
+            if (settingsMenuPanel != null && settingsMenuPanel.activeSelf)
+            {
+                CloseSettings();
+            }
+            // ถ้าหน้า Pause หลักเปิดอยู่ ให้กลับเข้าเกม
+            else if (isPaused)
+            {
                 ResumeGame();
+            }
+            // ถ้าไม่มีอะไรเปิดอยู่เลย ให้หยุดเกม
             else
+            {
                 PauseGame();
+            }
         }
     }
 
@@ -59,18 +75,36 @@ public class SimplePauseMenu : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
+
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
+        if (settingsMenuPanel != null) settingsMenuPanel.SetActive(false); // ปิดหน้าตั้งค่าด้วยเพื่อความชัวร์
+
         if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         TogglePlayerInput(true);
     }
 
+    // ----------------------------------------------------------------
+    // 🌟 ฟังก์ชันใหม่: เอาไว้ผูกกับปุ่มต่างๆ 🌟
+
+    public void OpenSettings()
+    {
+        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false); // ซ่อนหน้า Pause หลัก
+        if (settingsMenuPanel != null) settingsMenuPanel.SetActive(true); // โชว์หน้าตั้งค่า
+    }
+
+    public void CloseSettings()
+    {
+        if (settingsMenuPanel != null) settingsMenuPanel.SetActive(false); // ซ่อนหน้าตั้งค่า
+        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(true); // โชว์หน้า Pause หลักกลับมา
+    }
+    // ----------------------------------------------------------------
+
     public void GoToMainMenu()
     {
         Debug.Log("🏠 กำลังกลับไปหน้าเมนูหลัก...");
         Time.timeScale = 1f;
-
         SceneManager.LoadScene("MainMen");
     }
 

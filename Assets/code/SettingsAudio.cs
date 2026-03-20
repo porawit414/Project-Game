@@ -3,23 +3,30 @@ using UnityEngine.Audio;
 
 public class SettingsAudio : MonoBehaviour
 {
-    public AudioMixer mainMixer; // ช่องสำหรับลาก MainMixer มาใส่
+    [Header("ใส่ MainMixer ตรงนี้")]
+    public AudioMixer mainMixer;
 
-    // ฟังก์ชันสำหรับสไลเดอร์ BGM
-    public void SetBGMVolume(float volume)
+    // 🎵 สำหรับเสียงดนตรี (BGM)
+    public void SetBGMVolume(float sliderValue)
     {
-        mainMixer.SetFloat("BGMVolume", volume);
+        // คำนวณค่าเสียง
+        float dbValue = Mathf.Log10(sliderValue) * 20f;
+        // ส่งค่าไปที่ Mixer
+        mainMixer.SetFloat("BGM", dbValue);
+
+        // 🚨 เครื่องจับเท็จ BGM
+        Debug.Log("🎵 สไลเดอร์ BGM ขยับ! ค่า Slider: " + sliderValue + " | แปลงเป็น: " + dbValue + " dB");
     }
 
-    // ฟังก์ชันสำหรับสไลเดอร์ SFX
-    public void SetSFXVolume(float volume)
+    // 🔊 สำหรับเสียงเอฟเฟกต์ (SFX)
+    public void SetSFXVolume(float sliderValue)
     {
-        mainMixer.SetFloat("SFXVolume", volume);
-    }
+        // คำนวณค่าเสียง
+        float dbValue = Mathf.Log10(sliderValue) * 20f;
+        // ส่งค่าไปที่ Mixer
+        mainMixer.SetFloat("SFX", dbValue);
 
-    // ฟังก์ชันสำหรับ Dropdown กราฟิก (ต่ำ=0, กลาง=1, สูง=2)
-    public void SetQuality(int qualityIndex)
-    {
-        QualitySettings.SetQualityLevel(qualityIndex);
+        // 🚨 เครื่องจับเท็จ SFX
+        Debug.Log("🔊 สไลเดอร์ SFX ขยับ! ค่า Slider: " + sliderValue + " | แปลงเป็น: " + dbValue + " dB");
     }
 }

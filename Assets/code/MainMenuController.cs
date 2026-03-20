@@ -9,55 +9,58 @@ public class MainMenuController : MonoBehaviour
     public GameObject loadingScreen;
     public VideoPlayer videoPlayer;
 
-    // 🌟 เปลี่ยนชื่อด่านในนี้ให้ตรงกับชื่อไฟล์ด่านเกมของคุณ (เช่น "DemoScene")
+    [Header("ปุ่มที่ต้องการซ่อน/โชว์")]
+    public GameObject newGameButton;
+
     private string gameSceneName = "DemoScene";
 
+    void Start()
+    {
+        // 1. เช็คว่ามีเซฟไหม? ถ้ามีโชว์ปุ่มเริ่มใหม่ ถ้าไม่มีให้ซ่อนไว้
+        if (PlayerPrefs.HasKey("HasSave"))
+        {
+            if (newGameButton != null) newGameButton.SetActive(true);
+        }
+        else
+        {
+            if (newGameButton != null) newGameButton.SetActive(false);
+        }
+    }
+
+    // 🔴 ผูกกับปุ่ม "เริ่มใหม่"
     public void StartNewGame()
     {
-        // 💣 ล้างบางเซฟทั้งหมด! ไม่ว่าจะเป็นตำแหน่งผู้เล่น, ไอเทม, หลักฐาน หรือตัวเลข
-        // คำสั่งนี้คำสั่งเดียว ล้างเกลี้ยงทั้งเกมครับ!
+        // ล้างข้อมูลเซฟทั้งหมดในเครื่องทิ้งแบบถอนรากถอนโคน!
         PlayerPrefs.DeleteAll();
 
-        PlayerPrefs.Save(); // ย้ำให้ระบบเซฟการลบทิ้ง
+        // ส่งจดหมายไปบอกด่านเกมว่า "รอบนี้เริ่มใหม่นะ ไม่ต้องโหลดเซฟ"
+        PlayerPrefs.SetInt("IsLoadGame", 0);
+        PlayerPrefs.Save();
 
-        Debug.Log("🗑️ นิวเคลียร์ลง! ล้างความจำทุกอย่างเรียบร้อย กำลังเริ่มเกมใหม่...");
-        Time.timeScale = 1f;
-
-        // โหลดเข้าฉากเกม
         StartCoroutine(LoadLevel(gameSceneName));
     }
 
+    // 🟢 ผูกกับปุ่ม "เล่นเกม"
     public void PlayGame()
     {
-        Debug.Log("🔄 กำลังโหลดเซฟเดิม...");
-        Time.timeScale = 1f;
+        // ส่งจดหมายไปบอกด่านเกมว่า "รอบนี้ให้ดึงเซฟมาเล่นต่อได้เลย"
+        PlayerPrefs.SetInt("IsLoadGame", 1);
+        PlayerPrefs.Save();
 
-        // โหลดเข้าฉากเกม
         StartCoroutine(LoadLevel(gameSceneName));
     }
 
     public void QuitGame()
     {
-        Debug.Log("ออกเกมแล้ว");
         Application.Quit();
     }
 
     IEnumerator LoadLevel(string sceneName)
     {
         loadingScreen.SetActive(true);
-
-        if (videoPlayer != null)
-        {
-            videoPlayer.Play();
-        }
-
+        if (videoPlayer != null) videoPlayer.Play();
         yield return new WaitForSeconds(1f);
-
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
-
-        while (!operation.isDone)
-        {
-            yield return null;
-        }
+        while (!operation.isDone) yield return null;
     }
 }
