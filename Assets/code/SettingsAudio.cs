@@ -1,32 +1,59 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class SettingsAudio : MonoBehaviour
 {
     [Header("ใส่ MainMixer ตรงนี้")]
     public AudioMixer mainMixer;
 
+    [Header("ลากหลอด Slider มาใส่ตรงนี้")]
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+
+    void Start()
+    {
+        // โหลดความจำเสียง
+        float savedBGM = PlayerPrefs.GetFloat("SavedBGM", 1f);
+        float savedSFX = PlayerPrefs.GetFloat("SavedSFX", 1f);
+
+        // เซ็ตค่าให้ Slider
+        if (bgmSlider != null) bgmSlider.value = savedBGM;
+        if (sfxSlider != null) sfxSlider.value = savedSFX;
+
+        SetBGMVolume(savedBGM);
+        SetSFXVolume(savedSFX);
+    }
+
     // 🎵 สำหรับเสียงดนตรี (BGM)
     public void SetBGMVolume(float sliderValue)
     {
-        // คำนวณค่าเสียง
         float dbValue = Mathf.Log10(sliderValue) * 20f;
-        // ส่งค่าไปที่ Mixer
-        mainMixer.SetFloat("BGM", dbValue);
+        mainMixer.SetFloat("BGMVolume", dbValue);
 
-        // 🚨 เครื่องจับเท็จ BGM
-        Debug.Log("🎵 สไลเดอร์ BGM ขยับ! ค่า Slider: " + sliderValue + " | แปลงเป็น: " + dbValue + " dB");
+        PlayerPrefs.SetFloat("SavedBGM", sliderValue);
+        PlayerPrefs.Save();
     }
 
     // 🔊 สำหรับเสียงเอฟเฟกต์ (SFX)
     public void SetSFXVolume(float sliderValue)
     {
-        // คำนวณค่าเสียง
         float dbValue = Mathf.Log10(sliderValue) * 20f;
-        // ส่งค่าไปที่ Mixer
-        mainMixer.SetFloat("SFX", dbValue);
+        mainMixer.SetFloat("SFXVolume", dbValue);
 
-        // 🚨 เครื่องจับเท็จ SFX
-        Debug.Log("🔊 สไลเดอร์ SFX ขยับ! ค่า Slider: " + sliderValue + " | แปลงเป็น: " + dbValue + " dB");
+        PlayerPrefs.SetFloat("SavedSFX", sliderValue);
+        PlayerPrefs.Save();
+    }
+
+    // ==========================================
+    // 🖥️ ฟังก์ชันใหม่! สำหรับปรับกราฟิก (เพิ่มเข้ามาตรงนี้)
+    // ==========================================
+    public void SetQuality(int qualityIndex)
+    {
+        // สั่ง Unity ให้เปลี่ยนระดับกราฟิก (0 = ต่ำสุด, 1 = กลาง, 2 = สูง ...)
+        QualitySettings.SetQualityLevel(qualityIndex);
+
+        // 🚨 เครื่องจับเท็จ (ให้มันเด้งบอกใน Console ว่าเปลี่ยนแล้วจริงๆ)
+        Debug.Log("🖥️ เปลี่ยนกราฟิกเป็นระดับ: " + qualityIndex);
     }
 }
