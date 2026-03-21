@@ -5,28 +5,45 @@ public class TutorialManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject tutorialNote; // ลาก Object กระดาษคำอธิบายของคุณมาใส่ที่นี่
-    public TextMeshProUGUI promptText; // ลาก Object ข้อความ "กด 1" มาใส่ที่นี่
+    public TextMeshProUGUI promptText; // ลาก Object ข้อความ "กด [Space Bar]" มาใส่ที่นี่
 
     [Header("Player Control")]
-    public MonoBehaviour playerMovement; // ลากสคริปต์ควบคุมการเดินของตัวละครมาใส่ (เช่น FirstPersonController)
+    public MonoBehaviour playerMovement; // ลากสคริปต์ควบคุมการเดินมาใส่
 
     private bool isNoteOpen = false;
+    private bool isSystemDisabled = false; // ตัวแปรเช็คว่าโดนสั่งปิดระบบหรือยัง (ตอนจบเกม)
 
     void Start()
     {
         // ตอนเริ่มเกม ให้ซ่อนกระดาษคำอธิบายไว้ก่อน
         if (tutorialNote != null) tutorialNote.SetActive(false);
         // และแสดงข้อความบอกวิธีเปิด
-        if (promptText != null) promptText.enabled = true;
+        if (promptText != null) 
+        {
+            promptText.enabled = true;
+            promptText.text = "กด [Space Bar] เพื่อเปิดคำอธิบาย"; // ตั้งค่าเริ่มต้น
+        }
     }
 
     void Update()
     {
-        // เช็คว่าผู้เล่นกดปุ่ม 1 หรือไม่ (GetKeyDown เพื่อให้กดครั้งเดียว)
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+        // ถ้าโดนสั่งปิดระบบ (จากสคริปต์ประตูฉากจบ) ไม่ต้องทำงานต่อ
+        if (isSystemDisabled) return;
+
+        // เปลี่ยนเป็นเช็คปุ่ม Space Bar
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             ToggleTutorialNote();
         }
+    }
+
+    // ฟังก์ชันสั่งปิดระบบสอนทั้งหมด (เรียกใช้จากสคริปต์ประตูฉากจบ)
+    public void DisableTutorialSystem()
+    {
+        isSystemDisabled = true;
+        if (tutorialNote != null) tutorialNote.SetActive(false);
+        if (promptText != null) promptText.gameObject.SetActive(false); 
+        this.enabled = false; 
     }
 
     void ToggleTutorialNote()
@@ -39,13 +56,12 @@ public class TutorialManager : MonoBehaviour
         {
             // --- เปิดกระดาษ ---
             tutorialNote.SetActive(true);
-            // เปลี่ยนข้อความ prompt หรือจะซ่อนไปเลยก็ได้
-            if (promptText != null) promptText.text = "กด 1 เพื่อปิดคำอธิบาย";
+            if (promptText != null) promptText.text = "กด [Space Bar] เพื่อปิดคำอธิบาย";
 
-            // ล็อคการเคลื่อนที่ของตัวละครเพื่อให้เน้นอ่าน
+            // ล็อคการเคลื่อนที่ของตัวละคร
             if (playerMovement != null) playerMovement.enabled = false;
 
-            // ปลดล็อคเมาส์ (ถ้าต้องใช้เมาส์กดปิดในหน้ากระดาษ)
+            // ปลดล็อคเมาส์
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
@@ -53,8 +69,7 @@ public class TutorialManager : MonoBehaviour
         {
             // --- ปิดกระดาษ ---
             tutorialNote.SetActive(false);
-            // เปลี่ยนข้อความ prompt กลับ
-            if (promptText != null) promptText.text = "กด 1 เพื่อเปิดคำอธิบาย";
+            if (promptText != null) promptText.text = "กด [Space Bar] เพื่อเปิดคำอธิบาย";
 
             // ปลดล็อคให้ตัวละครเดินได้ปกติ
             if (playerMovement != null) playerMovement.enabled = true;

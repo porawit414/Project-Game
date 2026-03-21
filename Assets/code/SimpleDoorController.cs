@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class SimpleDoorController : MonoBehaviour
 {
@@ -10,19 +11,20 @@ public class SimpleDoorController : MonoBehaviour
     public float smoothSpeed = 3f;
     public GameObject doorUI;
 
-    [Header("Ending System")]
+    [Header("Ending System (UI to Disable)")]
+    // 🌟 ลาก Object ที่มีสคริปต์ TutorialManager มาใส่ที่นี่ (เช่น Canvas)
+    public TutorialManager tutorialManager; 
+    // 🌟 ลาก EvidenceCounter มาใส่ที่นี่
+    public GameObject evidenceCounterText; 
+
+    [Header("Ending Effects")]
     public Image fadeToBlackImage; 
     public float fadeSpeed = 0.5f; 
-    public GameObject creditsUI; // <--- [เอากลับมาแล้ว] ช่องสำหรับใส่หน้าเครดิต
+    public GameObject creditsUI; // หน้าจอ THE MYSTERIOUS HOUSE
 
-    [Header("Auto Close Settings")]
+    [Header("Auto Close & Audio")]
     public float autoCloseDelay = 3f; 
-    private Coroutine autoCloseCoroutine;
-
-    [Header("Auto Close & Physics")]
     public Collider blockingCollider; 
-
-    [Header("Audio Settings")]
     public AudioClip openSound;
     public AudioClip closeSound;
 
@@ -32,12 +34,11 @@ public class SimpleDoorController : MonoBehaviour
     private Quaternion openRotation;
     private AudioSource audioSource;
     private bool isEndingStarted = false;
+    private Coroutine autoCloseCoroutine;
 
     void Start()
     {
-        // [เพิ่มใหม่] รีเซ็ตเสียงของเกมให้กลับมาดัง 100% เสมอตอนเริ่มเกมใหม่
         AudioListener.volume = 1f;
-
         if (doorBody == null) doorBody = transform;
         closedRotation = doorBody.localRotation;
         openRotation = closedRotation * Quaternion.Euler(0, openAngle, 0); 
@@ -47,7 +48,6 @@ public class SimpleDoorController : MonoBehaviour
         
         if (doorUI != null) doorUI.SetActive(false);
         if (blockingCollider != null) blockingCollider.enabled = true;
-
         if (fadeToBlackImage != null) fadeToBlackImage.gameObject.SetActive(false);
     }
 
@@ -60,45 +60,11 @@ public class SimpleDoorController : MonoBehaviour
 
         Quaternion targetRotation = isOpen ? openRotation : closedRotation;
         doorBody.localRotation = Quaternion.Slerp(doorBody.localRotation, targetRotation, Time.deltaTime * smoothSpeed);
-
-        float angleRemaining = Quaternion.Angle(doorBody.localRotation, closedRotation);
-        if (!isOpen && angleRemaining <= 0.1f)
-        {
-            if (blockingCollider != null && !blockingCollider.enabled)
-                blockingCollider.enabled = true;
-        }
-    }
-
-    void ToggleDoor()
-    {
-        if (!isOpen) OpenDoor();
-        else CloseDoor();
-    }
-
-    void OpenDoor()
-    {
-        isOpen = true;
-        PlaySound(openSound);
-        if (blockingCollider != null) blockingCollider.enabled = false;
-
-        if (autoCloseCoroutine != null) StopCoroutine(autoCloseCoroutine);
-        autoCloseCoroutine = StartCoroutine(AutoCloseRoutine());
-    }
-
-    void CloseDoor()
-    {
-        isOpen = false;
-        PlaySound(closeSound);
-    }
-
-    IEnumerator AutoCloseRoutine()
-    {
-        yield return new WaitForSeconds(autoCloseDelay);
-        if (isOpen) CloseDoor();
     }
 
     public void StartEndingSequence()
     {
+        // เช็คจำนวนหลักฐานจาก GameManager
         if (GameManager.instance != null && GameManager.instance.GetEvidenceCount() >= 5)
         {
             if (!isEndingStarted)
@@ -107,81 +73,72 @@ public class SimpleDoorController : MonoBehaviour
                 StartCoroutine(FadeToBlackRoutine());
             }
         }
+        else
+        {
+            Debug.Log("หลักฐานยังไม่ครบ 5 ชิ้น!");
+        }
     }
 
     IEnumerator FadeToBlackRoutine()
     {
         if (fadeToBlackImage != null)
         {
+            // 1. หยุดการทำงานของตัวละคร
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
                 CharacterController cc = player.GetComponent<CharacterController>();
-                if (cc != null) cc.enabled = false;
+                if (cc != null) cc.enabled = false; 
 
-                MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
-                foreach (var script in scripts)
+                foreach (var script in player.GetComponents<MonoBehaviour>())
                 {
-                    string sName = script.GetType().Name;
-                    if (sName.Contains("Movement") || sName.Contains("Controller") || 
-                        sName.Contains("Inventory") || sName.Contains("Input") || 
-                        sName.Contains("Interact"))
-                    {
+                    if (script.GetType().Name.Contains("Movement") || script.GetType().Name.Contains("Controller"))
                         script.enabled = false;
-                    }
                 }
-
-                // สั่งหยุดเสียงที่ค้างอยู่บนตัวผู้เล่นทันที
-                AudioSource[] playerAudios = player.GetComponentsInChildren<AudioSource>();
-                foreach (var audio in playerAudios)
-                {
-                    audio.Stop();
-                }
-
-                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
-                foreach (Canvas canvas in allCanvases)
-                {
-                    if (canvas != fadeToBlackImage.canvas)
-                    {
-                        canvas.enabled = false;
-                    }
-                }
-
+                
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
 
-            // เตรียมหรี่เสียง
-            float startVolume = AudioListener.volume;
+            // 🌟 2. สั่งปิดระบบ Tutorial ผ่านฟังก์ชันใหม่ที่เราเพิ่มใน TutorialManager
+            if (tutorialManager != null)
+            {
+                tutorialManager.DisableTutorialSystem();
+            }
 
+            // 🌟 3. ปิดตัวนับหลักฐาน 0/5
+            if (evidenceCounterText != null) 
+            {
+                evidenceCounterText.SetActive(false);
+            }
+
+            // 4. เริ่มจอดำ
+            float startVolume = AudioListener.volume;
             fadeToBlackImage.gameObject.SetActive(true);
             float alpha = 0;
             while (alpha < 1)
             {
                 alpha += Time.deltaTime * fadeSpeed;
                 fadeToBlackImage.color = new Color(0, 0, 0, alpha);
-                
-                // ค่อยๆ ลดระดับเสียงหลักของเกมลง
                 AudioListener.volume = Mathf.Lerp(startVolume, 0f, alpha);
-
                 yield return null;
             }
 
-            if (player != null)
-            {
-                Renderer[] renderers = player.GetComponentsInChildren<Renderer>();
-                foreach (var r in renderers) r.enabled = false;
-            }
-
-            // <--- [เอากลับมาแล้ว] เปิดหน้าเครดิตหลังจากจอดำสนิท --->
+            // 5. แสดงหน้าเครดิตตอนจบ
             if (creditsUI != null)
             {
                 creditsUI.SetActive(true);
             }
-
-            Debug.Log("ฉากจบสมบูรณ์: ผู้เล่นถูกล็อก ภาพมืดสนิท เสียงเงียบ และแสดงเครดิตแล้ว");
         }
     }
+
+    void ToggleDoor() { if (!isOpen) OpenDoor(); else CloseDoor(); }
+    void OpenDoor() { 
+        isOpen = true; PlaySound(openSound); 
+        if (blockingCollider != null) blockingCollider.enabled = false; 
+    }
+    void CloseDoor() { isOpen = false; PlaySound(closeSound); }
+    void PlaySound(AudioClip clip) { if (clip != null && audioSource != null) audioSource.PlayOneShot(clip); }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -189,6 +146,7 @@ public class SimpleDoorController : MonoBehaviour
         {
             isPlayerNearby = true;
             if (doorUI != null) doorUI.SetActive(true);
+            // ถ้าต้องการให้ชนแล้วจบเลย: StartEndingSequence();
         }
     }
 
@@ -198,14 +156,6 @@ public class SimpleDoorController : MonoBehaviour
         {
             isPlayerNearby = false;
             if (doorUI != null) doorUI.SetActive(false);
-        }
-    }
-
-    void PlaySound(AudioClip clip)
-    {
-        if (clip != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(clip);
         }
     }
 }
