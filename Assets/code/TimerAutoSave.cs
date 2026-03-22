@@ -1,65 +1,77 @@
 using UnityEngine;
 
+
+
 public class TimerAutoSave : MonoBehaviour
+
 {
+
     [Header("ตัวละคร Player (ลากมาใส่)")]
+
     public GameObject playerObject;
 
+
+
     [Header("เวลาที่จะให้เซฟ (หน่วยเป็นวินาที)")]
-    public float saveInterval = 300f;
+
+    public float saveInterval = 300f; // 300 วินาที = 5 นาทีพอดีเป๊ะ!
+
+
 
     private float timer = 0f;
 
-    void Start()
-    {
-        if (playerObject == null) return;
 
-        // 2. เปิดอ่านจดหมายจากหน้าเมนู (0 = เริ่มใหม่, 1 = เล่นต่อ)
-        int isLoadGame = PlayerPrefs.GetInt("IsLoadGame", 0);
-
-        if (isLoadGame == 1)
-        {
-            // 🟢 ถ้าเมนูบอกให้เล่นต่อ -> ดึงตำแหน่งที่เซฟไว้มาใช้
-            if (PlayerPrefs.HasKey("SavedPlayerX"))
-            {
-                float x = PlayerPrefs.GetFloat("SavedPlayerX");
-                float y = PlayerPrefs.GetFloat("SavedPlayerY");
-                float z = PlayerPrefs.GetFloat("SavedPlayerZ");
-
-                playerObject.transform.position = new Vector3(x, y, z);
-                Debug.Log("🔄 โหลดเซฟสำเร็จ: เล่นต่อจากจุดเดิม!");
-            }
-        }
-        else
-        {
-            // 🔴 ถ้าเมนูบอกให้เริ่มใหม่ -> ไม่ต้องย้ายตำแหน่ง ปล่อยให้เกิดที่จุดเริ่มต้น
-            Debug.Log("🆕 เริ่มเกมใหม่: ตัวละครอยู่ที่จุดเกิดดั้งเดิม!");
-        }
-    }
 
     void Update()
+
     {
+
+        // ถ้าไม่ได้ใส่ตัวละครไว้ ให้หยุดทำงานจะได้ไม่พัง
+
         if (playerObject == null) return;
 
+
+
+        // นับเวลาเพิ่มขึ้นเรื่อยๆ ตามเวลาจริงในเกม
+
         timer += Time.deltaTime;
+
+
+
+        // เช็คว่าถึงเวลาที่กำหนดหรือยัง (ครบ 5 นาที)
+
         if (timer >= saveInterval)
+
         {
+
             AutoSave();
+
+
+
+            // รีเซ็ตนาฬิกากลับเป็น 0 เพื่อเริ่มนับ 5 นาทีรอบใหม่
+
             timer = 0f;
+
         }
+
     }
+
+
 
     void AutoSave()
     {
-        // บันทึกตำแหน่ง X Y Z ลงเครื่อง
+        // แอบจดจำตำแหน่ง X, Y, Z ปัจจุบันของผู้เล่นลงเครื่อง
         PlayerPrefs.SetFloat("SavedPlayerX", playerObject.transform.position.x);
         PlayerPrefs.SetFloat("SavedPlayerY", playerObject.transform.position.y);
         PlayerPrefs.SetFloat("SavedPlayerZ", playerObject.transform.position.z);
 
-        // 🌟 สำคัญมาก: สร้างกุญแจบอกหน้าเมนูว่า "มีเซฟแล้วนะ โชว์ปุ่มเริ่มใหม่ได้เลย!"
+        // 🌟 เพิ่มบรรทัดนี้เข้าไป! เพื่อสร้างตัวแปรบอกหน้าเมนูว่า "เคยเล่นและมีเซฟแล้ว"
         PlayerPrefs.SetInt("HasSave", 1);
+
+        // สั่งให้เซฟลงเครื่องเดี๋ยวนี้!
         PlayerPrefs.Save();
 
-        Debug.Log("⏱️ ออโต้เซฟทำงานเรียบร้อย!");
+        Debug.Log("⏱️ [Auto Save] เซฟตำแหน่งและสถานะเซฟอัตโนมัติตามเวลาเรียบร้อย!");
     }
+
 }

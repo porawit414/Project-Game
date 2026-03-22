@@ -9,58 +9,82 @@ public class MainMenuController : MonoBehaviour
     public GameObject loadingScreen;
     public VideoPlayer videoPlayer;
 
-    [Header("ปุ่มที่ต้องการซ่อน/โชว์")]
+    // 🌟 เพิ่มช่องสำหรับลากปุ่ม "เริ่มใหม่" มาใส่
+    [Header("ปุ่มเมนู")]
     public GameObject newGameButton;
 
+    // เปลี่ยนชื่อด่านในนี้ให้ตรงกับชื่อไฟล์ด่านเกมของคุณ (เช่น "DemoScene")
     private string gameSceneName = "DemoScene";
 
     void Start()
     {
-        // 1. เช็คว่ามีเซฟไหม? ถ้ามีโชว์ปุ่มเริ่มใหม่ ถ้าไม่มีให้ซ่อนไว้
-        if (PlayerPrefs.HasKey("HasSave"))
+        // เช็คว่ามีเซฟเกมหรือไม่ (สมมติให้คีย์ชื่อ "HasSave" ถ้ามีจะเป็น 1 ถ้าไม่มีจะเป็น 0)
+        if (PlayerPrefs.GetInt("HasSave", 0) == 1)
         {
-            if (newGameButton != null) newGameButton.SetActive(true);
+            // ถ้ามีเซฟ: แสดงปุ่มเริ่มใหม่
+            newGameButton.SetActive(true);
         }
         else
         {
-            if (newGameButton != null) newGameButton.SetActive(false);
+            // ถ้าไม่มีเซฟ (เข้าเกมครั้งแรก): ซ่อนปุ่มเริ่มใหม่
+            newGameButton.SetActive(false);
         }
     }
 
-    // 🔴 ผูกกับปุ่ม "เริ่มใหม่"
-    public void StartNewGame()
+    public void PlayGame()
     {
-        // ล้างข้อมูลเซฟทั้งหมดในเครื่องทิ้งแบบถอนรากถอนโคน!
-        PlayerPrefs.DeleteAll();
+        // เมื่อกดปุ่มเล่นเกม (ปุ่มหลัก)
+        if (PlayerPrefs.GetInt("HasSave", 0) == 1)
+        {
+            Debug.Log("🔄 มีเซฟอยู่แล้ว กำลังโหลดเซฟเดิมมาเล่นต่อ...");
+        }
+        else
+        {
+            Debug.Log("🆕 เข้าเกมครั้งแรก! เริ่มต้นเกมใหม่...");
+            // เพื่อความชัวร์ จะสั่งลบค่าที่อาจตกค้างอยู่ด้วยก็ได้
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
 
-        // ส่งจดหมายไปบอกด่านเกมว่า "รอบนี้เริ่มใหม่นะ ไม่ต้องโหลดเซฟ"
-        PlayerPrefs.SetInt("IsLoadGame", 0);
-        PlayerPrefs.Save();
-
+        Time.timeScale = 1f;
         StartCoroutine(LoadLevel(gameSceneName));
     }
 
-    // 🟢 ผูกกับปุ่ม "เล่นเกม"
-    public void PlayGame()
+    public void StartNewGame()
     {
-        // ส่งจดหมายไปบอกด่านเกมว่า "รอบนี้ให้ดึงเซฟมาเล่นต่อได้เลย"
-        PlayerPrefs.SetInt("IsLoadGame", 1);
-        PlayerPrefs.Save();
+        // 💣 ล้างบางเซฟทั้งหมด! ไม่ว่าจะเป็นตำแหน่งผู้เล่น, ไอเทม, หลักฐาน หรือตัวเลข
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save(); // ย้ำให้ระบบเซฟการลบทิ้ง
 
+        Debug.Log("🗑️ นิวเคลียร์ลง! ล้างความจำทุกอย่างเรียบร้อย กำลังเริ่มเกมใหม่...");
+        Time.timeScale = 1f;
+
+        // โหลดเข้าฉากเกม
         StartCoroutine(LoadLevel(gameSceneName));
     }
 
     public void QuitGame()
     {
+        Debug.Log("ออกเกมแล้ว");
         Application.Quit();
     }
 
     IEnumerator LoadLevel(string sceneName)
     {
         loadingScreen.SetActive(true);
-        if (videoPlayer != null) videoPlayer.Play();
+
+        if (videoPlayer != null)
+        {
+            videoPlayer.Play();
+        }
+
         yield return new WaitForSeconds(1f);
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
-        while (!operation.isDone) yield return null;
+
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
     }
 }
