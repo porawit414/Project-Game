@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class ShowInteractText : MonoBehaviour
 {
-    [Header("🌟 ลากจุดเสกผี (จุดที่ 1) และจุดทำให้ผีหาย (จุดที่ 2) มาใส่")]
-    public GameObject ghostSpawnTrigger; 
-    public GameObject ghostHideTrigger;
+    [Header("🌟 ตัวผีที่จะให้โผล่มา")]
+    public GameObject ghostEntity; // ลาก Ghost_Waving มาใส่ช่องนี้
 
     [Header("ตั้งค่า UI")]
     public GameObject uiText; 
@@ -20,23 +19,29 @@ public class ShowInteractText : MonoBehaviour
     public AudioClip pickupSound;
 
     private bool isPlayerNear = false;
-    private bool hasBeenPickedUp = false; // กันบั๊กกดรัว
+    private bool hasBeenPickedUp = false; 
 
     void Start()
     {
+        // ถ้าเคยเก็บมีดไปแล้ว ให้ซ่อนผีและปิดโมเดลมีดถาวร
         if (PlayerPrefs.GetInt(knifeSaveKey, 0) == 1)
         {
-            ActivateTriggers(); 
+            if (ghostEntity != null) ghostEntity.SetActive(false); 
             if (evidenceUI != null) evidenceUI.SetActive(true);
             if (knife3DModel != null) knife3DModel.SetActive(false);
             this.enabled = false;
         }
         
         if (uiText != null) uiText.SetActive(false);
+        
+        // เริ่มเกมมาต้องซ่อนผีไว้ก่อนเสมอ
+        if (ghostEntity != null && PlayerPrefs.GetInt(knifeSaveKey, 0) == 0) 
+            ghostEntity.SetActive(false);
     }
 
     void Update()
     {
+        // เช็คการกดปุ่ม F เพื่อเก็บของ
         if (isPlayerNear && !hasBeenPickedUp && Input.GetKeyDown(KeyCode.F))
         {
             PickUpKnife();
@@ -47,27 +52,26 @@ public class ShowInteractText : MonoBehaviour
     {
         hasBeenPickedUp = true;
 
-        // ❌ ลบบรรทัด GameManager.instance.AddEvidence() ออกแล้ว 
-        // เพื่อไม่ให้เลขบวกซ้ำซ้อน (ให้สคริปต์หลักเป็นคนบวกแทน)
-
+        // เล่นเสียงเก็บของ
         if (pickupSound != null) AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        
+        // จัดการ UI และโมเดลมีด
         if (evidenceUI != null) evidenceUI.SetActive(true);
         if (knife3DModel != null) knife3DModel.SetActive(false);
         if (uiText != null) uiText.SetActive(false);
 
-        ActivateTriggers();
+        // 🌟 หัวใจสำคัญ: สั่งให้ผีโผล่มาทันทีที่เก็บมีด!
+        if (ghostEntity != null) 
+        {
+            ghostEntity.SetActive(true);
+            Debug.Log("เก็บมีดแล้ว! ผีโผล่มาหลอกทันที");
+        }
 
+        // บันทึกสถานะว่าเก็บแล้ว
         PlayerPrefs.SetInt(knifeSaveKey, 1);
         PlayerPrefs.Save();
 
-        Debug.Log("เก็บมีดแล้ว -> เปิดระบบผี (ไม่มีการบวกเลขจากสคริปต์นี้)");
-        this.enabled = false;
-    }
-
-    void ActivateTriggers()
-    {
-        if (ghostSpawnTrigger != null) ghostSpawnTrigger.SetActive(true);
-        if (ghostHideTrigger != null) ghostHideTrigger.SetActive(true);
+        this.enabled = false; // ปิดสคริปต์ตัวเอง
     }
 
     private void OnTriggerEnter(Collider other)

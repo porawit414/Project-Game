@@ -1,49 +1,60 @@
 using UnityEngine;
-using System.Collections; // ต้องมีบรรทัดนี้เพื่อใช้ระบบหน่วงเวลา (Coroutine)
+using System.Collections;
 
 public class GhostAudioDelay : MonoBehaviour
 {
-    [Header("ตั้งค่าเสียงผีเดินผ่าน")]
-    public AudioClip passBySound; // ช่องสำหรับเอาไฟล์เสียงมาใส่ใน Inspector
-    public float soundDelay = 0f; // ตั้งเวลาหน่วง 0.2 วินาที ตามที่คุณต้องการ
+    [Header("--- ระบบเสียง ---")]
+    public AudioClip screamSound; // ลากไฟล์เสียงกรี๊ดมาใส่
+    public float soundDelay = 0.2f; 
     
-    private AudioSource audioSource; // ตัวแปรสำหรับคุมเครื่องเล่นเสียง
+    [Header("--- ระบบเคลื่อนที่ ---")]
+    public float moveSpeed = 8f;
+    public float destroyDistance = 1.2f;
 
-    // ฟังก์ชัน Start จะทำงาน "ทันที" ที่ตัวผีถูกสั่งให้โผล่มา (SetActive เป็น true)
-    void Start()
+    private AudioSource audioSource;
+    private Animator anim;
+    private Transform player;
+    private bool isRushing = false; // ตัวเช็คว่าถึงเวลาวิ่งหรือยัง
+
+    void Awake()
     {
-        // 1. สร้างเครื่องเล่นเสียงแปะติดไว้กับตัวผี
-        audioSource = gameObject.AddComponent<AudioSource>(); 
-        
-        // 2. เอาไฟล์เสียงที่เตรียมไว้ใส่เข้าไปในเครื่องเล่น
-        audioSource.clip = passBySound; 
-        
-        // 3. ปิดไม่ให้มันเล่นเองทันที เพราะเราจะใช้ระบบหน่วงเวลา
-        audioSource.playOnAwake = false; 
-        
-        // 4. ปรับเสียงให้เป็นระบบ 3 มิติ (สำคัญมาก: ผู้เล่นจะได้ยินเสียงวิ่งผ่านหน้าจากซ้ายไปขวาจริงๆ)
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+
+        // ตั้งค่าเสียง 3D เหมือนเดิม
+        audioSource.playOnAwake = false;
         audioSource.spatialBlend = 1f; 
-
-        // 5. ถ้ามีไฟล์เสียงใส่ไว้ ให้เริ่มนับถอยหลังหน่วงเวลาได้เลย
-        if (passBySound != null)
-        {
-            StartCoroutine(PlayDelayedSound());
-        }
     }
 
-    // ฟังก์ชันสำหรับหน่วงเวลา
-    IEnumerator PlayDelayedSound()
+    // ⭐ ฟังก์ชันใหม่: สั่งให้ผีเริ่มวิ่ง (เรียกจากจุดดัก Trigger)
+    public void StartRunning()
     {
-        // สั่งให้โค้ดหยุดรอเป็นเวลา 0.2 วินาที (ตามค่า soundDelay)
-        yield return new WaitForSeconds(soundDelay);
-        
-        // พอครบ 0.2 วินาที เช็คว่าถ้าเครื่องเล่นเสียงยังอยู่ (ผียังไม่โดนลบ)
-        if (audioSource != null)
+        if (isRushing) return;
+        isRushing = true;
+
+        // เปลี่ยนท่าเป็นวิ่งใน Animator
+        if (anim != null) anim.SetTrigger("StartRun");
+
+        // เล่นเสียงกรี๊ด
+        if (screamSound != null) audioSource.PlayOneShot(screamSound);
+    }
+
+    void Update()
+    {
+        // ถ้ายังไม่สั่งให้วิ่ง (isRushing เป็น false) ผีจะยืนโบกมือเฉยๆ
+        if (!isRushing || player == null) return;
+
+        // โค้ดสั่งวิ่งเข้าหาผู้เล่น
+        Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
+        transform.LookAt(targetPos);
+        transform.position += transform.forward * moveSpeed * Time.deltaTime;
+
+        // ถึงตัวแล้วหายไป
+        if (Vector3.Distance(transform.position, player.position) < destroyDistance)
         {
-            audioSource.Play(); // สั่งเล่นเสียงหลอน!
+            Destroy(gameObject);
         }
     }
-    
-    // หมายเหตุ: เมื่อผีถูกคำสั่ง Destroy(targetGhost, 1.7f) จากกล่องกับดักทำลายทิ้ง 
-    // ตัว AudioSource ในสคริปต์นี้จะถูกทำลายตามไปด้วย ทำให้เสียงตัดดับไปทันทีครับ
 }

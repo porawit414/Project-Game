@@ -4420,8 +4420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 416825241}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -6858,8 +6857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 1260556319}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -13270,7 +13268,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5be28cc169b957044ad0835356c84199, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 380.186
+      value: 380.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5be28cc169b957044ad0835356c84199, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13278,7 +13276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5be28cc169b957044ad0835356c84199, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 342.392
+      value: 345.135
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5be28cc169b957044ad0835356c84199, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13311,6 +13309,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5be28cc169b957044ad0835356c84199, type: 3}
       propertyPath: m_Name
       value: garbagebags
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5be28cc169b957044ad0835356c84199, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -49085,8 +49087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 830170512}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -65566,7 +65567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 386.134
+      value: 386.413
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -65574,23 +65575,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 342.607
+      value: 342.921
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.6939709
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.72000307
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -65598,7 +65599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -92.109
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f4f14d5dba4610468670dc200cc260a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -81094,7 +81095,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.54, y: 9, z: 2}
+  m_Size: {x: 3.54, y: 12, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &647729788
 GameObject:
@@ -82356,8 +82357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 1127859624}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -85086,6 +85086,11 @@ Transform:
   - {fileID: 460600523}
   m_Father: {fileID: 1144618967}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &694631300 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
+  m_PrefabInstance: {fileID: 1487692191}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &694745530
 GameObject:
   m_ObjectHideFlags: 0
@@ -86313,7 +86318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc6e346b92349847a99a8a3e4a2314b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 380.22
+      value: 380.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc6e346b92349847a99a8a3e4a2314b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -86321,7 +86326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc6e346b92349847a99a8a3e4a2314b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 342.647
+      value: 345.341
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edc6e346b92349847a99a8a3e4a2314b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -86354,6 +86359,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: edc6e346b92349847a99a8a3e4a2314b, type: 3}
       propertyPath: m_Name
       value: 'Evidence: Knife'
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: edc6e346b92349847a99a8a3e4a2314b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5881181896857891185, guid: edc6e346b92349847a99a8a3e4a2314b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -86682,8 +86691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 1675962548}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -94921,7 +94929,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1305471906}
+      addedObject: {fileID: 1305471909}
   m_SourcePrefab: {fileID: 100100000, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
 --- !u!1 &793424761
 GameObject:
@@ -112966,8 +112974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 830170512}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -121328,7 +121335,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4972193, y: 0.57126176, z: 1.1140009}
+  m_Size: {x: 0.4972193, y: 3, z: 1.1140009}
   m_Center: {x: -0.000061027706, y: -0.00003053248, z: -0.000030577183}
 --- !u!1 &1037521550
 GameObject:
@@ -122088,8 +122095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 1165081221}
-  ghostHideTrigger: {fileID: 1254692007}
+  ghostEntity: {fileID: 1305471905}
   uiText: {fileID: 1127859624}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -126535,6 +126541,118 @@ Transform:
   - {fileID: 1184335252}
   m_Father: {fileID: 1223337420}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1089577300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1089577301}
+  - component: {fileID: 1089577304}
+  - component: {fileID: 1089577303}
+  - component: {fileID: 1089577302}
+  m_Layer: 0
+  m_Name: old_table (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1089577301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089577300}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 2.823, y: 0.383, z: 0.942}
+  m_LocalScale: {x: 0.92816, y: 0.92816, z: 0.92816}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 694631300}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1089577302
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089577300}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.000000014901158}
+--- !u!23 &1089577303
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089577300}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: b78364ac0327c4342b7c7029f31dcf37, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1089577304
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089577300}
+  m_Mesh: {fileID: 2301136122252454430, guid: a05747a95510c77459b3716b491af074, type: 3}
 --- !u!1 &1089730162
 GameObject:
   m_ObjectHideFlags: 0
@@ -133244,7 +133362,7 @@ Transform:
   m_GameObject: {fileID: 1165081221}
   serializedVersion: 2
   m_LocalRotation: {x: 2.8458351e-12, y: 0.99987614, z: -4.4803066e-14, w: -0.01574143}
-  m_LocalPosition: {x: 380.99487, y: 1.6149, z: 348.81793}
+  m_LocalPosition: {x: 380.928, y: 1.6149, z: 346.681}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -142883,8 +143001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21f1a869b13cca4bb079b0b3b61a5d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostWavingTrigger1
-  ghostObject: {fileID: 1305471905}
-  knifeSaveKey: Evidence_Knife
+  ghostScript: {fileID: 0}
 --- !u!23 &1254692011
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -143820,7 +143937,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260556319}
   m_LocalRotation: {x: 0.0038326972, y: 0.88745075, z: -0.4608276, w: 0.007380919}
-  m_LocalPosition: {x: 0, y: 0, z: 1.523}
+  m_LocalPosition: {x: 0, y: 0, z: 1.555}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -143828,7 +143945,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 54.883, y: 179.047, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.381, y: -1.004}
+  m_AnchoredPosition: {x: -0.381, y: -1}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1260810015
@@ -146683,8 +146800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 115339218}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -148743,20 +148859,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
   m_PrefabInstance: {fileID: 793353451}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1305471906
+--- !u!114 &1305471909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305471905}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdff58512ee349e46a591e5a91effa1a, type: 3}
+  m_Script: {fileID: 11500000, guid: c7b8740a8d5ca864bbb7dbb6d5bfba27, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostAudioDelay
-  passBySound: {fileID: 0}
-  soundDelay: 0
+  m_EditorClassIdentifier: Assembly-CSharp::GhostRushSystem
+  moveSpeed: 10
+  destroyDistance: 1.2
+  lifeTime: 5
+  screamSound: {fileID: 0}
 --- !u!1 &1305937018
 GameObject:
   m_ObjectHideFlags: 0
@@ -149923,8 +150041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 345727322}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -162531,8 +162648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 209680268}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -167613,31 +167729,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 384.777
+      value: 382.369
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000062042936
+      value: -0.000006198883
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 345.558
+      value: 344.033
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.98061323
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.1959533
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -167645,7 +167761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 22.601
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -167657,7 +167773,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b78364ac0327c4342b7c7029f31dcf37, type: 2}
     - target: {fileID: -3059918069457676742, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.955
+      value: -1.361
       objectReference: {fileID: 0}
     - target: {fileID: -3059918069457676742, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.y
@@ -167665,7 +167781,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3059918069457676742, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.751
+      value: 1.712
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_Name
@@ -167725,7 +167841,10 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b78364ac0327c4342b7c7029f31dcf37, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1089577301}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -890725610732284099, guid: a05747a95510c77459b3716b491af074, type: 3}
       insertIndex: -1
@@ -168520,31 +168639,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 381.937
+      value: 386.295
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00001179317
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 342.62732
+      value: 345.229
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.69726187
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.7168165
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -168552,7 +168671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -91.585
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -168561,6 +168680,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_Name
       value: Stove2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5312734219453308919, guid: 9c22dd1e5e659c64581fd1e30e53abd8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -178671,8 +178794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 217901305}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -180101,8 +180223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d0814e31eab49bf610dbfad19d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShowInteractText
-  ghostSpawnTrigger: {fileID: 0}
-  ghostHideTrigger: {fileID: 0}
+  ghostEntity: {fileID: 0}
   uiText: {fileID: 1835098368}
   knifeSaveKey: Evidence_Knife
   knife3DModel: {fileID: 0}
@@ -184555,7 +184676,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.2953873, y: 0.7613358, z: 0.58455265}
+  m_Size: {x: 2, y: 0.7613358, z: 0.58455265}
   m_Center: {x: 0, y: 0, z: 0.000000014901158}
 --- !u!1 &1636780926
 GameObject:
@@ -188213,43 +188334,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 383.37057
+      value: 381.301
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.12969422
+      value: 0.196
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 345.41293
+      value: 344.892
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.54916805
+      value: 0.077030286
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.21081047
+      value: 0.14119704
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.80638325
+      value: 0.95905405
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.06098813
+      value: -0.23312029
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 160.737
+      value: 152.037
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 294.361
+      value: 354.67798
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 196.81
+      value: 195.425
       objectReference: {fileID: 0}
     - target: {fileID: -5836552744715497169, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -188257,15 +188378,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b78364ac0327c4342b7c7029f31dcf37, type: 2}
     - target: {fileID: -3059918069457676742, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.109
+      value: -2.025
       objectReference: {fileID: 0}
     - target: {fileID: -3059918069457676742, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.523
+      value: 0.818
       objectReference: {fileID: 0}
     - target: {fileID: -3059918069457676742, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.55
+      value: 0.383
       objectReference: {fileID: 0}
     - target: {fileID: -3059918069457676742, guid: a05747a95510c77459b3716b491af074, type: 3}
       propertyPath: m_LocalRotation.w
@@ -189905,8 +190026,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdff58512ee349e46a591e5a91effa1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostAudioDelay
-  passBySound: {fileID: 8300000, guid: 6656a44f5e6f534458e45077e7f8d669, type: 3}
-  soundDelay: 0
+  screamSound: {fileID: 8300000, guid: 6656a44f5e6f534458e45077e7f8d669, type: 3}
+  soundDelay: 0.2
+  moveSpeed: 8
+  destroyDistance: 1.2
 --- !u!1 &1685453026
 GameObject:
   m_ObjectHideFlags: 0
@@ -203160,7 +203283,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.8, z: 1.7}
+  m_Size: {x: 1, y: 12, z: 1.7}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1814988374
 PrefabInstance:
@@ -218392,27 +218515,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 382.16
+      value: 386.197
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.946
+      value: 0.986
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 342.794
+      value: 345.444
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.68024135
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.73298824
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalRotation.z
@@ -218424,7 +218547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -94.275
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 369685a37c275374b8a355dbfd7b8282, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -235824,7 +235947,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -106.569, y: 206.568}
+  m_AnchoredPosition: {x: -106.56909, y: 206.568}
   m_SizeDelta: {x: 213.136, y: 63.136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2126294988

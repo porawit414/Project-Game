@@ -2,37 +2,27 @@ using UnityEngine;
 
 public class Trigger_Ghost_Waving : MonoBehaviour
 {
-    [Header("ลาก Ghost_Waving มาใส่ที่นี่")]
-    public GameObject ghostObject; 
-
-    [Header("ชื่อ Key ที่ใช้เซฟตอนเก็บมีด")]
-    public string knifeSaveKey = "Evidence_Knife";
+    [Header("ลากตัวผีที่มีสคริปต์ GhostAudioDelay มาใส่")]
+    public GhostAudioDelay ghostScript; // เปลี่ยนจาก GhostController เป็น GhostAudioDelay ให้ตรงกับของจริง
 
     private bool hasTriggered = false;
 
-    // ไม่ต้องมี void Start() ที่สั่งปิดผี เพราะหน้าที่นั้นเป็นของจุดเสกผีครับ
-
     private void OnTriggerEnter(Collider other)
     {
-        // เช็ค 1: เป็นผู้เล่น
-        // เช็ค 2: จุดนี้ยังไม่เคยทำงาน (hasTriggered)
+        // 1. เช็คว่าเป็นผู้เล่น และยังไม่เคยทำงาน
         if (other.CompareTag("Player") && !hasTriggered)
         {
-            // เช็ค 3: เก็บมีดแล้วหรือยัง (ค่าความจำต้องเป็น 1)
-            if (PlayerPrefs.GetInt(knifeSaveKey, 0) == 1)
+            // 2. เช็คว่าผีโผล่มาหรือยัง และมีสคริปต์ติดอยู่ไหม
+            if (ghostScript != null && ghostScript.gameObject.activeSelf)
             {
-                if (ghostObject != null)
-                {
-                    ghostObject.SetActive(false); // สั่งปิดตัวผีทันที
-                    Debug.Log("Jon Kimson เดินมาถึงจุดดักที่ 2: ผีหายไปแล้ว!");
-                }
-
+                // สั่งให้ผีเริ่มวิ่ง (ฟังก์ชันนี้เราเขียนเพิ่มไว้ใน GhostAudioDelay แล้ว)
+                ghostScript.StartRunning(); 
+                
+                Debug.Log("🎯 ผู้เล่นเดินชนจุดดัก: สั่งผีวิ่งใส่แล้ว!");
+                
                 hasTriggered = true; 
-                Destroy(gameObject, 0.1f); // ทำลายจุดดักทิ้งเพื่อประหยัดทรัพยากร
-            }
-            else
-            {
-                Debug.Log("ยังไม่ได้เก็บมีด จุดทำให้ผีหายจะไม่ทำงาน");
+                // ทำลายจุดดักทิ้งเพื่อไม่ให้ทำงานซ้ำ
+                Destroy(gameObject, 0.1f); 
             }
         }
     }
