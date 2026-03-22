@@ -42863,7 +42863,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1f7d0c12f24c75d4fa771cd997ff912d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 387.59924
+      value: 388.757
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1f7d0c12f24c75d4fa771cd997ff912d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -42871,7 +42871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1f7d0c12f24c75d4fa771cd997ff912d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 354.6753
+      value: 354.781
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1f7d0c12f24c75d4fa771cd997ff912d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -94907,6 +94907,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_Avatar
       value: 
@@ -133344,7 +133348,7 @@ GameObject:
   - component: {fileID: 1165081222}
   - component: {fileID: 1165081226}
   - component: {fileID: 1165081225}
-  - component: {fileID: 1165081224}
+  - component: {fileID: 1165081227}
   - component: {fileID: 1165081223}
   m_Layer: 0
   m_Name: Ghost_Spawn_Trigger
@@ -133389,19 +133393,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.5, y: 3, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1165081224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1165081221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b281d9d422f914abad8b4eabb508ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostWavingTrigger
-  ghostObject: {fileID: 1305471905}
 --- !u!23 &1165081225
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -133459,6 +133450,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165081221}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1165081227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165081221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b060895692a09640b6836472ff8ce61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UniversalGhostTrigger
+  ghostObject: {fileID: 1305471905}
+  rushScript: {fileID: 0}
+  isSpawnTrigger: 1
 --- !u!28 &1165126205
 Texture2D:
   m_ObjectHideFlags: 0
@@ -142944,7 +142950,7 @@ GameObject:
   - component: {fileID: 1254692008}
   - component: {fileID: 1254692012}
   - component: {fileID: 1254692011}
-  - component: {fileID: 1254692010}
+  - component: {fileID: 1254692013}
   - component: {fileID: 1254692009}
   m_Layer: 0
   m_Name: Trigger_Ghost_Waving
@@ -142962,7 +142968,7 @@ Transform:
   m_GameObject: {fileID: 1254692007}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.99987614, z: -0, w: -0.01574143}
-  m_LocalPosition: {x: 380.88867, y: 1.3809, z: 351.79977}
+  m_LocalPosition: {x: 380.8, y: 1.3809, z: 348.992}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -142989,19 +142995,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3, y: 2, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1254692010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1254692007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a21f1a869b13cca4bb079b0b3b61a5d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostWavingTrigger1
-  ghostScript: {fileID: 0}
 --- !u!23 &1254692011
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -143059,6 +143052,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254692007}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1254692013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254692007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df1c2784ab570c14f9c2985604b4113a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostTriggerV2
+  ghostScript: {fileID: 1305471909}
 --- !u!1 &1254731156
 GameObject:
   m_ObjectHideFlags: 0
@@ -145352,6 +145358,9 @@ MonoBehaviour:
   ghostSaveID: Crawling_Ghost_1
   targetGhost: {fileID: 1685044024}
   displayDuration: 1.9
+  jumpscareSound: {fileID: 8300000, guid: 6656a44f5e6f534458e45077e7f8d669, type: 3}
+  soundDelay: 0.1
+  volume: 1
 --- !u!23 &1271565832
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -148874,7 +148883,8 @@ MonoBehaviour:
   moveSpeed: 10
   destroyDistance: 1.2
   lifeTime: 5
-  screamSound: {fileID: 0}
+  screamSound: {fileID: 8300000, guid: 22a378007be18ff499762c15a7392538, type: 3}
+  volume: 1
 --- !u!1 &1305937018
 GameObject:
   m_ObjectHideFlags: 0
@@ -190026,10 +190036,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdff58512ee349e46a591e5a91effa1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostAudioDelay
-  screamSound: {fileID: 8300000, guid: 6656a44f5e6f534458e45077e7f8d669, type: 3}
-  soundDelay: 0.2
-  moveSpeed: 8
-  destroyDistance: 1.2
+  screamSound: {fileID: 0}
+  volume: 1
+  moveSpeed: 0.8
+  lifeTime: 5
 --- !u!1 &1685453026
 GameObject:
   m_ObjectHideFlags: 0
@@ -194591,7 +194601,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 401.33447
+      value: 401.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.y
@@ -194599,7 +194609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 358.80374
+      value: 359.18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae3438d6b74df643815e0020ee73d31, type: 3}
       propertyPath: m_LocalRotation.w
@@ -237153,7 +237163,7 @@ MonoBehaviour:
   ghostModel: {fileID: 992921692}
   audioSource: {fileID: 0}
   jumpscareSound: {fileID: 8300000, guid: d68243f031e96094fb56c5b37a6b3bfe, type: 3}
-  ghostDuration: 2
+  ghostDuration: 0.7
 --- !u!65 &2136404058
 BoxCollider:
   m_ObjectHideFlags: 0

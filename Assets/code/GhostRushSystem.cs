@@ -3,78 +3,69 @@ using UnityEngine;
 public class GhostRushSystem : MonoBehaviour
 {
     [Header("--- การตั้งค่าการเคลื่อนที่ ---")]
-    public float moveSpeed = 10f;       // ความเร็วตอนพุ่งใส่
-    public float destroyDistance = 1.2f; // ระยะห่างที่ชนตัวแล้วจะหายไป
-    public float lifeTime = 5f;         // วิ่งไม่ถึงใน 5 วิ ให้หายไปเอง
+    public float moveSpeed = 10f;       
+    public float destroyDistance = 1.2f; 
+    public float lifeTime = 5f;         
 
-    [Header("--- ระบบเสียง (แยกอิสระ) ---")]
-    public AudioClip screamSound;       // ลากไฟล์เสียงร้องมาใส่ใน Inspector
+    [Header("--- ระบบเสียง (เน้นดังสะใจ) ---")]
+    public AudioClip screamSound;       
+    [Range(0f, 1f)] public float volume = 1f; // ตั้งค่าความดังได้จาก Inspector (ค่าเริ่มต้นคือ 1 = ดังสุด)
     
     private Transform player;
     private Animator anim;
-    private AudioSource myAudioSource;  // ลำโพงส่วนตัวของผีตัวนี้
+    private AudioSource myAudioSource;  
     private bool isRushing = false;
 
     void Awake()
     {
-        // 1. ค้นหาผู้เล่นผ่าน Tag "Player"
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) 
-        {
-            player = playerObj.transform;
-        }
-        else
-        {
-            Debug.LogError("❌ หาวัตถุที่มี Tag 'Player' ไม่เจอ! อย่าลืมตั้ง Tag ที่ตัวละครเรานะครับ");
-        }
+        if (playerObj != null) player = playerObj.transform;
 
         anim = GetComponent<Animator>();
 
-        // 2. สร้างลำโพงส่วนตัวให้ผีตัวนี้ (ป้องกันเสียงไปทับตัวอื่น)
+        // --- ตั้งค่าลำโพงให้ดังที่สุด ---
         myAudioSource = gameObject.AddComponent<AudioSource>();
         myAudioSource.playOnAwake = false;
-        myAudioSource.spatialBlend = 1f; // เป็นเสียง 3D
-        myAudioSource.minDistance = 1f;
-        myAudioSource.maxDistance = 25f;
+        
+        // ปรับเป็น 0.2f เพื่อให้ยังพอรู้ทิศทางผีบ้าง แต่เสียงจะดังชัดเหมือนอยู่ข้างหูตลอด
+        myAudioSource.spatialBlend = 0.2f; 
+        
+        myAudioSource.volume = volume;         // เร่ง Volume เต็มที่
+        myAudioSource.priority = 0;            // ตั้งค่า Priority เป็น 0 (สำคัญที่สุด) เพื่อไม่ให้เสียงอื่นมากลบ
+        myAudioSource.minDistance = 10f;       // ระยะ 10 เมตรแรกจะดัง 100% ตลอด
+        myAudioSource.maxDistance = 100f;      // ได้ยินเสียงไกลถึง 100 เมตร
+        myAudioSource.rolloffMode = AudioRolloffMode.Linear; // ให้เสียงค่อยๆ เบาลงแบบเส้นตรง (จะดังกว่าแบบปกติ)
     }
 
-    // ฟังก์ชันนี้จะถูกเรียกจากจุดดัก (Trigger)
     public void StartRunning()
     {
         if (isRushing) return;
         isRushing = true;
 
-        // เปลี่ยนท่าเป็นวิ่ง (ชื่อ StartRun ต้องตรงกับใน Animator)
         if (anim != null) anim.SetTrigger("StartRun");
 
-        // เล่นเสียงร้องผ่านลำโพงตัวเองเท่านั้น
         if (screamSound != null) 
         {
-            myAudioSource.PlayOneShot(screamSound);
+            // ใช้ PlayOneShot ร่วมกับ Volume ที่ตั้งไว้
+            myAudioSource.PlayOneShot(screamSound, volume);
         }
 
-        Debug.Log("👻 ผีเริ่มวิ่งแล้ว!");
+        Destroy(gameObject, lifeTime);
+        Debug.Log("👻 ผีเริ่มวิ่งแล้ว! (เสียงดังสุดๆ)");
     }
 
     void Update()
     {
-        // ถ้ายังไม่ถึงคิววิ่ง หรือหาผู้เล่นไม่เจอ ให้หยุด
         if (!isRushing || player == null) return;
 
-        // 1. หันหน้าหาผู้เล่นตลอดเวลา (ล็อคแกน Y ไม่ให้ผีหน้าทิ่มหรือแหงน)
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, player.position.z);
         transform.LookAt(targetPos);
 
-        // 2. เคลื่อนที่ไปหาพิกัดผู้เล่นจริงๆ (MoveTowards ป้องกันผีวิ่งอยู่กับที่)
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
 
-        // 3. ถ้าถึงตัวผู้เล่น ให้หายไป
         if (Vector3.Distance(transform.position, player.position) < destroyDistance)
         {
             Destroy(gameObject);
         }
-
-        // 4. กันเหนียว: ถ้าวิ่งไม่ถึงสักที 5 วิให้หายไป
-        Destroy(gameObject, lifeTime);
     }
 }
