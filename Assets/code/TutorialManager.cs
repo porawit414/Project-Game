@@ -1,80 +1,91 @@
 using UnityEngine;
-using TMPro; // สำคัญมากสำหรับการควบคุม TMP Text
+using TMPro;
 
 public class TutorialManager : MonoBehaviour
 {
+    // 🚨 1. สร้างป้ายไฟเตือนให้สคริปต์อื่นรู้ว่า "หน้าต่างสอนเล่นเปิดอยู่!"
+    public static bool isTutorialOpen = false;
+
     [Header("UI Elements")]
-    public GameObject tutorialNote; // ลาก Object กระดาษคำอธิบายของคุณมาใส่ที่นี่
-    public TextMeshProUGUI promptText; // ลาก Object ข้อความ "กด [Space Bar]" มาใส่ที่นี่
+    public GameObject tutorialNote;
+    public TextMeshProUGUI promptText;
 
     [Header("Player Control")]
-    public MonoBehaviour playerMovement; // ลากสคริปต์ควบคุมการเดินมาใส่
+    public MonoBehaviour playerMovement;
 
     private bool isNoteOpen = false;
-    private bool isSystemDisabled = false; // ตัวแปรเช็คว่าโดนสั่งปิดระบบหรือยัง (ตอนจบเกม)
+    private bool isSystemDisabled = false;
 
     void Start()
     {
-        // ตอนเริ่มเกม ให้ซ่อนกระดาษคำอธิบายไว้ก่อน
+        isTutorialOpen = false; // รีเซ็ตตอนเริ่มเกม
         if (tutorialNote != null) tutorialNote.SetActive(false);
-        // และแสดงข้อความบอกวิธีเปิด
-        if (promptText != null) 
+        if (promptText != null)
         {
             promptText.enabled = true;
-            promptText.text = "กด [Space Bar] เพื่อเปิดคำอธิบาย"; // ตั้งค่าเริ่มต้น
+            promptText.text = "กด [Space Bar] เพื่อเปิดคำอธิบาย";
         }
     }
 
     void Update()
     {
-        // ถ้าโดนสั่งปิดระบบ (จากสคริปต์ประตูฉากจบ) ไม่ต้องทำงานต่อ
         if (isSystemDisabled) return;
 
-        // เปลี่ยนเป็นเช็คปุ่ม Space Bar
+        // เช็คไม้กั้นจากหัวหน้าและหน้าต่างเมนู Pause
+        if (IntroDialog.isIntroActive || SimplePauseMenu.isGamePaused)
+        {
+            if (promptText != null) promptText.enabled = false;
+            return;
+        }
+        else
+        {
+            if (promptText != null && !promptText.enabled)
+            {
+                promptText.enabled = true;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ToggleTutorialNote();
         }
     }
 
-    // ฟังก์ชันสั่งปิดระบบสอนทั้งหมด (เรียกใช้จากสคริปต์ประตูฉากจบ)
     public void DisableTutorialSystem()
     {
         isSystemDisabled = true;
+        isTutorialOpen = false; // ปิดป้ายไฟด้วย
         if (tutorialNote != null) tutorialNote.SetActive(false);
-        if (promptText != null) promptText.gameObject.SetActive(false); 
-        this.enabled = false; 
+        if (promptText != null) promptText.gameObject.SetActive(false);
+        this.enabled = false;
     }
 
     void ToggleTutorialNote()
     {
         if (tutorialNote == null) return;
 
-        isNoteOpen = !isNoteOpen; // สลับสถานะ
+        isNoteOpen = !isNoteOpen;
+        isTutorialOpen = isNoteOpen; // 🌟 2. อัปเดตสถานะป้ายไฟเตือน!
 
         if (isNoteOpen)
         {
-            // --- เปิดกระดาษ ---
             tutorialNote.SetActive(true);
             if (promptText != null) promptText.text = "กด [Space Bar] เพื่อปิดคำอธิบาย";
 
-            // ล็อคการเคลื่อนที่ของตัวละคร
+            // สั่งล็อคไม่ให้เดิน (ถ้าลากสคริปต์เดินมาใส่ใน Inspector แล้ว มันจะหยุดเดินทันที)
             if (playerMovement != null) playerMovement.enabled = false;
 
-            // ปลดล็อคเมาส์
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         else
         {
-            // --- ปิดกระดาษ ---
             tutorialNote.SetActive(false);
             if (promptText != null) promptText.text = "กด [Space Bar] เพื่อเปิดคำอธิบาย";
 
-            // ปลดล็อคให้ตัวละครเดินได้ปกติ
+            // สั่งให้กลับมาเดินได้ปกติ
             if (playerMovement != null) playerMovement.enabled = true;
 
-            // ล็อคเมาส์กลับเข้าเกม
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   loadingScreen: {fileID: 1851065784}
   videoPlayer: {fileID: 1851065785}
-  newGameButton: {fileID: 1788376917}
+  newGameButton: {fileID: 1062310141}
 --- !u!4 &289806494
 Transform:
   m_ObjectHideFlags: 0

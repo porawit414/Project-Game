@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
+using UnityEngine.UI; // 🌟 1. เพิ่มบรรทัดนี้ เพื่อให้ระบบรู้จักกับคำสั่ง "Button"
 
 public class MainMenuController : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class MainMenuController : MonoBehaviour
     public GameObject loadingScreen;
     public VideoPlayer videoPlayer;
 
-    // 🌟 เพิ่มช่องสำหรับลากปุ่ม "เริ่มใหม่" มาใส่
+    // 🌟 2. เปลี่ยนตรงนี้จาก GameObject เป็น Button
     [Header("ปุ่มเมนู")]
-    public GameObject newGameButton;
+    public Button newGameButton;
 
     // เปลี่ยนชื่อด่านในนี้ให้ตรงกับชื่อไฟล์ด่านเกมของคุณ (เช่น "DemoScene")
     private string gameSceneName = "DemoScene";
@@ -21,13 +22,13 @@ public class MainMenuController : MonoBehaviour
         // เช็คว่ามีเซฟเกมหรือไม่ (สมมติให้คีย์ชื่อ "HasSave" ถ้ามีจะเป็น 1 ถ้าไม่มีจะเป็น 0)
         if (PlayerPrefs.GetInt("HasSave", 0) == 1)
         {
-            // ถ้ามีเซฟ: แสดงปุ่มเริ่มใหม่
-            newGameButton.SetActive(true);
+            // ถ้ามีเซฟ: ทำให้ปุ่มสว่าง และกดได้ปกติ
+            if (newGameButton != null) newGameButton.interactable = true; // 🌟 3. เปลี่ยนเป็น interactable = true
         }
         else
         {
-            // ถ้าไม่มีเซฟ (เข้าเกมครั้งแรก): ซ่อนปุ่มเริ่มใหม่
-            newGameButton.SetActive(false);
+            // ถ้าไม่มีเซฟ (เข้าเกมครั้งแรก): ทำให้ปุ่มเป็นสีเทา และกดไม่ติด!
+            if (newGameButton != null) newGameButton.interactable = false; // 🌟 4. เปลี่ยนเป็น interactable = false
         }
     }
 
