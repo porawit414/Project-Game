@@ -5251,15 +5251,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f4e3690f77c52db40acaefe6c8fc9d50, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 393.155
+      value: 393.345
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4e3690f77c52db40acaefe6c8fc9d50, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.389
+      value: 2.332
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4e3690f77c52db40acaefe6c8fc9d50, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 362.062
+      value: 361.739
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4e3690f77c52db40acaefe6c8fc9d50, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15259,15 +15259,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 33f3ef0714dbea8479346bb09f28311f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.25
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33f3ef0714dbea8479346bb09f28311f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.25
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33f3ef0714dbea8479346bb09f28311f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.25
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33f3ef0714dbea8479346bb09f28311f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -77261,13 +77261,13 @@ MonoBehaviour:
   doorBody: {fileID: 5262320588085782019}
   openAngle: 90
   smoothSpeed: 3
-  autoCloseTime: 3
   chainLock: {fileID: 1730294548}
   openSound: {fileID: 8300000, guid: 2f27a672050fc784989be6eb342f6e56, type: 3}
   closeSound: {fileID: 0}
   lockedSound: {fileID: 0}
   cutSound: {fileID: 8300000, guid: 1d529e74305dbda4d8268b004ebd7a5f, type: 3}
-  solidDoorCollider: {fileID: 6973380828083143921}
+  safeDistanceToClose: 1.5
+  playerTransform: {fileID: 44101509}
 --- !u!1 &611068199
 GameObject:
   m_ObjectHideFlags: 0
@@ -181365,7 +181365,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4e12e530922cd8f4ca085e0063000938, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e600e4061492e8b40969b0c0651e6581, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -264132,7 +264132,6 @@ GameObject:
   - component: {fileID: 7718513979749363365}
   - component: {fileID: 1475973269155338577}
   - component: {fileID: 6973380828083143921}
-  - component: {fileID: 7718513979749363366}
   - component: {fileID: 610579405}
   m_Layer: 0
   m_Name: Interior_Door
@@ -290462,8 +290461,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8959997, y: 2.0370002, z: 0.066000335}
-  m_Center: {x: 0.4459999, y: 1.0195, z: 0.031999942}
+  m_Size: {x: 0.8959997, y: 2.0370002, z: 0}
+  m_Center: {x: 0.44599995, y: 1.0195, z: -0.0010002349}
 --- !u!33 &6979808823175331430
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -295835,27 +295834,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3390741272202676731}
   m_Mesh: {fileID: -8472003848236001347, guid: e0147f4678533444ca8209554a9ead22, type: 3}
---- !u!65 &7718513979749363366
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3390741272202676731}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.8959997, y: 2.0370002, z: 1}
-  m_Center: {x: 0.44596937, y: 1.0195, z: 0.031969424}
 --- !u!4 &7724761947717748331
 Transform:
   m_ObjectHideFlags: 0
